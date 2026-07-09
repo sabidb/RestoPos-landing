@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   RestoPOS brand tokens — ported from the official site (restopos-site).
+   Charcoal / gold / bone, Inter + JetBrains Mono, hairline borders.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  --color-charcoal: #0a0a0a;
+  --color-charcoal-soft: #141414;
+  --color-charcoal-raised: #1b1b1b;
+
+  --color-gold: #c5a059;
+  --color-gold-bright: #dcc08a;
+  --color-gold-dim: #8a7245;
+
+  /* Leaf — the green half of the logo gradient */
+  --color-leaf: #4c7a52;
+  --color-leaf-bright: #6f9e74;
+  --color-leaf-dim: #3a5c40;
+
+  --color-bone: #f5f3ee;
+  --color-hairline: #262622;
+
+  --text-display-xl: clamp(3rem, 7vw, 6.5rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-lg: clamp(2.25rem, 5vw, 4rem);
+  --text-display-lg--line-height: 1;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-md: clamp(1.75rem, 3vw, 2.5rem);
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.01em;
+
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-gold: 0 0 0 1px rgba(197, 160, 89, 0.25), 0 8px 40px -12px rgba(197, 160, 89, 0.35);
+
+  --animate-float: float 7s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+}
+
+/* The RestoPOS logo gradient — green to gold, sampled from the mark */
+.brand-gradient {
+  background-image: linear-gradient(135deg, #4c7a52 0%, #8a8443 52%, #c1922e 100%);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-charcoal);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-charcoal);
+}
+
+/* Visible keyboard focus, never removed */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Light sweep — a soft gold-tinted highlight travels diagonally across the
+   surface every 4s. Apply `.light-sweep` to a positioned, overflow-hidden
+   container.
+--------------------------------------------------------------------------- */
+.light-sweep::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(220, 192, 138, 0.04) 45%,
+    rgba(245, 243, 238, 0.09) 50%,
+    rgba(220, 192, 138, 0.04) 55%,
+    transparent 100%
+  );
+  transform: translateX(-220%) skewX(-18deg);
+  animation: light-sweep 4s linear infinite;
+}
+
+@keyframes light-sweep {
+  0% {
+    transform: translateX(-220%) skewX(-18deg);
+  }
+  32%,
+  100% {
+    transform: translateX(420%) skewX(-18deg);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3D tilt — transforms are driven by JS (see Hero.astro); this provides the
+   spring-back transition and preserves depth for child layers.
+--------------------------------------------------------------------------- */
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform 0.35s var(--ease-out-expo);
+  will-change: transform;
+}
+
+[data-tilt].is-tilting {
+  transition: transform 0.08s linear;
+}
+
+/* ---------------------------------------------------------------------------
+   Reveal on scroll — elements with [data-reveal] fade up when they enter the
+   viewport (IntersectionObserver in Layout.astro adds .is-visible).
+   Stagger with style="--reveal-delay: 0.1s".
+--------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.8s var(--ease-out-expo) var(--reveal-delay, 0s),
+    transform 0.8s var(--ease-out-expo) var(--reveal-delay, 0s);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Bilingual word — Arabic and English swap every 2.6s (script in Hero.astro).
+--------------------------------------------------------------------------- */
+.bilingual {
+  display: inline-grid;
+  direction: ltr;
+}
+
+.bilingual > span {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+}
+
+.bilingual > [data-lang="ar"] {
+  direction: rtl;
+}
+
+.bilingual > [data-lang="en"] {
+  opacity: 0;
+  transform: translateY(10px);
+  color: var(--color-gold);
+}
+
+.bilingual.show-en > [data-lang="ar"] {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.bilingual.show-en > [data-lang="en"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .light-sweep::after {
+    animation: none;
+    opacity: 0;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

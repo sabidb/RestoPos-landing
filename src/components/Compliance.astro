@@ -1,0 +1,60 @@
+---
+import ZatcaReceipt from './ZatcaReceipt.jsx';
+
+const points = [
+  {
+    title: 'ZATCA Phase 2, handled',
+    body: "Every invoice is cryptographically signed, QR-coded, and reported to Fatoora at the point of billing — through a dedicated reporting queue, not end-of-day batches.",
+  },
+  {
+    title: 'Cryptographic stamp on every receipt',
+    body: 'Each simplified tax invoice carries a compliant QR code and cryptographic stamp, verifiable by any ZATCA scanner.',
+  },
+  {
+    title: 'Arabic and English, natively',
+    body: 'Every screen, receipt, and report is bilingual by default — not translated as an afterthought.',
+  },
+];
+---
+
+<section id="compliance" class="relative px-6 py-24 md:px-8 sm:py-32">
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute right-0 top-1/3 -z-10 h-[28rem] w-[36rem] rounded-full bg-gold/[0.05] blur-[120px]"
+  >
+  </div>
+
+  <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
+    <div data-reveal>
+      <p class="text-[12px] uppercase tracking-[0.2em] text-gold">Compliance</p>
+      <h2 class="mt-4 text-balance text-display-lg font-extrabold text-bone">
+        Built for ZATCA.<br />Trusted at the till.
+      </h2>
+      <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
+        Every order placed in RestoPOS becomes a fully compliant e-invoice — stamped, QR-coded and
+        reported to ZATCA without your staff lifting a finger.
+      </p>
+
+      <ul class="mt-10 space-y-6">
+        {
+          points.map(({ title, body }) => (
+            <li class="flex gap-4">
+              <span
+                aria-hidden="true"
+                class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-leaf-bright/30 bg-leaf/15 text-xs font-bold text-leaf-bright"
+              >
+                ✓
+              </span>
+              <div>
+                <h3 class="font-semibold text-bone">{title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-bone/50">{body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <ZatcaReceipt client:visible />
+  </div>
+</section>
