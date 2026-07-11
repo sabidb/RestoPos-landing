@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بلوت المملكة — اللعبة الأصيلة</title>
+<meta name="description" content="بلوت المملكة — اللعبة الأصيلة. العب حكم وصن مع أصدقائك، أنشئ غرفة، تصدّر القائمة، واربح. صُنع في المملكة العربية السعودية.">
+<meta name="theme-color" content="#0D4A2A">
+<meta property="og:title" content="بلوت المملكة — اللعبة الأصيلة">
+<meta property="og:description" content="العب حكم وصن مع أصدقائك — أنشئ غرفة، تصدّر، واربح.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;700&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D4A2A'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23F0C040'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --green:#0D4A2A; --green-deep:#0F2A14; --ink:#07090A; --ink-2:#0C1410;
+    --gold:#F0C040; --gold-hi:#FFE08A; --gold-lo:#7A5B1A; --gold-deep:#8B6914;
+    --cream:#F0EDE5; --emerald:#2ECC71; --red:#c0392b;
+    --sans:'Tajawal',system-ui,sans-serif; --serif:'Scheherazade New',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans); background:var(--ink); color:var(--cream);
+    direction:rtl; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(ellipse 90% 60% at 50% -5%, #12331d 0%, transparent 55%), radial-gradient(ellipse 70% 50% at 50% 105%, #12331d 0%, transparent 55%);
+    background-attachment:fixed;
+  }
+  ::selection{background:var(--gold);color:var(--ink);}
+  a{color:inherit;text-decoration:none;}
+  .serif{font-family:var(--serif);}
+  .gold-text{
+    background:linear-gradient(135deg,#7A5B1A,#F0C040 35%,#FFE08A 50%,#F0C040 65%,#7A5B1A);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  }
+  .shimmer{background-size:200% auto;animation:shimmer 6s linear infinite;}
+  @keyframes shimmer{to{background-position:200% center;}}
+
+  #particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .wrap{position:relative;z-index:1;}
+  .container{max-width:1200px;margin:0 auto;padding:0 24px;}
+
+  /* nav */
+  nav{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent;}
+  nav.scrolled{background:rgba(7,9,10,.82);backdrop-filter:blur(12px);border-bottom-color:rgba(240,192,64,.14);}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-badge{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-size:20px;
+    background:radial-gradient(circle at 35% 30%,#1A5C34,#0D4A2A);border:1px solid rgba(240,192,64,.35);
+    box-shadow:0 0 18px rgba(240,192,64,.25),inset 0 1px 0 rgba(255,255,255,.15);color:var(--gold);}
+  .brand-name{font-family:var(--serif);font-size:22px;font-weight:700;}
+  .nav-links{display:none;gap:26px;align-items:center;font-size:14px;font-weight:700;}
+  .nav-links a{color:rgba(240,237,229,.72);transition:color .2s;}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-cta{padding:9px 20px;border-radius:11px;font-weight:800;font-size:14px;color:var(--ink);
+    background:linear-gradient(135deg,var(--gold-deep),var(--gold));box-shadow:0 6px 20px rgba(240,192,64,.28);}
+  @media(min-width:900px){.nav-links{display:flex;}}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:14px;border:none;cursor:pointer;
+    font-family:var(--sans);font-weight:800;font-size:16px;transition:transform .2s,box-shadow .2s,filter .2s;}
+  .btn-gold{color:var(--ink);background:linear-gradient(135deg,var(--gold-deep),var(--gold) 60%,var(--gold-hi));
+    box-shadow:0 10px 30px rgba(240,192,64,.35),inset 0 1px 0 rgba(255,255,255,.4);}
+  .btn-gold:hover{transform:translateY(-3px);filter:brightness(1.06);}
+  .btn-ghost{color:var(--cream);background:rgba(255,255,255,.05);border:1px solid rgba(240,192,64,.3);}
+  .btn-ghost:hover{transform:translateY(-3px);border-color:var(--gold);background:rgba(240,192,64,.08);}
+
+  /* HERO */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;overflow:hidden;padding:120px 20px 60px;}
+  .table-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(120vw,1000px);height:min(120vw,1000px);
+    border-radius:50%;background:radial-gradient(circle,rgba(15,42,20,.9) 0%,rgba(13,74,42,.35) 45%,transparent 70%);z-index:-1;}
+  .ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(240,192,64,.14);pointer-events:none;}
+  .ring.r1{width:min(90vw,620px);height:min(90vw,620px);transform:translate(-50%,-50%);animation:spin 60s linear infinite;}
+  .ring.r2{width:min(70vw,480px);height:min(70vw,480px);transform:translate(-50%,-50%);border-style:dashed;border-color:rgba(240,192,64,.09);animation:spin 42s linear infinite reverse;}
+  .ring.r3{width:min(52vw,360px);height:min(52vw,360px);transform:translate(-50%,-50%);border-color:rgba(46,204,113,.1);animation:spin 30s linear infinite;}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+  .kicker{font-size:13px;font-weight:800;letter-spacing:.35em;color:var(--gold);opacity:.9;margin-bottom:22px;
+    display:inline-flex;gap:12px;align-items:center;}
+  .kicker::before,.kicker::after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lo));}
+  .hero-title{font-family:var(--serif);font-weight:700;font-size:clamp(56px,15vw,150px);line-height:.95;margin-bottom:10px;
+    filter:drop-shadow(0 6px 30px rgba(240,192,64,.25));}
+  .hero-sub{font-size:clamp(15px,2.6vw,20px);color:rgba(240,237,229,.72);font-weight:500;letter-spacing:.05em;margin-bottom:6px;}
+  .hero-dots{font-size:12px;letter-spacing:.4em;color:rgba(240,237,229,.5);margin-bottom:34px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:46px;}
+
+  /* fanned hero deck */
+  .hero-deck{position:relative;height:200px;width:100%;max-width:520px;margin-top:8px;}
+  .card{position:absolute;width:72px;height:104px;border-radius:11px;
+    background:linear-gradient(150deg,#FEFDF8,#F0EBE0);border:1px solid rgba(0,0,0,.12);
+    box-shadow:0 10px 30px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:space-between;
+    padding:7px 8px;will-change:transform;}
+  .card .cs{font-size:26px;line-height:1;}
+  .card .cr{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1;}
+  .card .cr.bot{align-self:flex-end;transform:rotate(180deg);}
+  .card.red{color:var(--red);} .card.black{color:#111;}
+  .card-back{background:
+      repeating-linear-gradient(45deg,rgba(240,192,64,.16) 0 6px,transparent 6px 12px),
+      linear-gradient(150deg,#0D5C2A,#0F2A14);
+    border:1px solid rgba(240,192,64,.3);}
+  .card-back::after{content:"♠";position:absolute;inset:0;display:grid;place-items:center;font-size:26px;color:rgba(240,192,64,.55);}
+
+  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:rgba(240,237,229,.5);
+    font-size:11px;letter-spacing:.3em;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .scroll-cue .line{width:1px;height:30px;background:linear-gradient(var(--gold),transparent);animation:cueMove 1.8s ease-in-out infinite;}
+  @keyframes cueMove{0%,100%{opacity:.3;transform:scaleY(.6);}50%{opacity:1;transform:scaleY(1);}}
+
+  .float-suit{position:absolute;font-size:clamp(28px,6vw,60px);opacity:.08;pointer-events:none;z-index:-1;will-change:transform;}
+
+  /* stats strip */
+  .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:0;border-block:1px solid rgba(240,192,64,.14);
+    background:rgba(13,20,16,.5);}
+  .stat{flex:1;min-width:150px;text-align:center;padding:28px 16px;border-inline-start:1px solid rgba(255,255,255,.05);}
+  .stat:first-child{border:none;}
+  .stat .num{font-size:clamp(30px,5vw,46px);font-weight:900;color:var(--gold);line-height:1;}
+  .stat .lbl{font-size:13px;color:rgba(240,237,229,.6);margin-top:8px;font-weight:600;}
+
+  section{position:relative;padding:100px 0;}
+  .sec-head{text-align:center;max-width:640px;margin:0 auto 60px;}
+  .sec-tag{font-size:13px;font-weight:800;letter-spacing:.3em;color:var(--gold);margin-bottom:16px;}
+  .sec-title{font-family:var(--serif);font-size:clamp(34px,6vw,60px);font-weight:700;line-height:1.1;margin-bottom:16px;}
+  .sec-desc{font-size:17px;color:rgba(240,237,229,.62);line-height:1.8;}
+
+  /* reveal engine */
+  [data-reveal]{opacity:0;transform:translateY(48px) scale(.96);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+  [data-reveal].in{opacity:1;transform:none;}
+  [data-reveal-x]{opacity:0;transform:translateX(var(--rx,60px));transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+  [data-reveal-x].in{opacity:1;transform:none;}
+
+  /* modes */
+  .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+  .mode{position:relative;background:linear-gradient(160deg,rgba(16,26,18,.9),rgba(12,20,16,.7));
+    border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:34px 24px;overflow:hidden;
+    transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s;will-change:transform;}
+  .mode:hover{border-color:rgba(240,192,64,.4);box-shadow:0 26px 60px rgba(0,0,0,.5);}
+  .mode .m-glow{position:absolute;top:-40px;inset-inline-start:-40px;width:150px;height:150px;border-radius:50%;
+    filter:blur(50px);opacity:.5;transition:opacity .3s;}
+  .mode:hover .m-glow{opacity:.9;}
+  .mode .m-icon{font-size:44px;margin-bottom:16px;position:relative;}
+  .mode h3{font-size:22px;font-weight:900;margin-bottom:8px;position:relative;}
+  .mode p{color:rgba(240,237,229,.6);font-size:14px;line-height:1.7;position:relative;}
+  .mode .m-badge{position:absolute;top:18px;inset-inline-end:18px;font-size:22px;opacity:.25;}
+
+  /* game types */
+  .types{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:820px;margin:0 auto;}
+  @media(max-width:620px){.types{grid-template-columns:1fr;}}
+  .type-card{position:relative;border-radius:26px;padding:44px 30px;text-align:center;overflow:hidden;
+    border:1px solid rgba(240,192,64,.25);min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    transition:transform .35s cubic-bezier(.16,1,.3,1);will-change:transform;}
+  .type-hokum{background:radial-gradient(ellipse at 50% 0,#124a2b,#0a1c11);}
+  .type-sun{background:radial-gradient(ellipse at 50% 0,#3a2d0c,#191207);}
+  .type-card .t-suit{font-size:60px;filter:drop-shadow(0 0 20px rgba(240,192,64,.5));margin-bottom:6px;}
+  .type-card h3{font-family:var(--serif);font-size:44px;font-weight:700;}
+  .type-card p{color:rgba(240,237,229,.66);font-size:15px;line-height:1.8;max-width:280px;}
+  .type-card .t-tag{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--gold);border:1px solid rgba(240,192,64,.3);
+    border-radius:20px;padding:5px 14px;}
+
+  /* DEAL scroll-scrub section */
+  .deal{height:320vh;position:relative;}
+  .deal-sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .deal-felt{position:absolute;width:min(86vw,560px);height:min(86vw,560px);border-radius:50%;
+    background:radial-gradient(circle,#123a20 0%,#0c2414 60%,transparent 72%);
+    box-shadow:inset 0 0 80px rgba(0,0,0,.6),0 0 60px rgba(46,204,113,.06);}
+  .deal-felt::before{content:"";position:absolute;inset:8%;border-radius:50%;border:1px dashed rgba(240,192,64,.18);}
+  .seat{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:5;transition:opacity .4s;}
+  .seat .ava{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:26px;
+    background:rgba(16,26,18,.92);border:2px solid var(--gold-lo);box-shadow:0 6px 18px rgba(0,0,0,.5);}
+  .seat .nm{font-size:12px;font-weight:700;color:rgba(240,237,229,.7);}
+  .deal-card{position:absolute;width:60px;height:86px;border-radius:9px;background:linear-gradient(150deg,#FEFDF8,#F0EBE0);
+    box-shadow:0 8px 22px rgba(0,0,0,.6);will-change:transform;display:flex;flex-direction:column;justify-content:space-between;padding:6px;}
+  .deal-title{position:absolute;top:12%;inset-inline:0;text-align:center;z-index:8;pointer-events:none;}
+  .deal-title .serif{font-size:clamp(30px,7vw,58px);}
+  .trump-badge{position:absolute;z-index:8;background:rgba(10,14,12,.85);border:1px solid rgba(240,192,64,.3);
+    border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transition:opacity .5s;}
+  .trump-badge .lb{font-size:11px;color:rgba(240,237,229,.6);font-weight:700;}
+  .trump-badge .sy{font-size:32px;filter:drop-shadow(0 0 10px rgba(240,192,64,.6));}
+
+  /* leaderboard */
+  .board{max-width:560px;margin:0 auto;background:linear-gradient(160deg,rgba(16,26,18,.9),rgba(10,16,12,.8));
+    border:1px solid rgba(240,192,64,.18);border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .board-top{padding:22px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(240,192,64,.04);}
+  .rank-row{display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid rgba(255,255,255,.05);
+    transition:background .3s;}
+  .rank-row:hover{background:rgba(240,192,64,.05);}
+  .rank-row .rk{width:30px;text-align:center;font-weight:900;font-size:18px;flex-shrink:0;}
+  .rank-row .av{font-size:28px;}
+  .rank-row .info{flex:1;min-width:0;}
+  .rank-row .info .n{font-weight:800;font-size:15px;}
+  .rank-row .info .c{font-size:12px;color:rgba(240,237,229,.55);}
+  .rank-row .w{font-weight:900;color:var(--gold);font-size:15px;}
+
+  /* store */
+  .store{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+  .item{position:relative;background:linear-gradient(160deg,rgba(16,26,18,.9),rgba(12,20,16,.7));
+    border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:26px 16px;text-align:center;
+    transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s;will-change:transform;}
+  .item:hover{transform:translateY(-6px);border-color:rgba(240,192,64,.35);}
+  .item .it-i{font-size:42px;margin-bottom:12px;}
+  .item .it-n{font-weight:800;font-size:15px;margin-bottom:12px;}
+  .item .it-p{display:inline-block;font-weight:900;color:var(--gold);font-size:14px;
+    background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.25);border-radius:20px;padding:5px 14px;}
+  .item .it-tag{position:absolute;top:12px;inset-inline-end:12px;font-size:9px;font-weight:800;padding:3px 8px;border-radius:7px;color:#fff;}
+
+  /* features split */
+  .feature-row{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;max-width:1000px;margin:0 auto;}
+  @media(max-width:760px){.feature-row{grid-template-columns:1fr;gap:32px;}}
+  .feature-list{list-style:none;display:flex;flex-direction:column;gap:22px;}
+  .feature-list li{display:flex;gap:16px;}
+  .feature-list .fi{width:46px;height:46px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;font-size:22px;
+    background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.25);}
+  .feature-list h4{font-size:17px;font-weight:900;margin-bottom:4px;}
+  .feature-list p{font-size:14px;color:rgba(240,237,229,.6);line-height:1.7;}
+  .phone{position:relative;justify-self:center;width:270px;height:540px;border-radius:38px;padding:12px;
+    background:linear-gradient(160deg,#1a1a1a,#000);border:1px solid rgba(240,192,64,.2);
+    box-shadow:0 40px 90px rgba(0,0,0,.7),0 0 40px rgba(240,192,64,.08);}
+  .phone-screen{width:100%;height:100%;border-radius:28px;overflow:hidden;position:relative;
+    background:radial-gradient(ellipse 90% 70% at 50% 40%,#0F2A14,#07090A);display:flex;flex-direction:column;align-items:center;padding:26px 14px;}
+  .phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:90px;height:20px;border-radius:12px;background:#000;z-index:3;}
+  .phone .p-title{font-family:var(--serif);font-size:30px;margin-top:22px;}
+  .phone .p-sub{font-size:10px;letter-spacing:.25em;color:rgba(240,237,229,.5);margin-bottom:18px;}
+  .phone .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
+  .phone .p-mode{background:rgba(13,20,16,.9);border:1px solid rgba(255,255,255,.07);border-radius:13px;
+    padding:14px 8px;text-align:center;}
+  .phone .p-mode .pi{font-size:22px;}
+  .phone .p-mode .pl{font-size:10px;font-weight:700;margin-top:5px;}
+  .phone .p-hand{position:absolute;bottom:20px;left:0;right:0;height:80px;}
+  .phone .p-hand .pc{position:absolute;bottom:0;left:50%;width:40px;height:58px;border-radius:7px;
+    background:linear-gradient(150deg,#FEFDF8,#F0EBE0);box-shadow:0 6px 14px rgba(0,0,0,.6);
+    display:flex;flex-direction:column;justify-content:space-between;padding:4px;font-size:13px;}
+
+  /* final CTA */
+  .final{text-align:center;padding:120px 20px;position:relative;overflow:hidden;}
+  .final-inner{max-width:720px;margin:0 auto;position:relative;z-index:2;}
+  .final h2{font-family:var(--serif);font-size:clamp(40px,8vw,80px);line-height:1.05;margin-bottom:18px;}
+  .final p{font-size:18px;color:rgba(240,237,229,.66);margin-bottom:34px;line-height:1.8;}
+  .badges{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
+  .badge{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(240,192,64,.2);font-weight:700;font-size:14px;}
+  .badge .bi{font-size:22px;}
+
+  footer{border-top:1px solid rgba(240,192,64,.12);padding:40px 24px;text-align:center;color:rgba(240,237,229,.45);font-size:13px;}
+  footer .f-brand{font-family:var(--serif);font-size:22px;color:var(--gold);margin-bottom:10px;}
+  .cities-marquee{overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);margin:8px 0 20px;}
+  .cities-track{display:inline-block;animation:marquee 26s linear infinite;}
+  .cities-track span{margin:0 20px;font-size:14px;color:rgba(240,192,64,.5);font-weight:700;}
+  @keyframes marquee{to{transform:translateX(50%);}}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;}
+    [data-reveal],[data-reveal-x]{opacity:1!important;transform:none!important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<nav id="nav">
+  <div class="brand">
+    <span class="brand-badge">♠</span>
+    <span class="brand-name gold-text">بلوت المملكة</span>
+  </div>
+  <div class="nav-links">
+    <a href="#modes">طرق اللعب</a>
+    <a href="#types">حكم وصن</a>
+    <a href="#board">المتصدرون</a>
+    <a href="#store">المتجر</a>
+  </div>
+  <a href="#play" class="nav-cta">العب الآن</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="table-glow"></div>
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <span class="float-suit" data-par="0.15" style="top:18%;inset-inline-start:10%;color:#c0392b;">♥</span>
+    <span class="float-suit" data-par="0.28" style="top:26%;inset-inline-end:12%;color:#F0C040;">♠</span>
+    <span class="float-suit" data-par="0.2" style="bottom:24%;inset-inline-start:16%;color:#F0C040;">♣</span>
+    <span class="float-suit" data-par="0.32" style="bottom:20%;inset-inline-end:14%;color:#c0392b;">♦</span>
+
+    <div class="kicker">المملكة العربية السعودية</div>
+    <h1 class="hero-title gold-text shimmer">بلوت المملكة</h1>
+    <p class="hero-sub">اللعبة الأصيلة — العب مع أصدقائك</p>
+    <p class="hero-dots">العب · تنافس · افوز</p>
+    <div class="hero-cta">
+      <a href="#play" class="btn btn-gold">🃏 العب الآن</a>
+      <a href="#modes" class="btn btn-ghost">اكتشف اللعبة</a>
+    </div>
+    <div class="hero-deck" id="heroDeck"></div>
+
+    <div class="scroll-cue"><span>مرّر</span><span class="line"></span></div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="num" data-count="6.2" data-suffix="م">٠</div><div class="lbl">لاعب حول المملكة</div></div>
+    <div class="stat"><div class="num" data-count="984" data-suffix="">٠</div><div class="lbl">مباراة الآن</div></div>
+    <div class="stat"><div class="num" data-count="152" data-suffix="">٠</div><div class="lbl">نقطة للفوز</div></div>
+    <div class="stat"><div class="num" data-count="4.8" data-suffix="★">٠</div><div class="lbl">تقييم اللاعبين</div></div>
+  </div>
+
+  <!-- MODES -->
+  <section id="modes" class="container">
+    <div class="sec-head" data-reveal>
+      <div class="sec-tag">طرق اللعب</div>
+      <h2 class="sec-title gold-text">العب كيفما تحب</h2>
+      <p class="sec-desc">درّب مهارتك، تحدَّ أصدقاءك في غرفة خاصة، أو اقفز في مباراة سريعة مع لاعبين من كل مدينة.</p>
+    </div>
+    <div class="modes">
+      <div class="mode" data-reveal data-tilt><div class="m-glow" style="background:#9B59B6"></div><span class="m-badge">🃏</span><div class="m-icon">🤖</div><h3>مع الروبوت</h3><p>تدرّب متى شئت بدون انتظار — خصم ذكي يرفع مستواك ضربة بعد ضربة.</p></div>
+      <div class="mode" data-reveal data-tilt style="transition-delay:.08s"><div class="m-glow" style="background:#F0C040"></div><span class="m-badge">👥</span><div class="m-icon">👥</div><h3>مع الأصدقاء</h3><p>أنشئ غرفة خاصة، شارك الكود، واجمع الشلّة على طاولة واحدة.</p></div>
+      <div class="mode" data-reveal data-tilt style="transition-delay:.16s"><div class="m-glow" style="background:#3498DB"></div><span class="m-badge">🔑</span><div class="m-icon">🔑</div><h3>انضم لغرفة</h3><p>عندك كود؟ أدخله والحق باللعبة في ثانية — أينما كانوا.</p></div>
+      <div class="mode" data-reveal data-tilt style="transition-delay:.24s"><div class="m-glow" style="background:#2ECC71"></div><span class="m-badge">⚡</span><div class="m-icon">⚡</div><h3>لعبة سريعة</h3><p>مباشرة إلى الطاولة مع لاعبين عشوائيين — مباراة كاملة في دقائق.</p></div>
+    </div>
+  </section>
+
+  <!-- GAME TYPES -->
+  <section id="types" class="container">
+    <div class="sec-head" data-reveal>
+      <div class="sec-tag">أسلوب المباراة</div>
+      <h2 class="sec-title gold-text">حكم أم صن؟</h2>
+      <p class="sec-desc">أشهر أسلوبين في البلوت — اختر الكوز واحكم الطاولة، أو العب صن حيث لا حكم ولا مجاملة.</p>
+    </div>
+    <div class="types">
+      <div class="type-card type-hokum" data-reveal data-tilt>
+        <div class="t-suit">♠</div><h3 class="serif gold-text">حكم</h3>
+        <p>اختر الكوز وامنح فريقك الأفضلية — الورق الرابح يقلب المباراة رأساً على عقب.</p>
+        <span class="t-tag">مع الكوز</span>
+      </div>
+      <div class="type-card type-sun" data-reveal data-tilt style="transition-delay:.1s">
+        <div class="t-suit">☀︎</div><h3 class="serif gold-text">صن</h3>
+        <p>لا حكم — قيمة الورق أعلى، والحساب مضاعف. أسلوب المحترفين الجريء.</p>
+        <span class="t-tag">بلا كوز</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEAL scroll-scrubbed -->
+  <section class="deal" id="deal">
+    <div class="deal-sticky">
+      <div class="deal-title"><div class="serif gold-text">وزّع الورق</div></div>
+      <div class="deal-felt"></div>
+      <div class="trump-badge" id="trumpBadge"><span class="lb">الكوز</span><span class="sy">♠</span></div>
+      <!-- seats -->
+      <div class="seat" id="seat-b" style="bottom:6%;left:50%;transform:translateX(-50%);"><div class="ava">🙂</div><div class="nm">أنت</div></div>
+      <div class="seat" id="seat-t" style="top:6%;left:50%;transform:translateX(-50%);"><div class="ava">🧔</div><div class="nm">عبدالله</div></div>
+      <div class="seat" id="seat-l" style="top:50%;inset-inline-start:5%;transform:translateY(-50%);"><div class="ava">👲</div><div class="nm">محمد</div></div>
+      <div class="seat" id="seat-r" style="top:50%;inset-inline-end:5%;transform:translateY(-50%);"><div class="ava">🤴</div><div class="nm">سعد</div></div>
+      <div id="dealCards"></div>
+    </div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section id="board" class="container">
+    <div class="sec-head" data-reveal>
+      <div class="sec-tag">🏆 المتصدرون</div>
+      <h2 class="sec-title gold-text">أفضل لاعبي المملكة</h2>
+      <p class="sec-desc">تسلّق القائمة انتصاراً بعد انتصار — من الرياض إلى جدة، الأسماء الكبيرة تلعب هنا.</p>
+    </div>
+    <div class="board" data-reveal>
+      <div class="board-top"><div class="serif" style="font-size:24px;color:var(--gold)">🏆 لوحة الصدارة</div></div>
+      <div class="rank-row"><span class="rk" style="color:#FFD700">🥇</span><span class="av">🧔</span><div class="info"><div class="n">أبو عبدالله</div><div class="c">الرياض</div></div><span class="w">٢٤٧ ✓</span></div>
+      <div class="rank-row"><span class="rk" style="color:#C0C0C0">🥈</span><span class="av">👲</span><div class="info"><div class="n">محمد الغامدي</div><div class="c">جدة</div></div><span class="w">١٩٨ ✓</span></div>
+      <div class="rank-row"><span class="rk" style="color:#CD7F32">🥉</span><span class="av">🤴</span><div class="info"><div class="n">سعد العتيبي</div><div class="c">الدمام</div></div><span class="w">١٨٧ ✓</span></div>
+      <div class="rank-row"><span class="rk">٤</span><span class="av">🧙</span><div class="info"><div class="n">فهد القحطاني</div><div class="c">مكة</div></div><span class="w">١٥٦ ✓</span></div>
+      <div class="rank-row"><span class="rk">٥</span><span class="av">👨‍💼</span><div class="info"><div class="n">عبدالرحمن</div><div class="c">المدينة</div></div><span class="w">١٤٣ ✓</span></div>
+    </div>
+  </section>
+
+  <!-- STORE -->
+  <section id="store" class="container">
+    <div class="sec-head" data-reveal>
+      <div class="sec-tag">🛍️ المتجر</div>
+      <h2 class="sec-title gold-text">تألّق على الطاولة</h2>
+      <p class="sec-desc">أطقم ذهبية، طاولات زمردية، إطارات نادرة وتعابير مميزة — اجعل حضورك لا يُنسى.</p>
+    </div>
+    <div class="store">
+      <div class="item" data-reveal><span class="it-tag" style="background:#E74C3C">الأكثر مبيعاً</span><div class="it-i">🎴</div><div class="it-n">طقم ذهبي</div><span class="it-p">٤٩ ريال</span></div>
+      <div class="item" data-reveal style="transition-delay:.05s"><span class="it-tag" style="background:#2ECC71">جديد</span><div class="it-i">🟩</div><div class="it-n">طاولة زمردية</div><span class="it-p">٢٩ ريال</span></div>
+      <div class="item" data-reveal style="transition-delay:.1s"><span class="it-tag" style="background:#F0C040;color:#000">الأفضل</span><div class="it-i">👑</div><div class="it-n">VIP شهري</div><span class="it-p">٩٩ ريال</span></div>
+      <div class="item" data-reveal style="transition-delay:.15s"><div class="it-i">🪙</div><div class="it-n">٥٠٠ عملة</div><span class="it-p">١٠ ريال</span></div>
+      <div class="item" data-reveal style="transition-delay:.2s"><div class="it-i">🎭</div><div class="it-n">تعابير مميزة</div><span class="it-p">١٩ ريال</span></div>
+      <div class="item" data-reveal style="transition-delay:.25s"><span class="it-tag" style="background:#9B59B6">نادر</span><div class="it-i">🏅</div><div class="it-n">إطار بطل</div><span class="it-p">٣٩ ريال</span></div>
+    </div>
+  </section>
+
+  <!-- FEATURES + PHONE -->
+  <section class="container">
+    <div class="feature-row">
+      <ul class="feature-list" data-reveal-x style="--rx:-60px">
+        <li><span class="fi">👥</span><div><h4>أصدقاؤك دائماً معك</h4><p>أضف الأصدقاء، شاهد من المتصل ومن في لعبة، وادعُهم لطاولتك بضغطة.</p></div></li>
+        <li><span class="fi">🏆</span><div><h4>بطولات ولوحة صدارة</h4><p>تنافس على القمة، اجمع الانتصارات، وثبّت اسمك بين نخبة المملكة.</p></div></li>
+        <li><span class="fi">⚡</span><div><h4>لعب فوري ومباشر</h4><p>مباريات لحظية سلسة — أنشئ غرفة أو انضم بكود وابدأ في ثانية.</p></div></li>
+        <li><span class="fi">🔐</span><div><h4>دخول بجوجل وحفظ تلقائي</h4><p>سجّل بحساب Google وتقدّمك محفوظ دائماً — عملاتك وانتصاراتك أينما لعبت.</p></div></li>
+      </ul>
+      <div class="phone" data-reveal-x style="--rx:60px" data-tilt>
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="p-title gold-text">بلوت</div>
+          <div class="p-sub">المملكة العربية السعودية</div>
+          <div class="p-grid">
+            <div class="p-mode"><div class="pi">🤖</div><div class="pl">مع الروبوت</div></div>
+            <div class="p-mode"><div class="pi">👥</div><div class="pl">مع الأصدقاء</div></div>
+            <div class="p-mode"><div class="pi">🔑</div><div class="pl">انضم لغرفة</div></div>
+            <div class="p-mode"><div class="pi">⚡</div><div class="pl">لعبة سريعة</div></div>
+          </div>
+          <div class="p-hand" id="phoneHand"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="play" class="final">
+    <div class="ring r2" style="opacity:.5"></div>
+    <div class="final-inner">
+      <div class="sec-tag" data-reveal>يلا نلعب</div>
+      <h2 class="gold-text shimmer" data-reveal>الطاولة جاهزة<br>والشلّة تنتظرك</h2>
+      <p data-reveal>افتح بلوت المملكة، اجمع أصدقاءك، واكسب أول ١٥٢ نقطة. اللعبة الأصيلة — كما يجب أن تكون.</p>
+      <div class="hero-cta" style="justify-content:center" data-reveal>
+        <a href="#" class="btn btn-gold" id="playBtn">🃏 العب الآن</a>
+        <a href="#modes" class="btn btn-ghost">تعرّف أكثر</a>
+      </div>
+      <div class="badges" data-reveal>
+        <div class="badge"><span class="bi">📱</span> يعمل كتطبيق (PWA)</div>
+        <div class="badge"><span class="bi">🇸🇦</span> صُنع في المملكة</div>
+        <div class="badge"><span class="bi">⭐</span> ٤.٨ تقييم</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-brand gold-text">بلوت المملكة</div>
+    <div class="cities-marquee"><div class="cities-track">
+      <span>الرياض</span><span>جدة</span><span>مكة</span><span>المدينة</span><span>الدمام</span><span>الخبر</span><span>أبها</span><span>تبوك</span><span>حائل</span><span>القصيم</span>
+      <span>الرياض</span><span>جدة</span><span>مكة</span><span>المدينة</span><span>الدمام</span><span>الخبر</span><span>أبها</span><span>تبوك</span><span>حائل</span><span>القصيم</span>
+    </div></div>
+    <div>اللعبة الأصيلة — العب · تنافس · افوز</div>
+    <div style="margin-top:8px;opacity:.7">© ٢٠٢٦ بلوت المملكة · جميع الحقوق محفوظة</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SUITS=[['♠','black'],['♥','red'],['♦','red'],['♣','black']];
+  var RANKS=['أ','ك','ق','ج','١٠','٩','٨','٧'];
+  function rc(){var s=SUITS[(Math.random()*4)|0];return {sy:s[0],cl:s[1],rk:RANKS[(Math.random()*RANKS.length)|0]};}
+  function cardHTML(c){return '<span class="cr">'+c.rk+'</span><span class="cs" style="align-self:center">'+c.sy+'</span><span class="cr bot">'+c.rk+'</span>';}
+
+  /* ---- Hero fanned deck ---- */
+  var deck=document.getElementById('heroDeck');
+  var N=7, heroCards=[];
+  for(var i=0;i<N;i++){
+    var c=document.createElement('div');
+    var d=rc(); c.className='card '+d.cl; c.innerHTML=cardHTML(d);
+    deck.appendChild(c); heroCards.push(c);
+    var mid=(N-1)/2, ang=(i-mid)*11, x=(i-mid)*46, y=Math.abs(i-mid)*10;
+    c.style.left='50%'; c.style.top='40px';
+    c.dataset.baseRot=ang; c.dataset.baseX=x; c.dataset.baseY=y;
+    // start stacked, animate to fan
+    c.style.transform='translateX(-50%) rotate(0deg) translateY(120px) scale(.6)';
+    c.style.opacity='0';
+    (function(el,ang,x,y,idx){
+      setTimeout(function(){
+        el.style.transition='transform .9s cubic-bezier(.22,1.4,.4,1), opacity .5s';
+        el.style.opacity='1';
+        el.style.transform='translateX(calc(-50% + '+x+'px)) rotate('+ang+'deg) translateY('+y+'px)';
+      }, reduce?0:220+idx*90);
+    })(c,ang,x,y,i);
+  }
+
+  /* ---- particles canvas (gold embers + faint suits) ---- */
+  var cv=document.getElementById('particles'), ctx=cv.getContext('2d'), W,H,parts=[];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize(); addEventListener('resize',resize);
+  var COL=['rgba(240,192,64,','rgba(255,224,138,','rgba(46,204,113,'];
+  for(var p=0;p<60;p++){parts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+.6,
+    vx:(Math.random()-.5)*.25,vy:-(Math.random()*.4+.15),a:Math.random()*.5+.15,c:COL[(Math.random()*COL.length)|0]});}
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<parts.length;i++){var o=parts[i];o.x+=o.vx;o.y+=o.vy;
+      if(o.y<-10){o.y=H+10;o.x=Math.random()*W;} if(o.x<-10)o.x=W+10; if(o.x>W+10)o.x=-10;
+      ctx.beginPath();ctx.fillStyle=o.c+o.a+')';ctx.arc(o.x,o.y,o.r,0,6.283);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  if(!reduce) tick();
+
+  /* ---- nav scroll ---- */
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>40);},{passive:true});
+
+  /* ---- reveal ---- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('[data-reveal],[data-reveal-x]').forEach(function(el){io.observe(el);});
+
+  /* ---- count up ---- */
+  function arabize(s){var m={'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩','.':'٫'};return s.replace(/[0-9.]/g,function(d){return m[d];});}
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting)return; cio.unobserve(e.target);
+    var el=e.target, target=parseFloat(el.dataset.count), suf=el.dataset.suffix||'', dec=(target%1!==0), start=performance.now(), dur=1400;
+    function step(t){var k=Math.min(1,(t-start)/dur), e2=1-Math.pow(1-k,3), v=target*e2;
+      el.textContent=arabize(dec?v.toFixed(1):Math.round(v).toString())+suf; if(k<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  });},{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
+
+  /* ---- parallax float suits + hero deck on scroll ---- */
+  var floats=[].slice.call(document.querySelectorAll('.float-suit'));
+  function parallax(){
+    var y=scrollY;
+    floats.forEach(function(f){var s=parseFloat(f.dataset.par)||.2;f.style.transform='translateY('+(y*s)+'px) rotate('+(y*s*.4)+'deg)';});
+    // hero deck subtle compress as you scroll away
+    var hp=Math.min(1,y/600);
+    heroCards.forEach(function(c){var ang=parseFloat(c.dataset.baseRot),x=parseFloat(c.dataset.baseX),yy=parseFloat(c.dataset.baseY);
+      c.style.transform='translateX(calc(-50% + '+(x*(1-hp*.5))+'px)) rotate('+(ang*(1-hp))+'deg) translateY('+(yy+hp*40)+'px) scale('+(1-hp*.15)+')';});
+  }
+  if(!reduce) addEventListener('scroll',parallax,{passive:true});
+
+  /* ---- DEAL scroll-scrub ---- */
+  var dealSection=document.getElementById('deal');
+  var dealWrap=document.getElementById('dealCards');
+  var trump=document.getElementById('trumpBadge');
+  var seats={b:document.getElementById('seat-b'),t:document.getElementById('seat-t'),l:document.getElementById('seat-l'),r:document.getElementById('seat-r')};
+  // build 20 cards (5 each to 4 seats), target positions computed relative to sticky center
+  var DEAL=[], order=['b','r','t','l']; // deal order
+  function seatOffset(k,idx){
+    // returns {x,y,rot} fanned near a seat, in px from center of viewport
+    var vw=Math.min(innerWidth,1200), spread=Math.min(innerWidth,560);
+    var R=spread*0.34;
+    var base={b:{x:0,y:R,rot:0},t:{x:0,y:-R,rot:180},l:{x:-R,y:0,rot:90},r:{x:R,y:0,rot:-90}}[k];
+    var f=(idx-2)*(k==='b'?26:16);
+    if(k==='b'||k==='t')return{x:base.x+f,y:base.y+ (k==='b'?-Math.abs(idx-2)*4:Math.abs(idx-2)*4),rot:base.rot+(idx-2)*(k==='b'?7:-7)};
+    return{x:base.x,y:base.y+f,rot:base.rot+(idx-2)*7};
+  }
+  for(var s=0;s<20;s++){
+    var el=document.createElement('div'); el.className='deal-card';
+    var seatK=order[s%4], idx=(s/4)|0;
+    var isMe=(seatK==='b');
+    if(isMe){var d=rc(); el.classList.add(d.cl==='red'?'red':'black'); el.style.color=d.cl==='red'?'#c0392b':'#111'; el.innerHTML=cardHTML(d);}
+    else{el.classList.add('card-back'); el.style.background='repeating-linear-gradient(45deg,rgba(240,192,64,.16) 0 5px,transparent 5px 10px),linear-gradient(150deg,#0D5C2A,#0F2A14)'; el.style.border='1px solid rgba(240,192,64,.3)';}
+    dealWrap.appendChild(el);
+    DEAL.push({el:el,seat:seatK,idx:idx,order:s,tgt:seatOffset(seatK,idx)});
+  }
+  function updateDeal(){
+    var rect=dealSection.getBoundingClientRect();
+    var total=dealSection.offsetHeight-innerHeight;
+    var prog=Math.min(1,Math.max(0,(-rect.top)/total)); // 0..1
+    // phase: 0-0.15 stacked; 0.15-0.85 deal one-by-one; 0.85-1 trump reveal
+    DEAL.forEach(function(c){
+      var t0=0.12 + (c.order/20)*0.66, t1=t0+0.12;
+      var k=Math.min(1,Math.max(0,(prog-t0)/(t1-t0)));
+      var e=1-Math.pow(1-k,3);
+      var x=c.tgt.x*e, y=c.tgt.y*e, rot=c.tgt.rot*e;
+      var scale=0.7+0.3*e;
+      c.el.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px) rotate('+rot+'deg) scale('+scale+')';
+      c.el.style.opacity=(prog<t0-0.02)?'0':'1';
+      c.el.style.zIndex=String(10+c.order);
+    });
+    // trump reveal near the end
+    trump.style.opacity = prog>0.9?'1':'0';
+    trump.style.top='18%'; trump.style.insetInlineEnd='16%';
+  }
+  document.querySelectorAll('.deal-card').forEach(function(el){el.style.left='50%';el.style.top='50%';el.style.transform='translate(-50%,-50%) scale(.7)';el.style.opacity='0';});
+  addEventListener('scroll',function(){requestAnimationFrame(updateDeal);},{passive:true});
+  updateDeal();
+
+  /* ---- phone hand fan ---- */
+  var ph=document.getElementById('phoneHand');
+  for(var q=0;q<7;q++){var pc=document.createElement('div');pc.className='pc';var dd=rc();
+    pc.style.color=dd.cl==='red'?'#c0392b':'#111';pc.innerHTML='<span>'+dd.rk+'</span><span style="align-self:center;font-size:15px">'+dd.sy+'</span>';
+    var m=(7-1)/2,ag=(q-m)*10,xx=(q-m)*20;pc.style.transform='translateX(calc(-50% + '+xx+'px)) rotate('+ag+'deg) translateY('+Math.abs(q-m)*4+'px)';ph.appendChild(pc);}
+
+  /* ---- tilt ---- */
+  if(!reduce && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('[data-tilt]').forEach(function(el){
+      el.addEventListener('mousemove',function(e){var r=el.getBoundingClientRect();var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+        el.style.transform='perspective(800px) rotateY('+(px*10)+'deg) rotateX('+(-py*10)+'deg) translateY(-4px)';});
+      el.addEventListener('mouseleave',function(){el.style.transform='';});
+    });
+  }
+
+  /* ---- play button (game not yet hosted) ---- */
+  var playBtn=document.getElementById('playBtn');
+  if(playBtn) playBtn.addEventListener('click',function(ev){ev.preventDefault();playBtn.textContent='قريباً بإذن الله 🌙';setTimeout(function(){playBtn.textContent='🃏 العب الآن';},1800);});
+})();
+</script>
+</body>
+</html>

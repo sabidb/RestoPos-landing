@@ -47,6 +47,7 @@ const WORK_ITEMS = [
   },
   {
     id: 'baloot', name: 'Baloot', initials: 'BL', pattern: solid('#E2A184'),
+    link: './projects/baloot/',
     tagline: 'Real-time multiplayer card game',
     detail: "Baloot is a mobile multiplayer card game built around the traditional Gulf card game of the same name, with real-time matchmaking so friends and strangers can play together instantly.",
     bullets: [
