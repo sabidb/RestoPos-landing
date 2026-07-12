@@ -36,6 +36,7 @@ const WORK_ITEMS = [
   },
   {
     id: 'agent', name: 'DB Agent', initials: 'DB', pattern: solid('#6A93C7'),
+    link: './projects/db-agent/',
     tagline: 'Backend automation for repetitive workflows',
     detail: "A backend automation agent that takes over repetitive operational work — syncing data between tools, processing incoming orders or forms, and triggering the right notifications — so client teams stop doing it by hand.",
     bullets: [
