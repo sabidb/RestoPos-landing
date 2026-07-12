@@ -4,15 +4,17 @@ import { APP_URL } from '../config';
 ---
 
 <section class="relative overflow-x-clip px-6 pb-24 pt-40 md:px-8 md:pt-48">
-  <!-- Ambient glow — green and gold, echoing the logo gradient -->
+  <!-- Ambient glow — green and gold, echoing the logo gradient (parallax) -->
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute left-1/4 top-0 -z-10 h-[32rem] w-[40rem] -translate-x-1/2 rounded-full bg-leaf/[0.07] blur-[140px]"
+    data-parallax="0.2"
+    class="pointer-events-none absolute left-1/4 top-0 -z-10 h-[32rem] w-[40rem] -translate-x-1/2 rounded-full bg-leaf/[0.07] blur-[140px] will-change-transform"
   >
   </div>
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute right-1/4 top-10 -z-10 h-[32rem] w-[40rem] translate-x-1/2 rounded-full bg-gold/[0.06] blur-[140px]"
+    data-parallax="-0.12"
+    class="pointer-events-none absolute right-1/4 top-10 -z-10 h-[32rem] w-[40rem] translate-x-1/2 rounded-full bg-gold/[0.06] blur-[140px] will-change-transform"
   >
   </div>
 

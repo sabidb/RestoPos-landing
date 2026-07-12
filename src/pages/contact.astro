@@ -17,18 +17,11 @@ const fields = [
         </h1>
         <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
           Tell us about your restaurant and we'll set up a demo tailored to your branches,
-          printers, and menu.
+          printers, and menu. Send it straight to us on WhatsApp or by email.
         </p>
       </div>
 
       <div data-reveal style="--reveal-delay: 0.15s">
-        <div id="contact-success" hidden class="mt-14 rounded-2xl border border-gold/30 p-10 text-center">
-          <p class="mb-3 text-sm uppercase tracking-widest text-gold">Received</p>
-          <h2 class="text-xl font-semibold text-bone">
-            Thank you — we'll reach out within one business day.
-          </h2>
-        </div>
-
         <form id="contact-form" class="mt-14 flex flex-col gap-6">
           <div class="grid gap-6 sm:grid-cols-2">
             {
@@ -62,6 +55,18 @@ const fields = [
           </div>
 
           <div>
+            <label class="text-xs uppercase tracking-widest text-bone/50" for="branches">
+              Number of branches
+            </label>
+            <input
+              id="branches"
+              name="branches"
+              placeholder="e.g. 2"
+              class="ease-out-quad mt-2 w-full rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
+            />
+          </div>
+
+          <div>
             <label class="text-xs uppercase tracking-widest text-bone/50" for="message">
               What should we know?
             </label>
@@ -69,31 +74,110 @@ const fields = [
               id="message"
               name="message"
               rows="4"
-              placeholder="Number of branches, current POS, printer model — anything helps."
+              placeholder="Current POS, printer model, timeline — anything helps."
               class="ease-out-quad mt-2 w-full resize-none rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
             ></textarea>
           </div>
 
-          <button
-            type="submit"
-            class="brand-gradient ease-out-quad mt-2 self-start rounded-full px-8 py-3.5 text-sm font-semibold text-white transition duration-300 hover:brightness-110"
-          >
-            Send request
-          </button>
+          <!-- country + send options -->
+          <div>
+            <p class="text-xs uppercase tracking-widest text-bone/50">Reach us on</p>
+            <div class="mt-2 flex gap-2" id="country-toggle">
+              <button
+                type="button"
+                data-c="sa"
+                class="ease-out-quad rounded-lg border border-gold/50 bg-gold/10 px-4 py-2 font-mono text-[13px] font-semibold text-gold transition"
+              >
+                🇸🇦 Saudi Arabia
+              </button>
+              <button
+                type="button"
+                data-c="in"
+                class="ease-out-quad rounded-lg border border-hairline px-4 py-2 font-mono text-[13px] font-semibold text-bone/60 transition"
+              >
+                🇮🇳 India
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-1 flex flex-wrap gap-3">
+            <button
+              type="submit"
+              id="wa-send"
+              class="ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-[#04110a] transition duration-300 hover:brightness-110"
+              style="background:#25D366"
+            >
+              💬 Send on WhatsApp
+            </button>
+            <button
+              type="button"
+              id="mail-send"
+              class="brand-gradient ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition duration-300 hover:brightness-110"
+            >
+              ✉️ Send by email
+            </button>
+          </div>
         </form>
+
+        <div id="contact-success" hidden class="mt-8 rounded-2xl border border-leaf-bright/30 bg-leaf/5 p-8 text-center">
+          <p class="mb-2 text-sm uppercase tracking-widest text-leaf-bright">Opening your app…</p>
+          <h2 class="text-lg font-semibold text-bone">
+            Your message is ready with your details filled in — just hit send.
+          </h2>
+        </div>
       </div>
     </section>
   </div>
 </Layout>
 
 <script>
-  // TODO: wire to a backend (e.g. serverless function or Resend) to deliver this.
-  const form = document.getElementById('contact-form');
-  const success = document.getElementById('contact-success');
+  const WHATSAPP = { sa: '966538360053', in: '918848095603' };
+  const OWNER_EMAIL = 'hello@dbdev.io';
+  let country: 'sa' | 'in' = 'sa';
 
+  const toggle = document.getElementById('country-toggle');
+  toggle?.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+    b.addEventListener('click', () => {
+      country = (b.dataset.c as 'sa' | 'in') || 'sa';
+      toggle.querySelectorAll<HTMLButtonElement>('button').forEach((x) => {
+        const on = x === b;
+        x.className = on
+          ? 'ease-out-quad rounded-lg border border-gold/50 bg-gold/10 px-4 py-2 font-mono text-[13px] font-semibold text-gold transition'
+          : 'ease-out-quad rounded-lg border border-hairline px-4 py-2 font-mono text-[13px] font-semibold text-bone/60 transition';
+      });
+    });
+  });
+
+  const val = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() || '';
+  function buildMessage() {
+    const lines = [
+      'Hi RestoPOS! I\'d like a demo.',
+      val('name') && `Name: ${val('name')}`,
+      val('restaurant') && `Restaurant: ${val('restaurant')}`,
+      val('phone') && `Phone: ${val('phone')}`,
+      val('branches') && `Branches: ${val('branches')}`,
+      val('message') && `Notes: ${val('message')}`,
+    ].filter(Boolean);
+    return lines.join('\n');
+  }
+  function flashSuccess() {
+    const s = document.getElementById('contact-success');
+    if (s) { s.hidden = false; setTimeout(() => (s.hidden = true), 6000); }
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    form.hidden = true;
-    if (success) success.hidden = false;
+    const msg = encodeURIComponent(buildMessage());
+    window.open(`https://wa.me/${WHATSAPP[country]}?text=${msg}`, '_blank', 'noopener');
+    flashSuccess();
+  });
+
+  document.getElementById('mail-send')?.addEventListener('click', () => {
+    if (!form?.reportValidity()) return;
+    const body = encodeURIComponent(buildMessage());
+    const subject = encodeURIComponent('RestoPOS demo request');
+    window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+    flashSuccess();
   });
 </script>

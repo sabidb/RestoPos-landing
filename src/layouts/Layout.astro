@@ -34,6 +34,7 @@ const {
     <title>{title}</title>
   </head>
   <body class="flex min-h-screen flex-col">
+    <div id="scroll-progress" aria-hidden="true"></div>
     <Navbar />
     <main class="flex-1">
       <slot />
@@ -41,6 +42,8 @@ const {
     <Footer />
 
     <script>
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       // Reveal-on-scroll: [data-reveal] elements fade up when they enter view.
       const observer = new IntersectionObserver(
         (entries) => {
@@ -54,6 +57,58 @@ const {
         { threshold: 0.15 }
       );
       document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+
+      // Count-up: [data-count] animates from 0 when scrolled into view.
+      const arabicDigits: Record<string, string> = { '0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩','.':'٫' };
+      const countObs = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          countObs.unobserve(el);
+          const target = parseFloat(el.dataset.count || '0');
+          const suffix = el.dataset.suffix || '';
+          const arabic = el.dataset.arabic === 'true';
+          const decimals = target % 1 !== 0 ? 1 : 0;
+          const start = performance.now();
+          const dur = reduceMotion ? 0 : 1400;
+          const fmt = (v: number) => {
+            let s = v.toFixed(decimals);
+            if (arabic) s = s.replace(/[0-9.]/g, (d) => arabicDigits[d] || d);
+            return s + suffix;
+          };
+          const step = (t: number) => {
+            const k = dur ? Math.min(1, (t - start) / dur) : 1;
+            const eased = 1 - Math.pow(1 - k, 3);
+            el.textContent = fmt(target * eased);
+            if (k < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach((el) => countObs.observe(el));
+
+      // Scroll progress bar + parallax on [data-parallax] elements.
+      const bar = document.getElementById('scroll-progress');
+      const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const h = document.documentElement;
+          const max = h.scrollHeight - h.clientHeight;
+          if (bar) bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+          if (!reduceMotion) {
+            for (const el of parallaxEls) {
+              const speed = parseFloat(el.dataset.parallax || '0.15');
+              el.style.transform = `translateY(${window.scrollY * speed}px)`;
+            }
+          }
+          ticking = false;
+        });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     </script>
   </body>
 </html>
