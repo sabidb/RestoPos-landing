@@ -345,62 +345,39 @@ function startGlassPhysics() {
   glassRaf = requestAnimationFrame(step);
 }
 
-// Matrix digital-rain intro.
-const MTX_CHARS = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾅﾆﾇﾈﾉﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ0123456789{}[]<>/\\;=+*#$%&|ABCDEF'.split('');
-const MTX_STATUS = ['> decrypting portfolio…', '> mounting projects…', '> linking microsites…', '> rendering interface…', '> access granted ✓'];
+// Minimal techy intro — the "db.dev" wordmark types in over a filling hairline.
+const LOADER_WORD = 'db.dev';
+const LOADER_STATUS = ['initializing', 'mounting projects', 'linking microsites', 'ready'];
+
+// Render the typed portion, keeping the "." terracotta.
+function paintLoaderWord(el, n) {
+  const s = LOADER_WORD.slice(0, n).replace('.', '<span style="color:#C1663D">.</span>');
+  el.innerHTML = s;
+}
 
 function runLoader(onDone) {
-  const canvas = $('#loaderCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, cols, drops, fontSize, rafId;
-
-  const resize = () => {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    fontSize = Math.max(14, Math.min(20, Math.round(W / 90)));
-    cols = Math.ceil(W / fontSize);
-    drops = Array.from({ length: cols }, () => Math.floor((Math.random() * -H) / fontSize));
-  };
-  resize();
-  window.addEventListener('resize', resize);
-
-  const draw = () => {
-    // fade previous frame → trailing tails
-    ctx.fillStyle = 'rgba(3,7,10,0.09)';
-    ctx.fillRect(0, 0, W, H);
-    ctx.font = fontSize + 'px monospace';
-    for (let i = 0; i < cols; i++) {
-      const ch = MTX_CHARS[(Math.random() * MTX_CHARS.length) | 0];
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-      const r = Math.random();
-      if (r < 0.03) ctx.fillStyle = '#E2A184';        // rare brand-terracotta glyph
-      else if (r < 0.10) ctx.fillStyle = '#EAFFF2';   // bright leading head
-      else ctx.fillStyle = 'rgba(46,204,113,0.85)';   // matrix green
-      ctx.fillText(ch, x, y);
-      if (y > H && Math.random() > 0.975) drops[i] = 0;
-      drops[i] += 1;
-    }
-    rafId = requestAnimationFrame(draw);
-  };
-  if (!reduceMotion) draw();
-  else { ctx.fillStyle = '#03070a'; ctx.fillRect(0, 0, W, H); }
-
+  const wordEl = $('#loaderWord'), caretEl = $('#loaderCaret');
   const pctEl = $('#loaderPercent'), txtEl = $('#loaderText'), barEl = $('#loaderBar');
-  const total = reduceMotion ? 400 : 4600;
+  const total = reduceMotion ? 300 : 1500;
   const start = Date.now();
-  let lastStatus = -1;
+  let lastStatus = -1, lastTyped = -1;
+
   const iv = setInterval(() => {
     const p = Math.min(100, Math.round(((Date.now() - start) / total) * 100));
     if (pctEl) pctEl.textContent = p;
-    if (barEl) {
-      const filled = Math.round((p / 100) * 14);
-      barEl.textContent = '[' + '█'.repeat(filled) + '░'.repeat(14 - filled) + ']';
+    if (barEl) barEl.style.width = p + '%';
+
+    // type the wordmark over the first ~70% of the load
+    const chars = Math.min(LOADER_WORD.length, Math.round((p / 70) * LOADER_WORD.length));
+    if (wordEl && chars !== lastTyped) { lastTyped = chars; paintLoaderWord(wordEl, chars); }
+
+    const s = Math.min(LOADER_STATUS.length - 1, Math.floor((p / 100) * LOADER_STATUS.length));
+    if (txtEl && s !== lastStatus) { lastStatus = s; txtEl.textContent = LOADER_STATUS[s]; }
+    if (p >= 100) {
+      if (caretEl) caretEl.style.opacity = '0'; // caret retires once fully typed
+      clearInterval(iv);
     }
-    const s = Math.min(MTX_STATUS.length - 1, Math.floor((p / 100) * MTX_STATUS.length));
-    if (txtEl && s !== lastStatus) { lastStatus = s; txtEl.textContent = MTX_STATUS[s]; }
-    if (p >= 100) clearInterval(iv);
-  }, 60);
+  }, 40);
   loaderTimers.push(iv);
 
   const finish = () => {
@@ -409,11 +386,9 @@ function runLoader(onDone) {
     loader.dataset.done = '1';
     loader.style.animation = 'loaderFadeOut 0.5s ease forwards';
     loaderTimers.forEach((t) => { clearTimeout(t); clearInterval(t); });
-    if (rafId) cancelAnimationFrame(rafId);
-    window.removeEventListener('resize', resize);
     setTimeout(() => { loader.style.display = 'none'; onDone(); }, 500);
   };
-  loaderTimers.push(setTimeout(finish, total + 250));
+  loaderTimers.push(setTimeout(finish, total + 260));
   $('#skipLoader').addEventListener('click', finish);
 }
 
