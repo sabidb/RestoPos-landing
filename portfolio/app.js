@@ -345,52 +345,60 @@ function startGlassPhysics() {
   glassRaf = requestAnimationFrame(step);
 }
 
-// Boot HUD readout — lights up [ OK ] as progress climbs.
-const BOOT_STEPS = [
-  'MOUNTING PROJECTS',
-  'RENDERING COMPONENTS',
-  'LINKING MICROSITES',
-  'OPTIMIZING ASSETS',
-  'SECURING ROUTES',
-  'SYSTEM READY',
-];
-const RING_CIRC = 829; // 2π·132
+// Matrix digital-rain intro.
+const MTX_CHARS = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾅﾆﾇﾈﾉﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ0123456789{}[]<>/\\;=+*#$%&|ABCDEF'.split('');
+const MTX_STATUS = ['> decrypting portfolio…', '> mounting projects…', '> linking microsites…', '> rendering interface…', '> access granted ✓'];
 
 function runLoader(onDone) {
-  const stopParticles = setupParticles($('#loaderCanvas'));
-  const pctEl = $('#loaderPercent'), txtEl = $('#loaderText'), ring = $('#ringProg'),
-        coord = $('#hudCoord'), log = $('#bootLog');
+  const canvas = $('#loaderCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, cols, drops, fontSize, rafId;
 
-  const rows = BOOT_STEPS.map((name) => {
-    const row = el('div', 'display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.06em;color:rgba(248,244,239,.4);opacity:0;');
-    row.innerHTML = `<span>${name}</span><span class="ok" style="color:rgba(248,244,239,.28)">[    ]</span>`;
-    log.appendChild(row);
-    return row;
-  });
+  const resize = () => {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    fontSize = Math.max(14, Math.min(20, Math.round(W / 90)));
+    cols = Math.ceil(W / fontSize);
+    drops = Array.from({ length: cols }, () => Math.floor((Math.random() * -H) / fontSize));
+  };
+  resize();
+  window.addEventListener('resize', resize);
 
-  const total = reduceMotion ? 400 : 5200;
+  const draw = () => {
+    // fade previous frame → trailing tails
+    ctx.fillStyle = 'rgba(3,7,10,0.09)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.font = fontSize + 'px monospace';
+    for (let i = 0; i < cols; i++) {
+      const ch = MTX_CHARS[(Math.random() * MTX_CHARS.length) | 0];
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+      const r = Math.random();
+      if (r < 0.03) ctx.fillStyle = '#E2A184';        // rare brand-terracotta glyph
+      else if (r < 0.10) ctx.fillStyle = '#EAFFF2';   // bright leading head
+      else ctx.fillStyle = 'rgba(46,204,113,0.85)';   // matrix green
+      ctx.fillText(ch, x, y);
+      if (y > H && Math.random() > 0.975) drops[i] = 0;
+      drops[i] += 1;
+    }
+    rafId = requestAnimationFrame(draw);
+  };
+  if (!reduceMotion) draw();
+  else { ctx.fillStyle = '#03070a'; ctx.fillRect(0, 0, W, H); }
+
+  const pctEl = $('#loaderPercent'), txtEl = $('#loaderText'), barEl = $('#loaderBar');
+  const total = reduceMotion ? 400 : 4600;
   const start = Date.now();
-  let lastText = -1;
+  let lastStatus = -1;
   const iv = setInterval(() => {
     const p = Math.min(100, Math.round(((Date.now() - start) / total) * 100));
     if (pctEl) pctEl.textContent = p;
-    if (ring) ring.style.strokeDashoffset = String(RING_CIRC * (1 - p / 100));
-    if (coord) coord.textContent = 'SYS ' + String(p).padStart(2, '0') + '.' + String((p * 7) % 100).padStart(2, '0');
-    const reached = Math.floor((p / 100) * rows.length);
-    for (let i = 0; i < rows.length; i++) {
-      if (i < reached && !rows[i].dataset.on) {
-        rows[i].dataset.on = '1';
-        rows[i].style.animation = 'bootIn .3s ease both';
-        rows[i].style.color = 'rgba(248,244,239,.82)';
-        const ok = rows[i].querySelector('.ok');
-        ok.textContent = '[ OK ]';
-        ok.style.color = '#6FA88A';
-      }
+    if (barEl) {
+      const filled = Math.round((p / 100) * 14);
+      barEl.textContent = '[' + '█'.repeat(filled) + '░'.repeat(14 - filled) + ']';
     }
-    if (txtEl && reached !== lastText) {
-      lastText = reached;
-      txtEl.textContent = '> ' + (BOOT_STEPS[Math.min(BOOT_STEPS.length - 1, reached)] || 'system ready').toLowerCase() + '…';
-    }
+    const s = Math.min(MTX_STATUS.length - 1, Math.floor((p / 100) * MTX_STATUS.length));
+    if (txtEl && s !== lastStatus) { lastStatus = s; txtEl.textContent = MTX_STATUS[s]; }
     if (p >= 100) clearInterval(iv);
   }, 60);
   loaderTimers.push(iv);
@@ -401,7 +409,8 @@ function runLoader(onDone) {
     loader.dataset.done = '1';
     loader.style.animation = 'loaderFadeOut 0.5s ease forwards';
     loaderTimers.forEach((t) => { clearTimeout(t); clearInterval(t); });
-    if (stopParticles) stopParticles();
+    if (rafId) cancelAnimationFrame(rafId);
+    window.removeEventListener('resize', resize);
     setTimeout(() => { loader.style.display = 'none'; onDone(); }, 500);
   };
   loaderTimers.push(setTimeout(finish, total + 250));

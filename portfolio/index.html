@@ -17,17 +17,9 @@
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #C1663D; outline-offset: 3px; }
   @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
   .terminal-cursor { animation: blink 1s step-end infinite; }
-  /* ---- boot HUD ---- */
-  @keyframes hudScan { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
-  @keyframes hexSpin { to { transform: rotate(360deg); } }
-  @keyframes bootIn { 0% { opacity: 0; transform: translateX(-10px); } 100% { opacity: 1; transform: none; } }
-  .hud-corner { position: absolute; width: 32px; height: 32px; opacity: 0.85; pointer-events: none; }
-  .glitch { position: relative; display: inline-block; }
-  .glitch::before, .glitch::after { content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; }
-  .glitch::before { color: #C1663D; clip-path: inset(0 0 55% 0); animation: glitchA 3s infinite steps(1); }
-  .glitch::after { color: #6A93C7; clip-path: inset(55% 0 0 0); animation: glitchB 3s infinite steps(1); }
-  @keyframes glitchA { 0%,88%,100% { transform: translate(0); } 90% { transform: translate(-2px,-1px); } 94% { transform: translate(2px,1px); } }
-  @keyframes glitchB { 0%,88%,100% { transform: translate(0); } 90% { transform: translate(2px,1px); } 94% { transform: translate(-2px,-1px); } }
+  /* ---- matrix intro ---- */
+  @keyframes mtxFlicker { 0%,100% { opacity: 1; } 92% { opacity: 1; } 93% { opacity: 0.55; } 94% { opacity: 1; } 96% { opacity: 0.8; } 97% { opacity: 1; } }
+  .mtx-title { animation: mtxFlicker 4.5s infinite; }
   @keyframes revealBounceIn {
     0% { opacity: 0; transform: translate(var(--fx, 0px), var(--fy, 70px)) scale(0.75) rotate(var(--fr, -2deg)); }
     45% { opacity: 1; transform: translate(calc(var(--fx, 0px) * -0.12), calc(var(--fy, 70px) * -0.12)) scale(1.06) rotate(calc(var(--fr, -2deg) * -0.4)); }
@@ -87,42 +79,22 @@
 <div id="root" style="font-family: 'Inter', sans-serif; background: #F8F4EF; color: #17233A; width: 100%; overflow-x: hidden; background-image: radial-gradient(rgba(23,35,58,0.07) 1px, transparent 1px); background-size: 24px 24px;">
 
   <!-- LOADER — holographic system-boot HUD -->
-  <div id="loader" style="position: fixed; inset: 0; z-index: 200; background: radial-gradient(ellipse 70% 60% at 50% 42%, #10233a 0%, #070d16 70%); display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'JetBrains Mono', monospace; color: #F8F4EF;">
-    <!-- circuit dot field -->
-    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(226,161,132,0.10) 1px, transparent 1px); background-size: 30px 30px;"></div>
+  <div id="loader" style="position: fixed; inset: 0; z-index: 200; background: #03070a; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'JetBrains Mono', monospace;">
     <canvas id="loaderCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
-    <!-- scan sweep -->
-    <div style="position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, #C1663D, transparent); box-shadow: 0 0 18px #C1663D; animation: hudScan 3.4s linear infinite; pointer-events: none;"></div>
+    <!-- readability vignette -->
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 55% 48% at 50% 50%, rgba(3,7,10,0.86) 0%, rgba(3,7,10,0.55) 42%, transparent 74%); pointer-events: none;"></div>
+    <!-- CRT scanlines -->
+    <div style="position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.16) 2px 3px); opacity: 0.55; pointer-events: none;"></div>
 
-    <!-- corner viewfinder brackets -->
-    <span class="hud-corner" style="top: 24px; left: 24px; border-top: 2px solid #C1663D; border-left: 2px solid #C1663D;"></span>
-    <span class="hud-corner" style="top: 24px; right: 24px; border-top: 2px solid #6A93C7; border-right: 2px solid #6A93C7;"></span>
-    <span class="hud-corner" style="bottom: 24px; left: 24px; border-bottom: 2px solid #6A93C7; border-left: 2px solid #6A93C7;"></span>
-    <span class="hud-corner" style="bottom: 24px; right: 24px; border-bottom: 2px solid #C1663D; border-right: 2px solid #C1663D;"></span>
-
-    <div style="position: absolute; top: 32px; left: 50px; font-size: 11px; letter-spacing: 0.18em; color: rgba(226,161,132,0.75);">DB.DEV // BOOT_SEQUENCE</div>
-    <div style="position: absolute; top: 32px; right: 50px; font-size: 11px; letter-spacing: 0.14em; color: rgba(106,147,199,0.75);" id="hudCoord">SYS 00.00</div>
-
-    <!-- center reactor -->
-    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;">
-      <div style="position: relative; width: 300px; height: 300px; display: grid; place-items: center;">
-        <svg viewBox="0 0 300 300" style="position: absolute; inset: 0; transform: rotate(-90deg);">
-          <circle cx="150" cy="150" r="132" fill="none" stroke="rgba(248,244,239,0.08)" stroke-width="3"></circle>
-          <circle id="ringProg" cx="150" cy="150" r="132" fill="none" stroke="#C1663D" stroke-width="3" stroke-linecap="round" stroke-dasharray="829" stroke-dashoffset="829" style="filter: drop-shadow(0 0 6px #C1663D); transition: stroke-dashoffset 0.2s linear;"></circle>
-        </svg>
-        <svg viewBox="0 0 200 200" style="position: absolute; width: 236px; height: 236px; animation: hexSpin 16s linear infinite;"><polygon points="100,10 178,55 178,145 100,190 22,145 22,55" fill="none" stroke="rgba(226,161,132,0.35)" stroke-width="1.4"></polygon></svg>
-        <svg viewBox="0 0 200 200" style="position: absolute; width: 174px; height: 174px; animation: hexSpin 11s linear infinite reverse;"><polygon points="100,10 178,55 178,145 100,190 22,145 22,55" fill="none" stroke="rgba(106,147,199,0.42)" stroke-width="1.4"></polygon></svg>
-        <svg viewBox="0 0 200 200" style="position: absolute; width: 116px; height: 116px; animation: hexSpin 7s linear infinite;"><polygon points="100,10 178,55 178,145 100,190 22,145 22,55" fill="none" stroke="rgba(193,102,61,0.6)" stroke-width="1.4"></polygon></svg>
-        <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
-          <span class="glitch" data-text="DB" style="font-family: 'JetBrains Mono', monospace; font-size: 46px; font-weight: 800; letter-spacing: 3px; color: #F8F4EF; line-height: 1;">DB</span>
-          <div style="font-size: 32px; font-weight: 800; color: #E2A184; margin-top: 8px; line-height: 1;"><span id="loaderPercent">0</span><span style="font-size: 17px;">%</span></div>
-        </div>
+    <div style="position: relative; z-index: 2; text-align: center;">
+      <div class="mtx-title" style="font-size: clamp(56px,14vw,118px); font-weight: 800; color: #7CFFB0; letter-spacing: 5px; line-height: 1; text-shadow: 0 0 18px rgba(46,204,113,0.75), 0 0 46px rgba(46,204,113,0.4);">db<span style="color: #E2A184; text-shadow: 0 0 18px rgba(226,161,132,0.8);">.</span>dev</div>
+      <div id="loaderText" style="margin-top: 20px; font-size: 14px; letter-spacing: 0.16em; color: rgba(124,255,176,0.72);">&gt; decrypting portfolio…</div>
+      <div style="margin-top: 18px; font-size: 15px; letter-spacing: 3px; color: #7CFFB0; text-shadow: 0 0 12px rgba(46,204,113,0.5);">
+        <span id="loaderBar" style="opacity: 0.85;"></span> <span id="loaderPercent">0</span>%
       </div>
-      <div id="loaderText" style="margin-top: 2px; font-size: 13px; letter-spacing: 0.04em; color: rgba(248,244,239,0.65); min-height: 20px;">&gt; initializing…</div>
-      <div id="bootLog" style="margin-top: 24px; width: 288px; display: flex; flex-direction: column; gap: 8px;"></div>
     </div>
 
-    <button id="skipLoader" style="position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%); z-index: 3; background: rgba(226,161,132,0.08); border: 1px solid rgba(226,161,132,0.4); color: #E2A184; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; padding: 8px 18px; border-radius: 6px; cursor: pointer;">SKIP INTRO &#9656;</button>
+    <button id="skipLoader" style="position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 3; background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.4); color: #7CFFB0; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.14em; padding: 8px 18px; border-radius: 6px; cursor: pointer;">SKIP &#9656;</button>
   </div>
 
   <!-- LEAD GATE -->
