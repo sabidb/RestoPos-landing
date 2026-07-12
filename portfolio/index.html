@@ -3,323 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DB — Full-stack Developer</title>
-<meta name="description" content="DB builds products for restaurants, communities and startups — POS systems, automation agents, games and websites, end to end.">
+<title>DB Labs — Full-stack Developer</title>
+<meta name="description" content="DB Labs builds products for restaurants, communities and startups — POS systems, automation agents, games and websites, end to end.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C1663D'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='14' font-weight='800' text-anchor='middle' fill='%23F8F4EF'%3E&lt;/&gt;%3C/text%3E%3C/svg%3E">
 <style>
   html { scroll-behavior: smooth; }
-  body { margin: 0; }
+  body { margin: 0; background: #F8F4EF; color: #17233A; font-family: 'Inter', sans-serif; overflow-x: hidden; }
   * { box-sizing: border-box; }
   ::selection { background: #C1663D; color: #F8F4EF; }
+  a { color: inherit; }
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #C1663D; outline-offset: 3px; }
   @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
   .terminal-cursor { animation: blink 1s step-end infinite; }
-  @keyframes revealBounceIn {
-    0% { opacity: 0; transform: translate(var(--fx, 0px), var(--fy, 70px)) scale(0.75) rotate(var(--fr, -2deg)); }
-    45% { opacity: 1; transform: translate(calc(var(--fx, 0px) * -0.12), calc(var(--fy, 70px) * -0.12)) scale(1.06) rotate(calc(var(--fr, -2deg) * -0.4)); }
-    65% { transform: translate(calc(var(--fx, 0px) * 0.05), calc(var(--fy, 70px) * 0.05)) scale(0.97) rotate(calc(var(--fr, -2deg) * 0.15)); }
-    80% { transform: translate(calc(var(--fx, 0px) * -0.02), calc(var(--fy, 70px) * -0.02)) scale(1.015); }
-    92% { transform: translate(0, 0) scale(0.995); }
-    100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
-  }
-  @keyframes overlayIn { 0% { opacity: 0; transform: translateY(28px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-  @keyframes floatBlob { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, 30px) scale(1.12); } }
-  @keyframes driftShape { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(-18px, 22px) rotate(25deg); } }
+  @keyframes loaderGridDrift { 0% { background-position: 0 0, 0 0; } 100% { background-position: 46px 46px, 46px 46px; } }
   @keyframes loaderFadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-  @keyframes loaderBarFill { 0% { width: 0%; } 100% { width: 100%; } }
-  @keyframes loaderBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-  @keyframes loaderPulse { 0%, 100% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
-  @keyframes loaderGridDrift { 0% { background-position: 0 0, 0 0; } 100% { background-position: 60px 60px, 60px 60px; } }
-  @keyframes loaderScan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
-  @keyframes loaderLogoSpin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
-  @keyframes loaderBlobDrift { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.25); } }
-  @keyframes loaderRingSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  @keyframes loaderFloatCode { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); opacity: 0.5; } 50% { transform: translateY(-24px) rotate(var(--r, 0deg)); opacity: 0.9; } }
-  @keyframes loaderFallDown { 0% { transform: translateY(-40px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(calc(100vh + 40px)); opacity: 0; } }
-  @keyframes loaderCounterPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-  @keyframes loaderGlitch { 0%, 92%, 100% { transform: translate(0, 0); text-shadow: none; } 93% { transform: translate(-2px, 1px); text-shadow: 2px 0 #6A93C7, -2px 0 #C1663D; } 95% { transform: translate(2px, -1px); text-shadow: -2px 0 #6A93C7, 2px 0 #C1663D; } 97% { transform: translate(-1px, 0); text-shadow: none; } }
-  @keyframes shieldPulse { 0%, 100% { box-shadow: 0 0 50px rgba(193,102,61,0.3), inset 0 0 40px rgba(193,102,61,0.1); } 50% { box-shadow: 0 0 70px rgba(193,102,61,0.45), inset 0 0 50px rgba(193,102,61,0.15); } }
-  @keyframes shardFly { 0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 1; } 100% { transform: translate(calc(-50% + var(--sx, 60px)), calc(-50% + var(--sy, 60px))) rotate(var(--srot, 180deg)); opacity: 0; } }
-  @keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  @keyframes checkPop { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-  @keyframes confettiBurst { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--tx, 40px)), calc(-50% + var(--ty, 40px))) scale(0.3); opacity: 0; } }
-  @keyframes gateIconPulse { 0%, 100% { box-shadow: 0 0 26px rgba(193,102,61,0.5); transform: scale(1); } 50% { box-shadow: 0 0 40px rgba(193,102,61,0.75); transform: scale(1.06); } }
-  @keyframes lineBuildX { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-  @keyframes lineBuildY { 0% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
 
-  @media (min-width: 900px) {
-    [data-desktop-nav] { display: flex !important; }
-    [data-mobile-toggle] { display: none !important; }
+  /* ---- layout helpers (media queries; the rest is inline / Framer Motion) ---- */
+  .wrap { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 48px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,0.95fr); gap: 56px; align-items: center; }
+  .about-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: center; }
+  .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .nav-links { display: flex; gap: 6px; align-items: center; }
+  .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; }
+
+  @media (max-width: 900px) {
+    .wrap { padding: 0 26px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-card-col { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 36px; }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .two-col { grid-template-columns: 1fr; }
   }
-  @media (max-width: 899px) {
-    [data-hero-grid], [data-about-grid] { grid-template-columns: 1fr !important; }
-    [data-hero-image] { display: none; }
-    [data-work-grid] { grid-template-columns: 1fr 1fr !important; }
-    [data-contact-row] { grid-template-columns: 1fr !important; }
-    [data-calc-grid] { grid-template-columns: 1fr !important; }
-    [data-pos-plans] { grid-template-columns: 1fr !important; }
-    section h1 { font-size: 30px !important; }
+  @media (max-width: 560px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .wrap { padding: 0 20px; }
   }
-  @media (max-width: 599px) {
-    h2 { font-size: 28px !important; }
-    section h1 { font-size: 22px !important; }
-    section { padding-left: 24px !important; padding-right: 24px !important; }
-    nav { padding-left: 20px !important; padding-right: 20px !important; }
-    [data-work-grid] { grid-template-columns: 1fr !important; }
-  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<div id="root" style="font-family: 'Inter', sans-serif; background: #F8F4EF; color: #17233A; width: 100%; overflow-x: hidden; background-image: radial-gradient(rgba(23,35,58,0.07) 1px, transparent 1px); background-size: 24px 24px;">
 
-  <!-- LOADER — minimal techy boot, built from the site palette -->
-  <div id="loader" style="position: fixed; inset: 0; z-index: 200; background: #0A1220; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'JetBrains Mono', monospace;">
-    <!-- faint drifting grid -->
-    <div style="position: absolute; inset: -1px; background-image: linear-gradient(rgba(248,244,239,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.035) 1px, transparent 1px); background-size: 46px 46px; animation: loaderGridDrift 9s linear infinite; pointer-events: none;"></div>
-    <!-- ambient terracotta glow -->
-    <div style="position: absolute; width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; border-radius: 50%; background: radial-gradient(circle, rgba(193,102,61,0.16) 0%, transparent 62%); filter: blur(18px); pointer-events: none;"></div>
-    <!-- corner terminal label -->
-    <div style="position: absolute; top: 22px; left: 24px; font-size: 11px; letter-spacing: 0.16em; color: rgba(248,244,239,0.30);">~/db.dev &middot; portfolio</div>
-
-    <div style="position: relative; z-index: 2; text-align: center; width: min(380px, 84vw);">
-      <div style="font-size: clamp(46px,12vw,88px); font-weight: 800; color: #F8F4EF; letter-spacing: 1px; line-height: 1; white-space: nowrap;">
-        <span id="loaderWord"></span><span id="loaderCaret" style="color: #C1663D; font-weight: 400;" class="terminal-cursor">&#9615;</span>
-      </div>
-      <!-- progress hairline -->
-      <div style="margin-top: 34px; height: 2px; width: 100%; background: rgba(248,244,239,0.10); border-radius: 2px; overflow: hidden;">
-        <div id="loaderBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #C1663D, #E2A184); box-shadow: 0 0 12px rgba(193,102,61,0.55); transition: width 0.14s linear;"></div>
-      </div>
-      <!-- readout -->
-      <div style="margin-top: 14px; display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.12em; color: rgba(248,244,239,0.42);">
-        <span id="loaderText">initializing</span>
-        <span><span id="loaderPercent">0</span>%</span>
-      </div>
+<!-- LOADER — minimal techy boot (vanilla, runs before the React app mounts) -->
+<div id="loader" style="position: fixed; inset: 0; z-index: 200; background: #0A1220; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'JetBrains Mono', monospace;">
+  <div style="position: absolute; inset: -1px; background-image: linear-gradient(rgba(248,244,239,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.035) 1px, transparent 1px); background-size: 46px 46px; animation: loaderGridDrift 9s linear infinite; pointer-events: none;"></div>
+  <div style="position: absolute; width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; border-radius: 50%; background: radial-gradient(circle, rgba(193,102,61,0.16) 0%, transparent 62%); filter: blur(18px); pointer-events: none;"></div>
+  <div style="position: absolute; top: 22px; left: 24px; font-size: 11px; letter-spacing: 0.16em; color: rgba(248,244,239,0.30);">~/db.dev &middot; portfolio</div>
+  <div style="position: relative; z-index: 2; text-align: center; width: min(380px, 84vw);">
+    <div style="font-size: clamp(46px,12vw,88px); font-weight: 800; color: #F8F4EF; letter-spacing: 1px; line-height: 1; white-space: nowrap;">
+      <span id="loaderWord"></span><span id="loaderCaret" style="color: #C1663D; font-weight: 400;" class="terminal-cursor">&#9615;</span>
     </div>
-
-    <!-- credit -->
-    <div style="position: absolute; bottom: 26px; left: 24px; z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(248,244,239,0.34);">Created by <span style="color: #C1663D; font-weight: 700;">DB Labs</span></div>
-
-    <button id="skipLoader" style="position: absolute; bottom: 26px; right: 24px; z-index: 3; background: transparent; border: 1px solid rgba(248,244,239,0.16); color: rgba(248,244,239,0.5); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; padding: 7px 14px; border-radius: 6px; cursor: pointer; transition: color 0.2s, border-color 0.2s;" onmouseover="this.style.color='#F8F4EF';this.style.borderColor='rgba(248,244,239,0.4)'" onmouseout="this.style.color='rgba(248,244,239,0.5)';this.style.borderColor='rgba(248,244,239,0.16)'">skip &rarr;</button>
-  </div>
-
-  <!-- LEAD GATE -->
-  <div id="gate" style="position: fixed; inset: 0; z-index: 110; background: #131F35; background-image: linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px); background-size: 40px 40px; display: none; align-items: center; justify-content: center; padding: 24px;">
-    <div style="position: relative; max-width: 420px; width: 100%; border-radius: 18px; padding: 2px; animation: overlayIn 0.4s cubic-bezier(0.2, 0.6, 0.3, 1) both; overflow: hidden;">
-      <div style="position: absolute; inset: -60%; background: conic-gradient(from 0deg, #C1663D, #6A93C7, #E2A184, #C1663D); animation: rotateBorder 5s linear infinite;"></div>
-      <div style="position: relative; background: #0E1A2E; border-radius: 16px; padding: 36px 32px; overflow: hidden;">
-        <div style="position: absolute; width: 180px; height: 180px; border-radius: 50%; top: -70px; left: -60px; background: radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%); animation: floatBlob 9s ease-in-out infinite; pointer-events: none;"></div>
-        <div style="position: absolute; width: 150px; height: 150px; border-radius: 50%; bottom: -60px; right: -50px; background: radial-gradient(circle, rgba(106,147,199,0.24) 0%, transparent 70%); animation: floatBlob 11s ease-in-out infinite reverse; pointer-events: none;"></div>
-
-        <div id="gateForm">
-          <div style="position: relative; width: 44px; height: 44px; border-radius: 12px; background: #C1663D; display: flex; align-items: center; justify-content: center; color: #F8F4EF; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin-bottom: 16px; box-shadow: 0 0 26px rgba(193,102,61,0.5); animation: gateIconPulse 2.4s ease-in-out infinite;">&lt;/&gt;</div>
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #E2A184; margin-bottom: 10px;">// before you continue</div>
-          <h2 style="color: #F8F4EF; font-size: 24px; font-weight: 800; margin: 0 0 10px;">Quick intro</h2>
-          <p style="color: rgba(248,244,239,0.65); font-size: 14px; line-height: 1.6; margin: 0 0 24px;">Leave your name and email so I know who's visiting &mdash; I'll follow up personally.</p>
-          <form id="gateFormEl" style="display: flex; flex-direction: column; gap: 14px;">
-            <input type="text" required placeholder="Your name" id="gateName" style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(248,244,239,0.2); background: rgba(248,244,239,0.05); color: #F8F4EF; font-family: 'Inter', sans-serif; font-size: 15px;">
-            <input type="email" required placeholder="Email address" id="gateEmail" style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(248,244,239,0.2); background: rgba(248,244,239,0.05); color: #F8F4EF; font-family: 'Inter', sans-serif; font-size: 15px;">
-            <button type="submit" style="background: #C1663D; color: #F8F4EF; border: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 15px; border-radius: 8px; cursor: pointer; margin-top: 4px;">Continue</button>
-          </form>
-          <button id="skipGate" style="margin-top: 16px; background: none; border: none; color: rgba(248,244,239,0.35); font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0;">Skip for now</button>
-        </div>
-
-        <div id="gateSuccess" style="display: none; position: relative; flex-direction: column; align-items: center; text-align: center; padding: 24px 0;">
-          <div style="position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(111,168,138,0.15); border: 2px solid #6FA88A; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; animation: checkPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;">
-            <span style="color: #6FA88A; font-size: 28px; font-weight: 800;">&#10003;</span>
-          </div>
-          <div style="color: #F8F4EF; font-size: 18px; font-weight: 700; margin-bottom: 6px;" id="gateThanks">Thanks!</div>
-          <div style="color: rgba(248,244,239,0.6); font-size: 14px;">I'll be in touch shortly.</div>
-        </div>
-      </div>
+    <div style="margin-top: 34px; height: 2px; width: 100%; background: rgba(248,244,239,0.10); border-radius: 2px; overflow: hidden;">
+      <div id="loaderBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #C1663D, #E2A184); box-shadow: 0 0 12px rgba(193,102,61,0.55); transition: width 0.14s linear;"></div>
+    </div>
+    <div style="margin-top: 14px; display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.12em; color: rgba(248,244,239,0.42);">
+      <span id="loaderText">initializing</span>
+      <span><span id="loaderPercent">0</span>%</span>
     </div>
   </div>
-
-  <!-- NAV -->
-  <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: transparent; border-bottom: 1px solid rgba(248,244,239,0.08); transition: background 0.3s ease;">
-    <div style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; color: #F8F4EF;">
-      <span style="width: 34px; height: 34px; border-radius: 6px; background: #C1663D; display: flex; align-items: center; justify-content: center; color: #F8F4EF; font-size: 13px; font-weight: 800;">&lt;/&gt;</span>
-      <span>db<span style="color: #C1663D;">.</span>dev</span>
-    </div>
-    <div style="display: none; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace;" data-desktop-nav="true">
-      <a href="#work" class="navlink" style="color: #F8F4EF; text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.85; padding: 8px 14px;"><span style="color: #C1663D;">01.</span> work</a>
-      <a href="#about" class="navlink" style="color: #F8F4EF; text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.85; padding: 8px 14px;"><span style="color: #C1663D;">02.</span> about</a>
-      <a href="#skills" class="navlink" style="color: #F8F4EF; text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.85; padding: 8px 14px;"><span style="color: #C1663D;">03.</span> skills</a>
-      <a href="#pricing" class="navlink" style="color: #F8F4EF; text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.85; padding: 8px 14px;"><span style="color: #C1663D;">04.</span> pricing</a>
-      <a href="#contact" style="background: transparent; border: 1px solid #C1663D; color: #C1663D; text-decoration: none; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 4px; margin-left: 8px;">contact()</a>
-    </div>
-    <button id="menuToggle" style="display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px;" data-mobile-toggle="true" aria-label="Menu">
-      <span style="width: 24px; height: 2px; background: #F8F4EF; display: block;"></span>
-      <span style="width: 24px; height: 2px; background: #F8F4EF; display: block;"></span>
-      <span style="width: 16px; height: 2px; background: #F8F4EF; display: block;"></span>
-    </button>
-  </nav>
-
-  <div id="mobileMenu" style="display: none; position: fixed; inset: 0; z-index: 49; background: #17233A; flex-direction: column; align-items: center; justify-content: center; gap: 32px;">
-    <a href="#work" class="mlink" style="color: #F8F4EF; text-decoration: none; font-size: 28px; font-weight: 600;">Work</a>
-    <a href="#about" class="mlink" style="color: #F8F4EF; text-decoration: none; font-size: 28px; font-weight: 600;">About</a>
-    <a href="#skills" class="mlink" style="color: #F8F4EF; text-decoration: none; font-size: 28px; font-weight: 600;">Skills</a>
-    <a href="#pricing" class="mlink" style="color: #F8F4EF; text-decoration: none; font-size: 28px; font-weight: 600;">Pricing</a>
-    <a href="#contact" class="mlink" style="background: #C1663D; color: #F8F4EF; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600; padding: 14px 30px; border-radius: 6px; margin-top: 12px;">contact()</a>
-    <button id="menuClose" style="position: absolute; top: 26px; right: 40px; background: none; border: none; color: #F8F4EF; font-size: 32px; cursor: pointer;">×</button>
-  </div>
-
-  <!-- HERO -->
-  <section style="height: 100vh; min-height: 560px; width: 100%; padding-top: 88px; background: #131F35; background-image: linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px); background-size: 40px 40px; display: flex; align-items: center; position: relative; overflow: hidden;">
-    <div style="position: absolute; top: -120px; right: -120px; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle, rgba(193,102,61,0.3) 0%, rgba(193,102,61,0) 70%); z-index: 0;"></div>
-    <canvas id="heroCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
-    <div id="heroGrid" style="max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 48px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; align-items: center; position: relative; z-index: 2; perspective: 1200px;" data-hero-grid="true">
-      <div>
-        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(193,102,61,0.15); border: 1px solid rgba(193,102,61,0.4); color: #E2A184; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 4px; margin-bottom: 28px;">&gt; whoami: full-stack developer</div>
-        <h1 style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; color: #F8F4EF; margin: 0 0 24px;">
-          <span style="color: #6A93C7;">const</span> services = <span style="color: #C1663D;">DB</span><br>
-          .<span style="color: #E2A184;">buildEverything</span>()<span style="color: #F8F4EF;">;</span>
-        </h1>
-        <p style="font-size: 19px; line-height: 1.6; color: rgba(248,244,239,0.68); max-width: 480px; margin: 0 0 40px;">I design and build products for restaurants, communities and startups — from POS systems to social apps — end to end.</p>
-        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-          <a href="#contact" style="background: #C1663D; color: #F8F4EF; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 16px 28px; border-radius: 6px;">book_a_call()</a>
-          <a href="#work" style="background: transparent; color: #F8F4EF; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 16px 28px; border-radius: 6px; border: 1px solid rgba(248,244,239,0.3);">see_my_work()</a>
-        </div>
-      </div>
-      <div id="heroCard" style="position: relative; width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid rgba(248,244,239,0.14); background: #0E1A2E; box-shadow: 0 30px 60px rgba(0,0,0,0.35); transform-style: preserve-3d; will-change: transform; transition: transform 0.15s ease-out;" data-hero-image="true">
-        <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #17233A; border-bottom: 1px solid rgba(248,244,239,0.08);">
-          <span style="width: 11px; height: 11px; border-radius: 50%; background: #E2604A;"></span>
-          <span style="width: 11px; height: 11px; border-radius: 50%; background: #E2A184;"></span>
-          <span style="width: 11px; height: 11px; border-radius: 50%; background: #6FA88A;"></span>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(248,244,239,0.4); margin-left: 8px;">profile.js</span>
-        </div>
-        <div style="padding: 24px 26px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.85;">
-          <div><span style="color: #6A93C7;">const</span> <span style="color: #E2A184;">developer</span> = {</div>
-          <div style="padding-left: 20px;"><span style="color: #9FB3CE;">name:</span> <span style="color: #C1663D;">'DB'</span>,</div>
-          <div style="padding-left: 20px;"><span style="color: #9FB3CE;">role:</span> <span style="color: #C1663D;">'Full-stack Developer'</span>,</div>
-          <div style="padding-left: 20px;"><span style="color: #9FB3CE;">stack:</span> [<span style="color: #C1663D;">'JS'</span>, <span style="color: #C1663D;">'React'</span>, <span style="color: #C1663D;">'Node'</span>],</div>
-          <div style="padding-left: 20px;"><span style="color: #9FB3CE;">available:</span> <span style="color: #6FA88A;">true</span></div>
-          <div>};</div>
-          <div style="margin-top: 14px; color: rgba(248,244,239,0.35);">// portrait photo goes here</div>
-          <div style="aspect-ratio: 4/3; margin-top: 10px; border-radius: 6px; background-image: repeating-linear-gradient(135deg, rgba(193,102,61,0.25) 0px, rgba(193,102,61,0.25) 2px, rgba(248,244,239,0.03) 2px, rgba(248,244,239,0.03) 24px); display: flex; align-items: center; justify-content: center; color: rgba(248,244,239,0.35); font-size: 12px;">portrait photo<span class="terminal-cursor" style="margin-left: 4px;">_</span></div>
-        </div>
-      </div>
-    </div>
-    <div style="position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(248,244,239,0.5); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.04em; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-      scroll<span class="terminal-cursor">_</span>
-      <span style="width: 1px; height: 28px; background: rgba(248,244,239,0.4);"></span>
-    </div>
-  </section>
-
-  <!-- SELECTED WORK -->
-  <section id="work" style="padding: 90px 48px 80px; background: linear-gradient(150deg, #2B1B14 0%, #3A2418 45%, #1D2A3F 100%); position: relative; overflow: hidden;">
-    <div style="position: absolute; width: 340px; height: 340px; border-radius: 50%; top: -80px; left: -100px; background: radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%); animation: floatBlob 14s ease-in-out infinite;"></div>
-    <div style="position: absolute; width: 260px; height: 260px; border-radius: 50%; bottom: -60px; right: 8%; background: radial-gradient(circle, rgba(106,147,199,0.22) 0%, transparent 70%); animation: floatBlob 18s ease-in-out infinite reverse;"></div>
-    <div style="position: absolute; width: 40px; height: 40px; border: 1px solid rgba(248,244,239,0.15); border-radius: 8px; top: 18%; right: 20%; animation: driftShape 11s ease-in-out infinite;"></div>
-    <div style="position: absolute; width: 26px; height: 26px; border: 1px solid rgba(226,161,132,0.3); border-radius: 50%; bottom: 22%; left: 12%; animation: driftShape 9s ease-in-out infinite reverse;"></div>
-    <div style="max-width: 1280px; margin: 0 auto; position: relative; z-index: 1;">
-      <div data-reveal-group="true" style="margin-bottom: 56px;">
-        <div style="--fx: -55vw; --fy: 0px; --fr: -4deg; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; opacity: 0; transform: translate(-55vw, 0) scale(0.75) rotate(-4deg);">
-          <div>
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #E2A184; margin-bottom: 12px;">// 01. selected work</div>
-            <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #F8F4EF;">Projects built for real clients</h2>
-          </div>
-          <p style="max-width: 380px; color: rgba(248,244,239,0.6); font-size: 15px; line-height: 1.6; margin: 0;">A mix of point-of-sale systems, automation agents, games and personal sites shipped across the world.</p>
-        </div>
-      </div>
-      <div id="workGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; perspective: 1000px;" data-work-grid="true" data-reveal-group="true"></div>
-    </div>
-  </section>
-
-  <!-- SERVICE DETAIL OVERLAY -->
-  <div id="serviceOverlay" style="display: none; position: fixed; inset: 0; z-index: 80; background: #131F35; background-image: linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px); background-size: 40px 40px; overflow-y: auto;"></div>
-
-  <!-- ABOUT -->
-  <section id="about" style="background: linear-gradient(150deg, #1D2A3F 0%, #26344B 45%, #2B1B14 100%); padding: 90px 48px; position: relative; overflow: hidden;">
-    <canvas id="aboutCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
-    <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 72px; align-items: center; position: relative; z-index: 1;" data-about-grid="true">
-      <div data-reveal-group="true">
-        <div style="--fx: -65vw; --fy: 0px; --fr: -5deg; position: relative; aspect-ratio: 1/1; max-height: 380px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(248,244,239,0.12); background-image: repeating-linear-gradient(135deg, rgba(193,102,61,0.2) 0px, rgba(193,102,61,0.2) 2px, rgba(248,244,239,0.03) 2px, rgba(248,244,239,0.03) 24px); opacity: 0; transform: translate(-65vw, 0) scale(0.75) rotate(-5deg);">
-          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #F8F4EF; background: rgba(19,31,53,0.75); padding: 8px 16px; border-radius: 6px;">workspace photo</span>
-          </div>
-        </div>
-      </div>
-      <div data-reveal-group="true">
-        <div style="--fx: 65vw; --fy: 0px; --fr: 5deg; opacity: 0; transform: translate(65vw, 0) scale(0.75) rotate(5deg);">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #E2A184; margin-bottom: 16px;">// 02. about</div>
-          <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 24px; color: #F8F4EF;">A developer who ships the whole product</h2>
-          <p style="font-size: 17px; line-height: 1.7; color: rgba(248,244,239,0.75); margin: 0 0 20px; max-width: 560px;">I'm DB — I build software for small businesses and founders who need something working, not just wireframed. Point-of-sale systems, backend agents, games, and the sites that sell them.</p>
-          <p style="font-size: 17px; line-height: 1.7; color: rgba(248,244,239,0.75); margin: 0; max-width: 560px;">Based on-call for clients across the world, I take a project from a napkin sketch to a live product — design, code, and the handoff after launch.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills" style="padding: 72px 48px 100px; max-width: 1280px; margin: 0 auto;">
-    <div data-reveal-group="true" style="margin-bottom: 48px;">
-      <div style="--fx: 0px; --fy: -45vh; --fr: -3deg; text-align: center; opacity: 0; transform: translate(0, -45vh) scale(0.75) rotate(-3deg);">
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #C1663D; margin-bottom: 16px;">// 03. skills &amp; tools</div>
-        <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #17233A;">What I build with</h2>
-      </div>
-    </div>
-    <div id="skillsWrap" style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;" data-reveal-group="true"></div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing" style="background: #131F35; background-image: linear-gradient(rgba(248,244,239,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.04) 1px, transparent 1px); background-size: 40px 40px; padding: 100px 48px;">
-    <div data-reveal-group="true">
-      <div style="--fx: 0px; --fy: 0px; --fr: 0deg; max-width: 780px; margin: 0 auto; text-align: center; opacity: 0; transform: scale(0.75);">
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #C1663D; margin-bottom: 16px;">// 04. pricing</div>
-        <h2 style="font-size: 34px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 20px; color: #F8F4EF;">Every project is scoped and quoted up front</h2>
-        <p style="font-size: 17px; line-height: 1.7; color: rgba(248,244,239,0.68); margin: 0 0 36px;">Tell me what you're building and I'll send back a fixed quote within 48 hours — no hourly surprises.</p>
-        <a href="#" id="openCalc" style="background: #C1663D; color: #F8F4EF; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 16px 30px; border-radius: 6px; display: inline-block;">calculate_estimate()</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING CALCULATOR OVERLAY -->
-  <div id="calcOverlay" style="display: none; position: fixed; inset: 0; z-index: 90; background: #131F35; background-image: linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px); background-size: 40px 40px; overflow-y: auto;"></div>
-
-  <!-- CONTACT -->
-  <section id="contact" style="padding: 120px 48px; background: #F8F4EF;">
-    <div data-reveal-group="true">
-      <div style="--fx: -60vw; --fy: 0px; --fr: -4deg; max-width: 640px; margin: 0 auto; opacity: 0; transform: translate(-60vw, 0) scale(0.75) rotate(-4deg);">
-        <div style="text-align: center; margin-bottom: 48px;">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #C1663D; margin-bottom: 16px;">// 05. contact</div>
-          <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; color: #17233A;">Let's build something</h2>
-          <p style="font-size: 16px; color: #5B6472; margin: 0;">Fill this in and I'll reply within a day.</p>
-        </div>
-        <form id="contactForm" style="display: flex; flex-direction: column; gap: 20px;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" data-contact-row="true">
-            <input type="text" placeholder="Your name" required style="padding: 16px 18px; border-radius: 10px; border: 1px solid rgba(23,35,58,0.15); font-family: 'Inter', sans-serif; font-size: 15px; background: #FFFFFF; color: #17233A;">
-            <input type="email" placeholder="Email address" required style="padding: 16px 18px; border-radius: 10px; border: 1px solid rgba(23,35,58,0.15); font-family: 'Inter', sans-serif; font-size: 15px; background: #FFFFFF; color: #17233A;">
-          </div>
-          <select required style="padding: 16px 18px; border-radius: 10px; border: 1px solid rgba(23,35,58,0.15); font-family: 'Inter', sans-serif; font-size: 15px; background: #FFFFFF; color: #17233A;">
-            <option value="">Project type</option>
-            <option value="pos">POS / restaurant system</option>
-            <option value="agent">Backend / automation agent</option>
-            <option value="game">Game</option>
-            <option value="site">Personal or business website</option>
-            <option value="social">Social media handling</option>
-            <option value="other">Something else</option>
-          </select>
-          <textarea placeholder="Tell me about your project" rows="5" style="padding: 16px 18px; border-radius: 10px; border: 1px solid rgba(23,35,58,0.15); font-family: 'Inter', sans-serif; font-size: 15px; background: #FFFFFF; color: #17233A; resize: vertical;"></textarea>
-          <button type="submit" id="contactSubmit" style="background: #C1663D; color: #F8F4EF; border: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 17px; border-radius: 8px; cursor: pointer;">Send message</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer style="background: #17233A; padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-    <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
-      <span style="color: rgba(248,244,239,0.5); font-family: 'JetBrains Mono', monospace; font-size: 13px;">© 2026 db.dev · Created by <span style="color: #E2A184; font-weight: 600;">DB Labs</span></span>
-      <a href="#" style="color: rgba(248,244,239,0.6); font-family: 'JetBrains Mono', monospace; font-size: 13px; text-decoration: none;">privacy &amp; safety</a>
-    </div>
-    <span style="color: rgba(248,244,239,0.35); font-family: 'JetBrains Mono', monospace; font-size: 12px;">&lt;built_with_care /&gt;</span>
-    <a href="#contact" style="color: #E2A184; font-family: 'JetBrains Mono', monospace; font-size: 13px; text-decoration: none; font-weight: 600;">contact() →</a>
-  </footer>
+  <div style="position: absolute; bottom: 26px; left: 24px; z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(248,244,239,0.34);">Created by <span style="color: #C1663D; font-weight: 700;">DB Labs</span></div>
+  <button id="skipLoader" style="position: absolute; bottom: 26px; right: 24px; z-index: 3; background: transparent; border: 1px solid rgba(248,244,239,0.16); color: rgba(248,244,239,0.5); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; padding: 7px 14px; border-radius: 6px; cursor: pointer;">skip &rarr;</button>
 </div>
 
+<div id="root"></div>
+
+<script src="./vendor/react.min.js"></script>
+<script src="./vendor/react-dom.min.js"></script>
+<script src="./vendor/framer-motion.js"></script>
+<script src="./vendor/htm.umd.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>
