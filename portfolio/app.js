@@ -60,6 +60,7 @@ const WORK_ITEMS = [
   },
   {
     id: 'mathbro', name: 'Mathbro', initials: 'MB', pattern: solid('#C1663D'),
+    link: './projects/mathbro/',
     tagline: 'Gamified math practice for kids',
     detail: "Mathbro turns math practice into a game — kids solve problems to progress through levels and earn rewards, while parents get a simple view of progress over time.",
     bullets: [
@@ -71,6 +72,7 @@ const WORK_ITEMS = [
   },
   {
     id: 'site', name: 'Personal Website', initials: 'PW', pattern: solid('#6A93C7'),
+    link: './projects/web-studio/',
     tagline: 'Fast custom sites for founders and creators',
     detail: "A fast, custom-built personal or business website — designed and coded from scratch to match the client's brand, optimized for speed and search, and easy to hand off or update after launch.",
     bullets: [
@@ -82,6 +84,7 @@ const WORK_ITEMS = [
   },
   {
     id: 'social', name: 'Social Media Handling', initials: 'SM', pattern: solid('#E2A184'),
+    link: './projects/social/',
     tagline: 'Content systems for client accounts',
     detail: "Ongoing content systems and scheduling tools for client social accounts — planning posts, automating publishing, and reporting on what's working, so clients get consistent output without doing it manually every day.",
     bullets: [
