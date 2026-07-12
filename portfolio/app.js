@@ -345,34 +345,66 @@ function startGlassPhysics() {
   glassRaf = requestAnimationFrame(step);
 }
 
+// Boot HUD readout — lights up [ OK ] as progress climbs.
+const BOOT_STEPS = [
+  'MOUNTING PROJECTS',
+  'RENDERING COMPONENTS',
+  'LINKING MICROSITES',
+  'OPTIMIZING ASSETS',
+  'SECURING ROUTES',
+  'SYSTEM READY',
+];
+const RING_CIRC = 829; // 2π·132
+
 function runLoader(onDone) {
-  buildFallingTokens();
   const stopParticles = setupParticles($('#loaderCanvas'));
-  startGlassPhysics();
-  const textEl = $('#loaderText'), pctEl = $('#loaderPercent');
-  const total = reduceMotion ? 600 : LOADER_TOTAL_MS;
-  const stepMs = total / LOADER_LINES.length;
-  LOADER_LINES.forEach((line, i) => {
-    loaderTimers.push(setTimeout(() => { if (textEl) textEl.textContent = line; }, i * stepMs));
+  const pctEl = $('#loaderPercent'), txtEl = $('#loaderText'), ring = $('#ringProg'),
+        coord = $('#hudCoord'), log = $('#bootLog');
+
+  const rows = BOOT_STEPS.map((name) => {
+    const row = el('div', 'display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.06em;color:rgba(248,244,239,.4);opacity:0;');
+    row.innerHTML = `<span>${name}</span><span class="ok" style="color:rgba(248,244,239,.28)">[    ]</span>`;
+    log.appendChild(row);
+    return row;
   });
+
+  const total = reduceMotion ? 400 : 5200;
   const start = Date.now();
-  const pi = setInterval(() => {
-    const pct = Math.min(100, Math.round(((Date.now() - start) / total) * 100));
-    if (pctEl) pctEl.textContent = pct;
-    if (pct >= 100) clearInterval(pi);
+  let lastText = -1;
+  const iv = setInterval(() => {
+    const p = Math.min(100, Math.round(((Date.now() - start) / total) * 100));
+    if (pctEl) pctEl.textContent = p;
+    if (ring) ring.style.strokeDashoffset = String(RING_CIRC * (1 - p / 100));
+    if (coord) coord.textContent = 'SYS ' + String(p).padStart(2, '0') + '.' + String((p * 7) % 100).padStart(2, '0');
+    const reached = Math.floor((p / 100) * rows.length);
+    for (let i = 0; i < rows.length; i++) {
+      if (i < reached && !rows[i].dataset.on) {
+        rows[i].dataset.on = '1';
+        rows[i].style.animation = 'bootIn .3s ease both';
+        rows[i].style.color = 'rgba(248,244,239,.82)';
+        const ok = rows[i].querySelector('.ok');
+        ok.textContent = '[ OK ]';
+        ok.style.color = '#6FA88A';
+      }
+    }
+    if (txtEl && reached !== lastText) {
+      lastText = reached;
+      txtEl.textContent = '> ' + (BOOT_STEPS[Math.min(BOOT_STEPS.length - 1, reached)] || 'system ready').toLowerCase() + '…';
+    }
+    if (p >= 100) clearInterval(iv);
   }, 60);
-  loaderTimers.push(pi);
+  loaderTimers.push(iv);
+
   const finish = () => {
     const loader = $('#loader');
     if (!loader || loader.dataset.done) return;
     loader.dataset.done = '1';
     loader.style.animation = 'loaderFadeOut 0.5s ease forwards';
     loaderTimers.forEach((t) => { clearTimeout(t); clearInterval(t); });
-    if (glassRaf) cancelAnimationFrame(glassRaf);
     if (stopParticles) stopParticles();
     setTimeout(() => { loader.style.display = 'none'; onDone(); }, 500);
   };
-  loaderTimers.push(setTimeout(finish, total + 100));
+  loaderTimers.push(setTimeout(finish, total + 250));
   $('#skipLoader').addEventListener('click', finish);
 }
 
