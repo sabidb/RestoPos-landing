@@ -8,7 +8,7 @@
 const OWNER_EMAIL = 'hello@dbdev.io';
 const WHATSAPP_NUMBERS = { sa: '966538360053', in: '918848095603' };
 // The live RestoPOS marketing site. Tapping the Restopos project opens this.
-const RESTOPOS_URL = 'https://restopos.store';
+const RESTOPOS_URL = 'https://resto-pos-landing.vercel.app/';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const el = (tag, style, html) => {
