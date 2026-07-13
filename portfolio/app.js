@@ -70,7 +70,6 @@ const BOOT_STEPS = [
   { at: 95, label: 'Finalizing interface', detail: 'ready' },
 ];
 const BOOT_TECH = ['React', 'Framer Motion', 'Node.js', 'TypeScript', 'PostgreSQL', 'AWS'];
-const BOOT_TOKENS = ['{ }', '</>', ';', '=>', 'const', '()', '#', '$', '[ ]', '01', '&&', '::', 'fn', '<•>'];
 
 /* ============================================================
    React app
@@ -448,42 +447,110 @@ function ScrollProgress() {
 /* ============================================================
    LOADER — 7s Framer Motion boot sequence with living background
    ============================================================ */
-const VH = (typeof window !== 'undefined' ? window.innerHeight : 800);
 const ORBIT_DOTS = Array.from({ length: 10 }, (_, i) => ({ a: (i / 10) * 360, c: [C.terra, C.blue, C.terra2, C.green][i % 4], r: 3 + (i % 3) }));
-const TOKEN_DATA = BOOT_TOKENS.map((t, i) => ({
-  t, left: (i * 6.7 + 4) % 96, size: 12 + (i % 4) * 5,
-  delay: (i % 7) * 0.9, dur: 8 + (i % 5) * 2.4, tilt: (i % 2 ? 1 : -1) * (6 + (i % 4) * 5),
-}));
 
-/* --- animated background, all Framer Motion --- */
+/* --- animated background --- */
+/* --- live particle constellation (canvas) — the professional techy layer --- */
+function ParticleField() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0, raf = 0, pts = [];
+    const mouse = { x: -9999, y: -9999 };
+    const DIST = 132;
+
+    const init = () => {
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.max(36, Math.min(96, Math.round((W * H) / 17000)));
+      pts = Array.from({ length: n }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.34, vy: (Math.random() - 0.5) * 0.34,
+        accent: Math.random() < 0.16,
+      }));
+    };
+
+    const frame = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of pts) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      }
+      // connective lines
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i];
+        for (let j = i + 1; j < pts.length; j++) {
+          const b = pts[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < DIST * DIST) {
+            const o = (1 - Math.sqrt(d2) / DIST) * 0.42;
+            ctx.strokeStyle = (a.accent || b.accent) ? 'rgba(226,161,132,' + (o * 0.9) + ')' : 'rgba(150,176,214,' + (o * 0.55) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+        // link to cursor
+        const mdx = a.x - mouse.x, mdy = a.y - mouse.y, md2 = mdx * mdx + mdy * mdy;
+        if (md2 < (DIST * 1.4) * (DIST * 1.4)) {
+          const o = (1 - Math.sqrt(md2) / (DIST * 1.4)) * 0.5;
+          ctx.strokeStyle = 'rgba(226,161,132,' + o + ')';
+          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
+      }
+      // nodes
+      for (const p of pts) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.accent ? 2.1 : 1.4, 0, 6.283);
+        ctx.fillStyle = p.accent ? 'rgba(226,161,132,0.95)' : 'rgba(196,210,230,0.55)';
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    };
+
+    init();
+    if (reduceMotion) { frame(); cancelAnimationFrame(raf); }
+    else raf = requestAnimationFrame(frame);
+
+    const onResize = () => init();
+    const onMove = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
+    window.addEventListener('resize', onResize);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerleave', onLeave);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerleave', onLeave); };
+  }, []);
+  return html`<canvas ref=${ref} aria-hidden="true" style=${{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />`;
+}
+
 function LoaderBg() {
   const orb = (style, anim, dur) => html`<${M.div} aria-hidden="true"
     animate=${reduceMotion ? {} : anim} transition=${{ duration: dur, repeat: Infinity, ease: 'easeInOut' }}
     style=${{ position: 'absolute', borderRadius: '50%', filter: 'blur(20px)', pointerEvents: 'none', ...style }} />`;
   return html`<div aria-hidden="true" style=${{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-    <!-- drifting grid -->
+    <!-- faint structural grid -->
     <${M.div}
-      animate=${reduceMotion ? {} : { x: [0, 46], y: [0, 46] }} transition=${{ duration: 6, repeat: Infinity, ease: 'linear' }}
+      animate=${reduceMotion ? {} : { x: [0, 60], y: [0, 60] }} transition=${{ duration: 14, repeat: Infinity, ease: 'linear' }}
       style=${{ position: 'absolute', top: '-10%', left: '-10%', width: '120%', height: '120%',
-        backgroundImage: 'linear-gradient(rgba(248,244,239,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.045) 1px, transparent 1px)',
-        backgroundSize: '46px 46px' }} />
-    <!-- soft drifting orbs -->
-    ${orb({ top: '-12%', right: '-8%', width: 520, height: 520, background: 'radial-gradient(circle, rgba(193,102,61,0.22) 0%, transparent 65%)' }, { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.12, 1] }, 12)}
-    ${orb({ bottom: '-16%', left: '-10%', width: 460, height: 460, background: 'radial-gradient(circle, rgba(106,147,199,0.18) 0%, transparent 65%)' }, { x: [0, -34, 0], y: [0, -26, 0], scale: [1, 1.15, 1] }, 15)}
-    ${orb({ top: '30%', left: '40%', width: 360, height: 360, background: 'radial-gradient(circle, rgba(111,168,138,0.12) 0%, transparent 65%)' }, { x: [0, 30, 0], y: [0, -20, 0] }, 18)}
-    <!-- rising code tokens -->
-    ${TOKEN_DATA.map((k, i) => html`<${M.span} key=${i}
-      animate=${reduceMotion ? {} : { y: [0, -(VH + 240)], opacity: [0, 0.5, 0.5, 0], rotate: [0, k.tilt] }}
-      transition=${{ duration: k.dur, repeat: Infinity, ease: 'linear', delay: k.delay }}
-      style=${{ position: 'absolute', top: '100%', left: k.left + '%', fontFamily: mono, fontSize: k.size, fontWeight: 600, color: 'rgba(226,161,132,0.45)', userSelect: 'none' }}>${k.t}<//>`)}
-    <!-- radar pulses behind the logo -->
+        backgroundImage: 'linear-gradient(rgba(248,244,239,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.025) 1px, transparent 1px)',
+        backgroundSize: '60px 60px' }} />
+    <!-- soft drifting orbs (depth) -->
+    ${orb({ top: '-12%', right: '-8%', width: 560, height: 560, background: 'radial-gradient(circle, rgba(193,102,61,0.16) 0%, transparent 65%)' }, { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.12, 1] }, 16)}
+    ${orb({ bottom: '-16%', left: '-10%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(106,147,199,0.14) 0%, transparent 65%)' }, { x: [0, -34, 0], y: [0, -26, 0], scale: [1, 1.15, 1] }, 19)}
+    <!-- live particle constellation -->
+    <${ParticleField} />
+    <!-- radar pulses behind the ring -->
     ${[0, 1, 2].map((i) => html`<${M.div} key=${'r' + i}
-      animate=${reduceMotion ? {} : { scale: [0.5, 2.4], opacity: [0.45, 0] }}
-      transition=${{ duration: 3.6, repeat: Infinity, ease: 'easeOut', delay: i * 1.2 }}
-      style=${{ position: 'absolute', top: '50%', left: '50%', width: 220, height: 220, marginLeft: -110, marginTop: -110, borderRadius: '50%', border: '1px solid rgba(193,102,61,0.4)' }} />`)}
+      animate=${reduceMotion ? {} : { scale: [0.5, 2.4], opacity: [0.4, 0] }}
+      transition=${{ duration: 4, repeat: Infinity, ease: 'easeOut', delay: i * 1.33 }}
+      style=${{ position: 'absolute', top: '50%', left: '50%', width: 220, height: 220, marginLeft: -110, marginTop: -110, borderRadius: '50%', border: '1px solid rgba(193,102,61,0.3)' }} />`)}
     <!-- scan sweep -->
-    <${M.div} animate=${reduceMotion ? {} : { y: ['-10%', '110%'] }} transition=${{ duration: 5, repeat: Infinity, ease: 'linear' }}
-      style=${{ position: 'absolute', left: 0, right: 0, height: 160, background: 'linear-gradient(rgba(193,102,61,0) 0%, rgba(193,102,61,0.05) 50%, rgba(193,102,61,0) 100%)' }} />
+    <${M.div} animate=${reduceMotion ? {} : { y: ['-15%', '115%'] }} transition=${{ duration: 6, repeat: Infinity, ease: 'linear' }}
+      style=${{ position: 'absolute', left: 0, right: 0, height: 180, background: 'linear-gradient(rgba(106,147,199,0) 0%, rgba(106,147,199,0.045) 50%, rgba(106,147,199,0) 100%)' }} />
   </div>`;
 }
 
