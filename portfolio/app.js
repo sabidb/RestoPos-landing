@@ -56,7 +56,7 @@ const C = {
 
 /* ---------- loader data (the React Loader component is defined lower) ---------- */
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const LOADER_MS = reduceMotion ? 1200 : 7000;
+const LOADER_MS = reduceMotion ? 1200 : 6000;
 
 // Boot-log steps — each flips to "done" as the progress bar passes its threshold.
 const BOOT_STEPS = [
@@ -445,112 +445,117 @@ function ScrollProgress() {
 }
 
 /* ============================================================
-   LOADER — 7s Framer Motion boot sequence with living background
+   LOADER — 6s boot sequence with a 3D assembling cube (Three.js)
    ============================================================ */
-const ORBIT_DOTS = Array.from({ length: 10 }, (_, i) => ({ a: (i / 10) * 360, c: [C.terra, C.blue, C.terra2, C.green][i % 4], r: 3 + (i % 3) }));
 
-/* --- animated background --- */
-/* --- live particle constellation (canvas) — the professional techy layer --- */
-function ParticleField() {
-  const ref = useRef(null);
+/* --- 3D assembling cube (Three.js) — the centerpiece --- */
+function Cube3D({ progressRef }) {
+  const mountRef = useRef(null);
   useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let W = 0, H = 0, raf = 0, pts = [];
-    const mouse = { x: -9999, y: -9999 };
-    const DIST = 132;
+    const mount = mountRef.current;
+    const THREE = window.THREE;
+    if (!mount || !THREE) return;
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (e) { return; }
 
-    const init = () => {
-      W = canvas.clientWidth; H = canvas.clientHeight;
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.max(36, Math.min(96, Math.round((W * H) / 17000)));
-      pts = Array.from({ length: n }, () => ({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.34, vy: (Math.random() - 0.5) * 0.34,
-        accent: Math.random() < 0.16,
-      }));
+    let W = mount.clientWidth || 320, H = mount.clientHeight || 320;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+    mount.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+    camera.position.set(4.6, 3.5, 6.2);
+    camera.lookAt(0, 0.1, 0);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.62));
+    const key = new THREE.PointLight(0xC1663D, 2.6); key.position.set(5, 6, 4); scene.add(key);
+    const rim = new THREE.PointLight(0x6A93C7, 1.9); rim.position.set(-6, -2, -4); scene.add(rim);
+    const top = new THREE.DirectionalLight(0xffffff, 0.5); top.position.set(0, 8, 3); scene.add(top);
+
+    const group = new THREE.Group(); scene.add(group);
+
+    const S = 1.04, sz = 0.94;
+    const boxGeo = new THREE.BoxGeometry(sz, sz, sz);
+    const edgeGeo = new THREE.EdgesGeometry(boxGeo);
+    const voxels = [];
+    for (let x = -1; x <= 1; x++) for (let y = -1; y <= 1; y++) for (let z = -1; z <= 1; z++) {
+      const mat = new THREE.MeshStandardMaterial({ color: 0x2C3E57, metalness: 0.4, roughness: 0.35, transparent: true, opacity: 0.92, emissive: 0x0a1220, emissiveIntensity: 0.4 });
+      const mesh = new THREE.Mesh(boxGeo, mat);
+      const edges = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ color: 0xE2A184, transparent: true, opacity: 0.9 }));
+      mesh.add(edges);
+      const home = new THREE.Vector3(x * S, y * S, z * S);
+      const dir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+      const scatter = home.clone().add(dir.multiplyScalar(6 + Math.random() * 5));
+      const spin = new THREE.Vector3(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+      voxels.push({ mesh, edges, home, scatter, spin });
+      group.add(mesh);
+    }
+    voxels.sort((a, b) => a.home.length() - b.home.length());
+    voxels.forEach((v, i) => { v.order = i / (voxels.length - 1); });
+
+    const grid = new THREE.GridHelper(22, 22, 0x6A93C7, 0x24344d);
+    grid.material.transparent = true; grid.material.opacity = 0.16; grid.position.y = -2.6;
+    scene.add(grid);
+
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    let raf, last = performance.now();
+    const tick = () => {
+      const now = performance.now();
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      const p = Math.min(1, Math.max(0, progressRef.current || 0));
+      voxels.forEach((v) => {
+        const startT = v.order * 0.7;
+        const local = easeOut(Math.min(1, Math.max(0, (p - startT) / 0.3)));
+        v.mesh.position.lerpVectors(v.scatter, v.home, local);
+        v.mesh.scale.setScalar(0.001 + local);
+        v.mesh.material.opacity = 0.18 + 0.74 * local;
+        v.edges.material.opacity = 0.12 + 0.82 * local;
+        if (local < 1) {
+          v.mesh.rotation.x += dt * v.spin.x * (1 - local);
+          v.mesh.rotation.y += dt * v.spin.y * (1 - local);
+          v.mesh.rotation.z += dt * v.spin.z * (1 - local);
+        } else { v.mesh.rotation.set(0, 0, 0); }
+      });
+      group.rotation.y += dt * 0.6;
+      group.rotation.x = Math.sin(now * 0.0004) * 0.16 + 0.14;
+      group.scale.setScalar(p >= 1 ? 1 + Math.sin(now * 0.006) * 0.02 : 1);
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(tick);
     };
+    tick();
 
-    const frame = () => {
-      ctx.clearRect(0, 0, W, H);
-      for (const p of pts) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-      }
-      // connective lines
-      for (let i = 0; i < pts.length; i++) {
-        const a = pts[i];
-        for (let j = i + 1; j < pts.length; j++) {
-          const b = pts[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < DIST * DIST) {
-            const o = (1 - Math.sqrt(d2) / DIST) * 0.42;
-            ctx.strokeStyle = (a.accent || b.accent) ? 'rgba(226,161,132,' + (o * 0.9) + ')' : 'rgba(150,176,214,' + (o * 0.55) + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          }
-        }
-        // link to cursor
-        const mdx = a.x - mouse.x, mdy = a.y - mouse.y, md2 = mdx * mdx + mdy * mdy;
-        if (md2 < (DIST * 1.4) * (DIST * 1.4)) {
-          const o = (1 - Math.sqrt(md2) / (DIST * 1.4)) * 0.5;
-          ctx.strokeStyle = 'rgba(226,161,132,' + o + ')';
-          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-        }
-      }
-      // nodes
-      for (const p of pts) {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.accent ? 2.1 : 1.4, 0, 6.283);
-        ctx.fillStyle = p.accent ? 'rgba(226,161,132,0.95)' : 'rgba(196,210,230,0.55)';
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(frame);
+    const onResize = () => {
+      W = mount.clientWidth; H = mount.clientHeight;
+      if (!W || !H) return;
+      camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H);
     };
-
-    init();
-    if (reduceMotion) { frame(); cancelAnimationFrame(raf); }
-    else raf = requestAnimationFrame(frame);
-
-    const onResize = () => init();
-    const onMove = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
-    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
     window.addEventListener('resize', onResize);
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerleave', onLeave);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerleave', onLeave); };
+    return () => {
+      cancelAnimationFrame(raf); window.removeEventListener('resize', onResize);
+      renderer.dispose();
+      if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+    };
   }, []);
-  return html`<canvas ref=${ref} aria-hidden="true" style=${{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />`;
+  return html`<div ref=${mountRef} style=${{ width: '100%', height: '100%' }} />`;
 }
 
+/* --- ambient backdrop --- */
 function LoaderBg() {
   const orb = (style, anim, dur) => html`<${M.div} aria-hidden="true"
     animate=${reduceMotion ? {} : anim} transition=${{ duration: dur, repeat: Infinity, ease: 'easeInOut' }}
-    style=${{ position: 'absolute', borderRadius: '50%', filter: 'blur(20px)', pointerEvents: 'none', ...style }} />`;
+    style=${{ position: 'absolute', borderRadius: '50%', filter: 'blur(30px)', pointerEvents: 'none', ...style }} />`;
   return html`<div aria-hidden="true" style=${{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-    <!-- faint structural grid -->
     <${M.div}
-      animate=${reduceMotion ? {} : { x: [0, 60], y: [0, 60] }} transition=${{ duration: 14, repeat: Infinity, ease: 'linear' }}
+      animate=${reduceMotion ? {} : { x: [0, 60], y: [0, 60] }} transition=${{ duration: 16, repeat: Infinity, ease: 'linear' }}
       style=${{ position: 'absolute', top: '-10%', left: '-10%', width: '120%', height: '120%',
-        backgroundImage: 'linear-gradient(rgba(248,244,239,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.025) 1px, transparent 1px)',
-        backgroundSize: '60px 60px' }} />
-    <!-- soft drifting orbs (depth) -->
-    ${orb({ top: '-12%', right: '-8%', width: 560, height: 560, background: 'radial-gradient(circle, rgba(193,102,61,0.16) 0%, transparent 65%)' }, { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.12, 1] }, 16)}
-    ${orb({ bottom: '-16%', left: '-10%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(106,147,199,0.14) 0%, transparent 65%)' }, { x: [0, -34, 0], y: [0, -26, 0], scale: [1, 1.15, 1] }, 19)}
-    <!-- live particle constellation -->
-    <${ParticleField} />
-    <!-- radar pulses behind the ring -->
-    ${[0, 1, 2].map((i) => html`<${M.div} key=${'r' + i}
-      animate=${reduceMotion ? {} : { scale: [0.5, 2.4], opacity: [0.4, 0] }}
-      transition=${{ duration: 4, repeat: Infinity, ease: 'easeOut', delay: i * 1.33 }}
-      style=${{ position: 'absolute', top: '50%', left: '50%', width: 220, height: 220, marginLeft: -110, marginTop: -110, borderRadius: '50%', border: '1px solid rgba(193,102,61,0.3)' }} />`)}
-    <!-- scan sweep -->
-    <${M.div} animate=${reduceMotion ? {} : { y: ['-15%', '115%'] }} transition=${{ duration: 6, repeat: Infinity, ease: 'linear' }}
-      style=${{ position: 'absolute', left: 0, right: 0, height: 180, background: 'linear-gradient(rgba(106,147,199,0) 0%, rgba(106,147,199,0.045) 50%, rgba(106,147,199,0) 100%)' }} />
+        backgroundImage: 'linear-gradient(rgba(248,244,239,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.02) 1px, transparent 1px)',
+        backgroundSize: '64px 64px' }} />
+    ${orb({ top: '-14%', right: '-10%', width: 600, height: 600, background: 'radial-gradient(circle, rgba(193,102,61,0.18) 0%, transparent 65%)' }, { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.12, 1] }, 16)}
+    ${orb({ bottom: '-18%', left: '-12%', width: 540, height: 540, background: 'radial-gradient(circle, rgba(106,147,199,0.15) 0%, transparent 65%)' }, { x: [0, -34, 0], y: [0, -26, 0], scale: [1, 1.15, 1] }, 20)}
   </div>`;
 }
 
@@ -575,6 +580,7 @@ function BootStep({ step, status, index }) {
 function Loader({ onDone }) {
   const [pct, setPct] = useState(0);
   const [done, setDone] = useState(false);
+  const progressRef = useRef(0);
 
   useEffect(() => {
     const boot = document.getElementById('boot');
@@ -584,6 +590,7 @@ function Loader({ onDone }) {
     const tick = (t) => {
       if (!start) start = t;
       const p = Math.min(1, (t - start) / LOADER_MS);
+      progressRef.current = p;
       setPct(Math.round(p * 100));
       if (p < 1) raf = requestAnimationFrame(tick); else finish();
     };
@@ -594,7 +601,6 @@ function Loader({ onDone }) {
     return () => { cancelAnimationFrame(raf); if (el) el.removeEventListener('click', skip); };
   }, []);
 
-  const R = 80, CIRC = 2 * Math.PI * R;
   const active = BOOT_STEPS.findIndex((s) => pct < s.at);
   const stepStatus = (i) => (pct >= BOOT_STEPS[i].at ? 'done' : i === active ? 'active' : 'pending');
   const statusLabel = active === -1 ? 'ready' : BOOT_STEPS[active].label.toLowerCase();
@@ -608,40 +614,20 @@ function Loader({ onDone }) {
     <div style=${{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 70% at 50% 45%, rgba(10,18,32,0.35) 0%, rgba(10,18,32,0.82) 100%)', pointerEvents: 'none' }} />
 
     <div className="loader-inner" style=${{ position: 'relative', zIndex: 2, width: 'min(920px, 92vw)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(28px,5vw,64px)', alignItems: 'center' }}>
-      <!-- left: ring + brand -->
+      <!-- left: 3D assembling cube + brand -->
       <${M.div} initial=${{ opacity: 0, y: 20 }} animate=${{ opacity: 1, y: 0 }} transition=${{ duration: 0.7, ease: EASE }}
         style=${{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <div style=${{ position: 'relative', width: 180, height: 180 }}>
-          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 24, repeat: Infinity, ease: 'linear' }} style=${{ position: 'absolute', inset: 0 }}>
-            <svg width="180" height="180" viewBox="0 0 180 180">
-              <circle cx="90" cy="90" r="88" fill="none" stroke="rgba(248,244,239,0.06)" strokeWidth="1" strokeDasharray="2 7" />
-            </svg>
-          <//>
-          <svg width="180" height="180" viewBox="0 0 180 180" style=${{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}>
-            <defs>
-              <linearGradient id="ringg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor=${C.terra} /><stop offset="1" stopColor=${C.terra2} />
-              </linearGradient>
-            </defs>
-            <circle cx="90" cy="90" r=${R} fill="none" stroke="rgba(248,244,239,0.08)" strokeWidth="4" />
-            <circle cx="90" cy="90" r=${R} fill="none" stroke="url(#ringg)" strokeWidth="4" strokeLinecap="round"
-              strokeDasharray=${CIRC} strokeDashoffset=${CIRC * (1 - pct / 100)}
-              style=${{ filter: 'drop-shadow(0 0 6px rgba(193,102,61,0.6))', transition: 'stroke-dashoffset .1s linear' }} />
-          </svg>
-          <!-- percentage, centered with flexbox (cannot drift) -->
-          <div style=${{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <span style=${{ fontSize: 44, fontWeight: 800, color: C.cream, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>${pct}<span style=${{ color: C.terra2, fontSize: 20 }}>%</span></span>
-            <span style=${{ marginTop: 6, fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>loading</span>
+        <div style=${{ width: 'min(340px, 76vw)', height: 'min(300px, 66vw)', position: 'relative' }}>
+          <${Cube3D} progressRef=${progressRef} />
+          <!-- percent overlaid at the corner, tabular -->
+          <div style=${{ position: 'absolute', left: 0, bottom: 0, display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            <span style=${{ fontSize: 34, fontWeight: 800, color: C.cream, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>${String(pct).padStart(2, '0')}<span style=${{ color: C.terra2, fontSize: 18 }}>%</span></span>
           </div>
-          <!-- orbiting dots -->
-          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            style=${{ position: 'absolute', inset: 0 }}>
-            ${ORBIT_DOTS.map((d, i) => html`<span key=${i} style=${{ position: 'absolute', top: '50%', left: '50%', width: d.r * 2, height: d.r * 2, marginLeft: -d.r, marginTop: -d.r, borderRadius: '50%', background: d.c, transform: 'rotate(' + d.a + 'deg) translateX(90px)', boxShadow: '0 0 8px ' + d.c }} />`)}
-          <//>
+          <div style=${{ position: 'absolute', right: 0, bottom: 6, fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>${done ? 'complete' : 'building'}</div>
         </div>
-        <div style=${{ marginTop: 30, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
+        <div style=${{ marginTop: 20, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
         <div style=${{ marginTop: 10, fontSize: 11, letterSpacing: '0.28em', color: C.terra2, textTransform: 'uppercase' }}>DB Labs — Creative Dev Studio</div>
-        <div style=${{ marginTop: 16, fontSize: 12, letterSpacing: '0.12em', color: 'rgba(248,244,239,0.5)', minHeight: 16 }}>${'> '}${statusLabel}<span className="terminal-cursor">_</span></div>
+        <div style=${{ marginTop: 12, fontSize: 12, letterSpacing: '0.12em', color: 'rgba(248,244,239,0.5)', minHeight: 16 }}>${'> '}${statusLabel}<span className="terminal-cursor">_</span></div>
       <//>
 
       <!-- right: boot log + tech -->
