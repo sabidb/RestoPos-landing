@@ -1101,12 +1101,10 @@ function Loader({ onDone }) {
   <//>`;
 }
 
-const seenLoader = (() => { try { return sessionStorage.getItem('db_booted') === '1'; } catch (e) { return false; } })();
 function App() {
-  const [booted, setBooted] = useState(seenLoader);
-  useEffect(() => { const boot = document.getElementById('boot'); if (boot) boot.style.display = 'none'; }, []);
+  const [booted, setBooted] = useState(false);
   useEffect(() => { document.body.style.overflow = booted ? '' : 'hidden'; }, [booted]);
-  const finishBoot = () => { try { sessionStorage.setItem('db_booted', '1'); } catch (e) {} setBooted(true); };
+  const finishBoot = () => setBooted(true);
   return html`<${React.Fragment}>
     ${booted && html`<${React.Fragment}>
       <${ScrollProgress} />
