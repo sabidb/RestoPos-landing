@@ -117,6 +117,73 @@ function CountUp({ to, suffix = '', duration = 1.6 }) {
   return html`<span ref=${ref}>${n}${suffix}</span>`;
 }
 
+/* ---------------- signature motion: cursor, grain, magnetic, split text, back-to-top ---------------- */
+function CursorFX() {
+  const dotRef = useRef(null), ringRef = useRef(null);
+  useEffect(() => {
+    if (reduceMotion || !window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
+    document.body.classList.add('has-cursor');
+    const dot = dotRef.current, ring = ringRef.current;
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, raf;
+    const move = (e) => { mx = e.clientX; my = e.clientY; if (dot) dot.style.transform = `translate(${mx}px,${my}px)`; };
+    const hit = (t) => t && t.closest && t.closest('a,button,[data-cursor]');
+    const over = (e) => { if (hit(e.target) && ring) ring.classList.add('cursor-hover'); };
+    const out = (e) => { if (hit(e.target) && ring) ring.classList.remove('cursor-hover'); };
+    const loop = () => { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; if (ring) ring.style.transform = `translate(${rx}px,${ry}px)`; raf = requestAnimationFrame(loop); };
+    loop();
+    window.addEventListener('pointermove', move);
+    document.addEventListener('mouseover', over); document.addEventListener('mouseout', out);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('pointermove', move); document.removeEventListener('mouseover', over); document.removeEventListener('mouseout', out); document.body.classList.remove('has-cursor'); };
+  }, []);
+  return html`<${React.Fragment}><div ref=${dotRef} className="cursor-dot"></div><div ref=${ringRef} className="cursor-ring"></div><//>`;
+}
+
+const NOISE_URL = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+function Grain() {
+  return html`<div aria-hidden="true" style=${{ position: 'fixed', inset: 0, zIndex: 350, pointerEvents: 'none', opacity: 0.05, mixBlendMode: 'overlay', backgroundImage: NOISE_URL, backgroundSize: '160px 160px' }} />`;
+}
+
+function BackToTop() {
+  const { scrollY } = useScroll();
+  const [show, setShow] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (v) => setShow(v > 720));
+  return html`<${AnimatePresence}>${show && html`<${M.button} key="btt"
+    onClick=${() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top" data-cursor="1"
+    initial=${{ opacity: 0, y: 18 }} animate=${{ opacity: 1, y: 0 }} exit=${{ opacity: 0, y: 18 }} whileHover=${{ y: -3 }} whileTap=${{ scale: 0.92 }}
+    style=${{ position: 'fixed', right: 24, bottom: 24, zIndex: 80, width: 46, height: 46, borderRadius: 12, border: '1px solid rgba(248,244,239,0.2)', background: 'rgba(19,31,53,0.82)', backdropFilter: 'blur(8px)', color: C.terra2, cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↑<//>`}<//>`;
+}
+
+function Magnetic({ children, strength = 0.4 }) {
+  const ref = useRef(null);
+  const x = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 });
+  const y = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 });
+  if (reduceMotion) return children;
+  const move = (e) => { const r = ref.current.getBoundingClientRect(); x.set((e.clientX - (r.left + r.width / 2)) * strength); y.set((e.clientY - (r.top + r.height / 2)) * strength); };
+  const leave = () => { x.set(0); y.set(0); };
+  return html`<${M.div} ref=${ref} onMouseMove=${move} onMouseLeave=${leave} style=${{ x, y, display: 'inline-flex' }}>${children}<//>`;
+}
+
+// Per-character reveal for the hero headline; segments carry their own colors.
+// Letters animate individually but words never break across lines.
+function SplitReveal({ segments, style }) {
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.022, delayChildren: 0.15 } } };
+  const ch = { hidden: { opacity: 0, y: '0.55em' }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } };
+  let k = 0;
+  const letter = (c, color) => html`<${M.span} key=${k++} variants=${ch} style=${{ display: 'inline-block', color }}>${c}<//>`;
+  const renderText = (t, color) => (t.match(/\s+|\S+/g) || []).map((tok) =>
+    /^\s+$/.test(tok)
+      ? html`<${M.span} key=${k++} variants=${ch} style=${{ display: 'inline-block', whiteSpace: 'pre', color }}>${tok}<//>`
+      : html`<span key=${k++} style=${{ display: 'inline-block', whiteSpace: 'nowrap' }}>${Array.from(tok).map((c) => letter(c, color))}</span>`);
+  return html`<${M.h1} variants=${container} initial="hidden" animate="show" style=${style}>
+    ${segments.map((seg, si) => seg.br ? html`<br key=${'br' + si} />` : renderText(seg.t, seg.c || 'inherit'))}
+  <//>`;
+}
+const HEADLINE = [
+  { t: 'const ', c: C.blue }, { t: 'services = ', c: C.cream }, { t: 'DB Labs', c: C.terra },
+  { br: true },
+  { t: '.', c: C.cream }, { t: 'buildEverything', c: C.terra2 }, { t: '();', c: C.cream },
+];
+
 /* ---------------- NAV ---------------- */
 function Nav() {
   const { scrollY } = useScroll();
@@ -142,7 +209,7 @@ function Nav() {
       </a>
       <div className="nav-links">
         ${links.map(([id, num]) => html`<a key=${id} href=${'#' + id} style=${linkStyle} onMouseOver=${(e) => e.currentTarget.style.opacity = 1} onMouseOut=${(e) => e.currentTarget.style.opacity = 0.85}><span style=${{ color: C.terra }}>${num}.</span> ${id}</a>`)}
-        <a href="#contact" style=${{ background: 'transparent', border: '1px solid ' + C.terra, color: C.terra, textDecoration: 'none', fontSize: 13, fontWeight: 600, padding: '9px 18px', borderRadius: 5, marginLeft: 8, fontFamily: mono }}>contact()</a>
+        <${Magnetic} strength=${0.5}><a href="#contact" data-cursor="1" style=${{ background: 'transparent', border: '1px solid ' + C.terra, color: C.terra, textDecoration: 'none', fontSize: 13, fontWeight: 600, padding: '9px 18px', borderRadius: 5, marginLeft: 8, fontFamily: mono, display: 'inline-block' }}>contact()</a><//>
       </div>
       <button aria-label="Menu" onClick=${() => setOpen(true)} style=${{ display: 'none', flexDirection: 'column', gap: 5, background: 'none', border: 'none', cursor: 'pointer', padding: 8 }} className="menu-btn">
         <span style=${{ width: 24, height: 2, background: C.cream }}></span><span style=${{ width: 24, height: 2, background: C.cream }}></span><span style=${{ width: 16, height: 2, background: C.cream }}></span>
@@ -200,9 +267,15 @@ function HeroWire3D() {
     const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100); camera.position.set(0, 0, 7);
     const group = new THREE.Group(); group.position.x = 1.5; scene.add(group);
 
-    const ico = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.5, 1)), new THREE.LineBasicMaterial({ color: 0xC1663D, transparent: true, opacity: 0.32 }));
-    const dod = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.DodecahedronGeometry(1.65, 0)), new THREE.LineBasicMaterial({ color: 0x6A93C7, transparent: true, opacity: 0.22 }));
-    group.add(ico); group.add(dod);
+    // several wireframe shapes that cross-dissolve into one another (morph)
+    const mkShape = (geo, color) => { const ls = new THREE.LineSegments(new THREE.WireframeGeometry(geo), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0 })); group.add(ls); return ls; };
+    const shapes = [
+      mkShape(new THREE.IcosahedronGeometry(2.5, 1), 0xC1663D),
+      mkShape(new THREE.TorusKnotGeometry(1.5, 0.42, 120, 12), 0xE2A184),
+      mkShape(new THREE.OctahedronGeometry(2.8, 0), 0x6A93C7),
+      mkShape(new THREE.DodecahedronGeometry(2.4, 0), 0x6FA88A),
+    ];
+    const SHAPE_PEAK = 0.34;
     const N = 130, arr = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) { const v = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize().multiplyScalar(2.5 + Math.random() * 1.3); arr[i * 3] = v.x; arr[i * 3 + 1] = v.y; arr[i * 3 + 2] = v.z; }
     const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(arr, 3));
@@ -214,13 +287,21 @@ function HeroWire3D() {
     window.addEventListener('pointermove', onMove);
 
     const render = () => renderer.render(scene, camera);
-    if (reduceMotion) { render(); return () => { window.removeEventListener('pointermove', onMove); renderer.dispose(); if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); }; }
+    if (reduceMotion) { shapes[0].material.opacity = SHAPE_PEAK; render(); return () => { window.removeEventListener('pointermove', onMove); renderer.dispose(); if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); }; }
 
+    const PER = 4.4, n = shapes.length; // seconds each shape holds before the next
     let raf, last = performance.now();
     const tick = () => {
       const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
       const scroll = window.scrollY / (window.innerHeight || 800);
-      group.rotation.y += dt * 0.18; ico.rotation.z += dt * 0.05; dod.rotation.x -= dt * 0.12;
+      // cross-dissolve: each shape peaks in its slot, adjacent shapes overlap
+      const phase = (now / 1000) / PER;
+      shapes.forEach((s, i) => {
+        let x = phase - i; x = ((x % n) + n) % n; if (x > n / 2) x -= n;
+        s.material.opacity = SHAPE_PEAK * Math.max(0, 1 - Math.abs(x));
+        s.rotation.y += dt * 0.06 * (i % 2 ? -1 : 1);
+      });
+      group.rotation.y += dt * 0.18;
       group.rotation.x += ((mouse.y * 0.3 + scroll * 0.7) - group.rotation.x) * 0.05;
       group.position.x = 1.5 + mouse.x * 0.3;
       group.position.y = -scroll * 1.4;
@@ -256,7 +337,7 @@ function Hero() {
   const codeLine = (pad, ...spans) => html`<div style=${{ paddingLeft: pad }}>${spans}</div>`;
 
   return html`
-    <section id="top" ref=${ref} style=${{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
+    <section id="top" ref=${ref} className="snap-start" style=${{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
       paddingTop: 96, background: C.navy,
       backgroundImage: 'linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px)',
       backgroundSize: '40px 40px' }}>
@@ -267,15 +348,13 @@ function Hero() {
       <${M.div} className="wrap hero-grid" style=${{ position: 'relative', zIndex: 2, y: yContent, opacity: fade }}>
         <${M.div} variants=${container} initial="hidden" animate="show">
           <${M.div} variants=${up} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(193,102,61,0.15)', border: '1px solid rgba(193,102,61,0.4)', color: C.terra2, fontFamily: mono, fontSize: 13, fontWeight: 500, padding: '7px 16px', borderRadius: 5, marginBottom: 26 }}>${'> whoami: full-stack developer'}</>
-          <${M.h1} variants=${up} style=${{ fontFamily: mono, fontSize: 'clamp(28px,4.4vw,40px)', lineHeight: 1.32, fontWeight: 700, letterSpacing: '-0.02em', color: C.cream, margin: '0 0 22px' }}>
-            <span style=${{ color: C.blue }}>const</span> services = <span style=${{ color: C.terra }}>DB Labs</span><br/>.<span style=${{ color: C.terra2 }}>buildEverything</span>()<span>;</span>
-          </>
+          <${SplitReveal} segments=${HEADLINE} style=${{ fontFamily: mono, fontSize: 'clamp(28px,4.4vw,40px)', lineHeight: 1.32, fontWeight: 700, letterSpacing: '-0.02em', color: C.cream, margin: '0 0 22px' }} />
           <${M.p} variants=${up} style=${{ fontSize: 'clamp(16px,2vw,19px)', lineHeight: 1.6, color: 'rgba(248,244,239,0.68)', maxWidth: 470, margin: '0 0 36px' }}>
             I design and build products for restaurants, communities and startups — from POS systems to social apps — end to end.
           </>
           <${M.div} variants=${up} style=${{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-            <${M.a} href="#contact" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ background: C.terra, color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 6, boxShadow: '0 12px 30px rgba(193,102,61,0.35)' }}>book_a_call()</>
-            <${M.a} href="#work" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ background: 'transparent', color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 6, border: '1px solid rgba(248,244,239,0.3)' }}>see_my_work()</>
+            <${Magnetic}><${M.a} href="#contact" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ background: C.terra, color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 6, boxShadow: '0 12px 30px rgba(193,102,61,0.35)' }}>book_a_call()<//><//>
+            <${Magnetic}><${M.a} href="#work" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ background: 'transparent', color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 6, border: '1px solid rgba(248,244,239,0.3)' }}>see_my_work()<//><//>
           </>
         <//>
 
@@ -328,10 +407,11 @@ function Marquee() {
 
 /* ---------------- STATS ---------------- */
 function Stats() {
-  return html`<section style=${{ background: C.navy2, padding: '0' }}>
-    <div className="wrap" style=${{ padding: '0 clamp(20px,5vw,48px)' }}>
+  return html`<section style=${{ background: C.navy2, position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${72} />
+    <div className="wrap" style=${{ padding: '0 clamp(20px,5vw,48px)', position: 'relative', zIndex: 1 }}>
       <div className="stats-grid" style=${{ background: 'rgba(248,244,239,0.08)', borderRadius: 0 }}>
-        ${STATS.map((s, i) => html`<${Reveal} key=${s.label} delay=${i * 0.08} style=${{ background: C.navy2 }}>
+        ${STATS.map((s, i) => html`<${Reveal} key=${s.label} delay=${i * 0.08} style=${{ background: 'rgba(23,35,58,0.7)', backdropFilter: 'blur(2px)' }}>
           <div style=${{ padding: '38px 20px', textAlign: 'center' }}>
             <div style=${{ fontFamily: mono, fontSize: 'clamp(34px,5vw,52px)', fontWeight: 800, color: C.terra2, lineHeight: 1 }}><${CountUp} to=${s.to} suffix=${s.suffix} /></div>
             <div style=${{ marginTop: 12, fontSize: 14, color: 'rgba(248,244,239,0.6)' }}>${s.label}</div>
@@ -377,7 +457,7 @@ function WorkCard({ item, i }) {
 }
 
 function Work() {
-  return html`<section id="work" style=${{ padding: '96px 0 88px', background: 'linear-gradient(150deg, #2B1B14 0%, #3A2418 45%, #1D2A3F 100%)', position: 'relative', overflow: 'hidden' }}>
+  return html`<section id="work" className="snap-start" style=${{ padding: '96px 0 88px', background: 'linear-gradient(150deg, #2B1B14 0%, #3A2418 45%, #1D2A3F 100%)', position: 'relative', overflow: 'hidden' }}>
     <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
     <${M.div} animate=${reduceMotion ? {} : { y: [0, 30, 0] }} transition=${{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} style=${{ position: 'absolute', top: -80, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%)', zIndex: 0 }} />
     <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
@@ -402,7 +482,7 @@ function About() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const yImg = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  return html`<section id="about" ref=${ref} style=${{ padding: '96px 0', background: 'linear-gradient(150deg, #1D2A3F 0%, #26344B 45%, #2B1B14 100%)', position: 'relative', overflow: 'hidden' }}>
+  return html`<section id="about" ref=${ref} className="snap-start" style=${{ padding: '96px 0', background: 'linear-gradient(150deg, #1D2A3F 0%, #26344B 45%, #2B1B14 100%)', position: 'relative', overflow: 'hidden' }}>
     <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
     <div className="wrap about-grid" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} y=${0}>
@@ -427,8 +507,9 @@ function About() {
 function Skills() {
   const container = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
   const chip = { hidden: { opacity: 0, y: 20, scale: 0.9 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE } } };
-  return html`<section id="skills" style=${{ padding: '84px 0 100px', background: C.cream, backgroundImage: 'radial-gradient(rgba(23,35,58,0.07) 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
-    <div className="wrap">
+  return html`<section id="skills" className="snap-start" style=${{ padding: '84px 0 100px', background: C.cream, backgroundImage: 'radial-gradient(rgba(23,35,58,0.07) 1px, transparent 1px)', backgroundSize: '24px 24px', position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_LIGHT} blur=${76} />
+    <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} style=${{ textAlign: 'center', marginBottom: 44 }}>
         <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>${'// 03. skills & tools'}</div>
         <h2 style=${{ fontSize: 'clamp(26px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.navy2 }}>What I build with</h2>
@@ -461,7 +542,7 @@ function Contact() {
   const cbtn = (c, label) => html`<button type="button" onClick=${() => setCountry(c)} style=${{ fontFamily: mono, fontSize: 13, fontWeight: 600, padding: '10px 16px', borderRadius: 9, cursor: 'pointer',
     border: '1px solid ' + (country === c ? C.terra : 'rgba(23,35,58,0.15)'), background: country === c ? 'rgba(193,102,61,0.1)' : '#fff', color: country === c ? C.terra : '#5B6472' }}>${label}</button>`;
 
-  return html`<section id="contact" style=${{ padding: '110px 0', background: C.cream, position: 'relative', overflow: 'hidden' }}>
+  return html`<section id="contact" className="snap-start" style=${{ padding: '110px 0', background: C.cream, position: 'relative', overflow: 'hidden' }}>
     <${Aurora} items=${SOFT_AURORA_LIGHT} blur=${72} />
     <${Reveal} className="wrap" style=${{ maxWidth: 660, position: 'relative', zIndex: 1 }}>
       <div style=${{ textAlign: 'center', marginBottom: 44 }}>
@@ -489,8 +570,8 @@ function Contact() {
           <div style=${{ display: 'flex', gap: 10 }}>${cbtn('sa', '🇸🇦 Saudi Arabia')}${cbtn('in', '🇮🇳 India')}</div>
         </div>
         <div style=${{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 4 }}>
-          <${M.button} type="submit" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: '#04110a', border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 700, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>💬 Send on WhatsApp</>
-          <${M.button} type="button" onClick=${mail} whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.terra, color: C.cream, border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>✉️ Send by email</>
+          <${Magnetic}><${M.button} type="submit" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: '#04110a', border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 700, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>💬 Send on WhatsApp<//><//>
+          <${Magnetic}><${M.button} type="button" onClick=${mail} data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.terra, color: C.cream, border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>✉️ Send by email<//><//>
         </div>
       </form>
     <//>
@@ -859,6 +940,9 @@ function App() {
       <${Skills} />
       <${Contact} />
       <${Footer} />
+      <${BackToTop} />
+      <${Grain} />
+      <${CursorFX} />
     <//>`}
     <${AnimatePresence}>
       ${!booted && html`<${Loader} key="loader" onDone=${() => setBooted(true)} />`}

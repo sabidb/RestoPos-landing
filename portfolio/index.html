@@ -46,6 +46,23 @@
     .wrap { padding: 0 20px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* ---- custom cursor ---- */
+  .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 9999; will-change: transform; }
+  .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: #C1663D; }
+  .cursor-ring { width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1.5px solid rgba(193,102,61,0.55); transition: width .22s ease, height .22s ease, margin .22s ease, background .22s ease, border-color .22s ease; }
+  .cursor-ring.cursor-hover { width: 56px; height: 56px; margin: -28px 0 0 -28px; background: rgba(193,102,61,0.10); border-color: rgba(226,161,132,0.9); }
+  @media (pointer: fine) {
+    body.has-cursor { cursor: none; }
+    body.has-cursor a, body.has-cursor button { cursor: none; }
+    body.has-cursor input, body.has-cursor textarea, body.has-cursor select { cursor: auto; }
+  }
+
+  /* ---- gentle scroll-snap ---- */
+  @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+    html { scroll-snap-type: y proximity; }
+    .snap-start { scroll-snap-align: start; }
+  }
 </style>
 </head>
 <body>
