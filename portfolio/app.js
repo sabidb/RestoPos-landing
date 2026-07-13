@@ -527,7 +527,7 @@ function Loader({ onDone }) {
     return () => { cancelAnimationFrame(raf); if (el) el.removeEventListener('click', skip); };
   }, []);
 
-  const R = 76, CIRC = 2 * Math.PI * R;
+  const R = 80, CIRC = 2 * Math.PI * R;
   const active = BOOT_STEPS.findIndex((s) => pct < s.at);
   const stepStatus = (i) => (pct >= BOOT_STEPS[i].at ? 'done' : i === active ? 'active' : 'pending');
   const statusLabel = active === -1 ? 'ready' : BOOT_STEPS[active].label.toLowerCase();
@@ -544,32 +544,37 @@ function Loader({ onDone }) {
       <!-- left: ring + brand -->
       <${M.div} initial=${{ opacity: 0, y: 20 }} animate=${{ opacity: 1, y: 0 }} transition=${{ duration: 0.7, ease: EASE }}
         style=${{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <div style=${{ position: 'relative', width: 170, height: 170 }}>
-          <svg width="170" height="170" viewBox="0 0 170 170" style=${{ position: 'absolute', inset: 0 }}>
+        <div style=${{ position: 'relative', width: 180, height: 180 }}>
+          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 24, repeat: Infinity, ease: 'linear' }} style=${{ position: 'absolute', inset: 0 }}>
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <circle cx="90" cy="90" r="88" fill="none" stroke="rgba(248,244,239,0.06)" strokeWidth="1" strokeDasharray="2 7" />
+            </svg>
+          <//>
+          <svg width="180" height="180" viewBox="0 0 180 180" style=${{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}>
             <defs>
               <linearGradient id="ringg" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stopColor=${C.terra} /><stop offset="1" stopColor=${C.terra2} />
               </linearGradient>
             </defs>
-            <circle cx="85" cy="85" r=${R} fill="none" stroke="rgba(248,244,239,0.08)" strokeWidth="4" />
-            <circle cx="85" cy="85" r=${R} fill="none" stroke="url(#ringg)" strokeWidth="4" strokeLinecap="round"
-              strokeDasharray=${CIRC} strokeDashoffset=${CIRC * (1 - pct / 100)} transform="rotate(-90 85 85)"
-              style=${{ filter: 'drop-shadow(0 0 6px rgba(193,102,61,0.6))' }} />
+            <circle cx="90" cy="90" r=${R} fill="none" stroke="rgba(248,244,239,0.08)" strokeWidth="4" />
+            <circle cx="90" cy="90" r=${R} fill="none" stroke="url(#ringg)" strokeWidth="4" strokeLinecap="round"
+              strokeDasharray=${CIRC} strokeDashoffset=${CIRC * (1 - pct / 100)}
+              style=${{ filter: 'drop-shadow(0 0 6px rgba(193,102,61,0.6))', transition: 'stroke-dashoffset .1s linear' }} />
           </svg>
-          <${M.div} animate=${reduceMotion ? {} : { scale: [1, 1.06, 1] }} transition=${{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            style=${{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 56, height: 56, borderRadius: 14, background: C.terra, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cream, fontWeight: 800, fontSize: 20, boxShadow: '0 0 30px rgba(193,102,61,0.6)' }}>${'</>'}<//>
+          <!-- percentage, centered with flexbox (cannot drift) -->
+          <div style=${{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <span style=${{ fontSize: 44, fontWeight: 800, color: C.cream, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>${pct}<span style=${{ color: C.terra2, fontSize: 20 }}>%</span></span>
+            <span style=${{ marginTop: 6, fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>loading</span>
+          </div>
           <!-- orbiting dots -->
-          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            style=${{ position: 'absolute', inset: -26 }}>
-            ${ORBIT_DOTS.map((d, i) => html`<span key=${i} style=${{ position: 'absolute', top: '50%', left: '50%', width: d.r * 2, height: d.r * 2, marginLeft: -d.r, marginTop: -d.r, borderRadius: '50%', background: d.c, transform: 'rotate(' + d.a + 'deg) translateX(105px)', boxShadow: '0 0 8px ' + d.c }} />`)}
+          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            style=${{ position: 'absolute', inset: 0 }}>
+            ${ORBIT_DOTS.map((d, i) => html`<span key=${i} style=${{ position: 'absolute', top: '50%', left: '50%', width: d.r * 2, height: d.r * 2, marginLeft: -d.r, marginTop: -d.r, borderRadius: '50%', background: d.c, transform: 'rotate(' + d.a + 'deg) translateX(90px)', boxShadow: '0 0 8px ' + d.c }} />`)}
           <//>
         </div>
-        <div style=${{ marginTop: 26, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
+        <div style=${{ marginTop: 30, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
         <div style=${{ marginTop: 10, fontSize: 11, letterSpacing: '0.28em', color: C.terra2, textTransform: 'uppercase' }}>DB Labs — Creative Dev Studio</div>
-        <div style=${{ marginTop: 18, display: 'flex', alignItems: 'baseline', gap: 10 }}>
-          <span style=${{ fontSize: 40, fontWeight: 800, color: C.cream, fontVariantNumeric: 'tabular-nums' }}>${String(pct).padStart(2, '0')}<span style=${{ color: C.terra2, fontSize: 22 }}>%</span></span>
-        </div>
-        <div style=${{ marginTop: 4, fontSize: 12, letterSpacing: '0.12em', color: 'rgba(248,244,239,0.5)', minHeight: 16 }}>${'> '}${statusLabel}<span className="terminal-cursor">_</span></div>
+        <div style=${{ marginTop: 16, fontSize: 12, letterSpacing: '0.12em', color: 'rgba(248,244,239,0.5)', minHeight: 16 }}>${'> '}${statusLabel}<span className="terminal-cursor">_</span></div>
       <//>
 
       <!-- right: boot log + tech -->
