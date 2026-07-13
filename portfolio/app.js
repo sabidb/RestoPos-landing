@@ -54,46 +54,23 @@ const C = {
   green: '#6FA88A',
 };
 
-/* ---------- loader (vanilla, runs first) ---------- */
-const LOADER_WORD = 'db.dev';
-const LOADER_STATUS = ['initializing', 'mounting projects', 'linking microsites', 'ready'];
+/* ---------- loader data (the React Loader component is defined lower) ---------- */
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LOADER_MS = reduceMotion ? 1200 : 7000;
 
-function runLoader(onDone) {
-  const $ = (s) => document.querySelector(s);
-  const wordEl = $('#loaderWord'), caretEl = $('#loaderCaret');
-  const pctEl = $('#loaderPercent'), txtEl = $('#loaderText'), barEl = $('#loaderBar');
-  const total = reduceMotion ? 300 : 1500;
-  const start = Date.now();
-  let lastStatus = -1, lastTyped = -1;
-  const timers = [];
-  const paint = (n) => { if (wordEl) wordEl.innerHTML = LOADER_WORD.slice(0, n).replace('.', '<span style="color:#C1663D">.</span>'); };
-
-  const iv = setInterval(() => {
-    const p = Math.min(100, Math.round(((Date.now() - start) / total) * 100));
-    if (pctEl) pctEl.textContent = p;
-    if (barEl) barEl.style.width = p + '%';
-    const chars = Math.min(LOADER_WORD.length, Math.round((p / 70) * LOADER_WORD.length));
-    if (chars !== lastTyped) { lastTyped = chars; paint(chars); }
-    const s = Math.min(LOADER_STATUS.length - 1, Math.floor((p / 100) * LOADER_STATUS.length));
-    if (txtEl && s !== lastStatus) { lastStatus = s; txtEl.textContent = LOADER_STATUS[s]; }
-    if (p >= 100) { if (caretEl) caretEl.style.opacity = '0'; clearInterval(iv); }
-  }, 40);
-  timers.push(iv);
-
-  const finish = () => {
-    const loader = $('#loader');
-    if (!loader || loader.dataset.done) return;
-    loader.dataset.done = '1';
-    loader.style.animation = 'loaderFadeOut 0.5s ease forwards';
-    timers.forEach((t) => clearInterval(t));
-    setTimeout(() => { loader.style.display = 'none'; }, 500);
-    onDone && onDone();
-  };
-  timers.push(setTimeout(finish, total + 260));
-  const skip = $('#skipLoader');
-  if (skip) skip.addEventListener('click', finish);
-}
+// Boot-log steps — each flips to "done" as the progress bar passes its threshold.
+const BOOT_STEPS = [
+  { at: 7, label: 'Booting DB Labs runtime', detail: 'core.init()' },
+  { at: 19, label: 'Loading React 18 + Framer Motion', detail: 'engine.mount()' },
+  { at: 32, label: 'Mounting client projects', detail: '6 loaded' },
+  { at: 46, label: 'Linking live microsites', detail: 'restopos · baloot · agent · +3' },
+  { at: 60, label: 'Wiring contact channels', detail: 'whatsapp · email' },
+  { at: 73, label: 'Compiling scroll animations', detail: 'framer-motion' },
+  { at: 85, label: 'Optimizing assets & fonts', detail: 'jetbrains-mono' },
+  { at: 95, label: 'Finalizing interface', detail: 'ready' },
+];
+const BOOT_TECH = ['React', 'Framer Motion', 'Node.js', 'TypeScript', 'PostgreSQL', 'AWS'];
+const BOOT_TOKENS = ['{ }', '</>', ';', '=>', 'const', '()', '#', '$', '[ ]', '01', '&&', '::', 'fn', '<•>'];
 
 /* ============================================================
    React app
@@ -468,22 +445,184 @@ function ScrollProgress() {
   return html`<${M.div} style=${{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,' + C.terra + ',' + C.terra2 + ')', transformOrigin: '0%', scaleX, zIndex: 100 }} />`;
 }
 
+/* ============================================================
+   LOADER — 7s Framer Motion boot sequence with living background
+   ============================================================ */
+const VH = (typeof window !== 'undefined' ? window.innerHeight : 800);
+const ORBIT_DOTS = Array.from({ length: 10 }, (_, i) => ({ a: (i / 10) * 360, c: [C.terra, C.blue, C.terra2, C.green][i % 4], r: 3 + (i % 3) }));
+const TOKEN_DATA = BOOT_TOKENS.map((t, i) => ({
+  t, left: (i * 6.7 + 4) % 96, size: 12 + (i % 4) * 5,
+  delay: (i % 7) * 0.9, dur: 8 + (i % 5) * 2.4, tilt: (i % 2 ? 1 : -1) * (6 + (i % 4) * 5),
+}));
+
+/* --- animated background, all Framer Motion --- */
+function LoaderBg() {
+  const orb = (style, anim, dur) => html`<${M.div} aria-hidden="true"
+    animate=${reduceMotion ? {} : anim} transition=${{ duration: dur, repeat: Infinity, ease: 'easeInOut' }}
+    style=${{ position: 'absolute', borderRadius: '50%', filter: 'blur(20px)', pointerEvents: 'none', ...style }} />`;
+  return html`<div aria-hidden="true" style=${{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+    <!-- drifting grid -->
+    <${M.div}
+      animate=${reduceMotion ? {} : { x: [0, 46], y: [0, 46] }} transition=${{ duration: 6, repeat: Infinity, ease: 'linear' }}
+      style=${{ position: 'absolute', top: '-10%', left: '-10%', width: '120%', height: '120%',
+        backgroundImage: 'linear-gradient(rgba(248,244,239,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.045) 1px, transparent 1px)',
+        backgroundSize: '46px 46px' }} />
+    <!-- soft drifting orbs -->
+    ${orb({ top: '-12%', right: '-8%', width: 520, height: 520, background: 'radial-gradient(circle, rgba(193,102,61,0.22) 0%, transparent 65%)' }, { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.12, 1] }, 12)}
+    ${orb({ bottom: '-16%', left: '-10%', width: 460, height: 460, background: 'radial-gradient(circle, rgba(106,147,199,0.18) 0%, transparent 65%)' }, { x: [0, -34, 0], y: [0, -26, 0], scale: [1, 1.15, 1] }, 15)}
+    ${orb({ top: '30%', left: '40%', width: 360, height: 360, background: 'radial-gradient(circle, rgba(111,168,138,0.12) 0%, transparent 65%)' }, { x: [0, 30, 0], y: [0, -20, 0] }, 18)}
+    <!-- rising code tokens -->
+    ${TOKEN_DATA.map((k, i) => html`<${M.span} key=${i}
+      animate=${reduceMotion ? {} : { y: [0, -(VH + 240)], opacity: [0, 0.5, 0.5, 0], rotate: [0, k.tilt] }}
+      transition=${{ duration: k.dur, repeat: Infinity, ease: 'linear', delay: k.delay }}
+      style=${{ position: 'absolute', top: '100%', left: k.left + '%', fontFamily: mono, fontSize: k.size, fontWeight: 600, color: 'rgba(226,161,132,0.45)', userSelect: 'none' }}>${k.t}<//>`)}
+    <!-- radar pulses behind the logo -->
+    ${[0, 1, 2].map((i) => html`<${M.div} key=${'r' + i}
+      animate=${reduceMotion ? {} : { scale: [0.5, 2.4], opacity: [0.45, 0] }}
+      transition=${{ duration: 3.6, repeat: Infinity, ease: 'easeOut', delay: i * 1.2 }}
+      style=${{ position: 'absolute', top: '50%', left: '50%', width: 220, height: 220, marginLeft: -110, marginTop: -110, borderRadius: '50%', border: '1px solid rgba(193,102,61,0.4)' }} />`)}
+    <!-- scan sweep -->
+    <${M.div} animate=${reduceMotion ? {} : { y: ['-10%', '110%'] }} transition=${{ duration: 5, repeat: Infinity, ease: 'linear' }}
+      style=${{ position: 'absolute', left: 0, right: 0, height: 160, background: 'linear-gradient(rgba(193,102,61,0) 0%, rgba(193,102,61,0.05) 50%, rgba(193,102,61,0) 100%)' }} />
+  </div>`;
+}
+
+function BootStep({ step, status, index }) {
+  const done = status === 'done', active = status === 'active';
+  const icon = done
+    ? html`<${M.span} initial=${{ scale: 0 }} animate=${{ scale: 1 }} transition=${{ type: 'spring', stiffness: 500, damping: 22 }}
+        style=${{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(111,168,138,0.18)', border: '1px solid ' + C.green, color: C.green, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, flexShrink: 0 }}>✓<//>`
+    : active
+    ? html`<${M.span} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+        style=${{ width: 18, height: 18, borderRadius: '50%', border: '2px solid rgba(226,161,132,0.25)', borderTopColor: C.terra2, flexShrink: 0 }} />`
+    : html`<span style=${{ width: 18, height: 18, borderRadius: '50%', border: '1px solid rgba(248,244,239,0.16)', flexShrink: 0 }} />`;
+  return html`<${M.div}
+    initial=${{ opacity: 0, x: -12 }} animate=${{ opacity: 1, x: 0 }} transition=${{ duration: 0.4, delay: 0.15 + index * 0.05 }}
+    style=${{ display: 'flex', alignItems: 'center', gap: 12, padding: '7px 0' }}>
+    ${icon}
+    <span style=${{ fontFamily: mono, fontSize: 13, color: done || active ? C.cream : 'rgba(248,244,239,0.4)', flex: 1, transition: 'color .3s' }}>${step.label}</span>
+    <span style=${{ fontFamily: mono, fontSize: 11, color: done ? C.green : active ? C.terra2 : 'rgba(248,244,239,0.25)' }}>${done ? 'done' : active ? step.detail : '·'}</span>
+  <//>`;
+}
+
+function Loader({ onDone }) {
+  const [pct, setPct] = useState(0);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const boot = document.getElementById('boot');
+    if (boot) boot.style.display = 'none';
+    let raf, start;
+    const finish = () => { if (!done) { setDone(true); setTimeout(onDone, 620); } };
+    const tick = (t) => {
+      if (!start) start = t;
+      const p = Math.min(1, (t - start) / LOADER_MS);
+      setPct(Math.round(p * 100));
+      if (p < 1) raf = requestAnimationFrame(tick); else finish();
+    };
+    raf = requestAnimationFrame(tick);
+    const skip = () => finish();
+    const el = document.getElementById('loaderSkip');
+    if (el) el.addEventListener('click', skip);
+    return () => { cancelAnimationFrame(raf); if (el) el.removeEventListener('click', skip); };
+  }, []);
+
+  const R = 76, CIRC = 2 * Math.PI * R;
+  const active = BOOT_STEPS.findIndex((s) => pct < s.at);
+  const stepStatus = (i) => (pct >= BOOT_STEPS[i].at ? 'done' : i === active ? 'active' : 'pending');
+  const statusLabel = active === -1 ? 'ready' : BOOT_STEPS[active].label.toLowerCase();
+
+  return html`<${M.div}
+    initial=${{ opacity: 1 }} exit=${{ opacity: 0, scale: 1.03 }} transition=${{ duration: 0.6, ease: EASE }}
+    style=${{ position: 'fixed', inset: 0, zIndex: 300, background: '#0A1220', overflow: 'hidden', fontFamily: mono,
+      display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <${LoaderBg} />
+    <!-- vignette for readability -->
+    <div style=${{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 70% at 50% 45%, rgba(10,18,32,0.35) 0%, rgba(10,18,32,0.82) 100%)', pointerEvents: 'none' }} />
+
+    <div className="loader-inner" style=${{ position: 'relative', zIndex: 2, width: 'min(920px, 92vw)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(28px,5vw,64px)', alignItems: 'center' }}>
+      <!-- left: ring + brand -->
+      <${M.div} initial=${{ opacity: 0, y: 20 }} animate=${{ opacity: 1, y: 0 }} transition=${{ duration: 0.7, ease: EASE }}
+        style=${{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+        <div style=${{ position: 'relative', width: 170, height: 170 }}>
+          <svg width="170" height="170" viewBox="0 0 170 170" style=${{ position: 'absolute', inset: 0 }}>
+            <defs>
+              <linearGradient id="ringg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor=${C.terra} /><stop offset="1" stopColor=${C.terra2} />
+              </linearGradient>
+            </defs>
+            <circle cx="85" cy="85" r=${R} fill="none" stroke="rgba(248,244,239,0.08)" strokeWidth="4" />
+            <circle cx="85" cy="85" r=${R} fill="none" stroke="url(#ringg)" strokeWidth="4" strokeLinecap="round"
+              strokeDasharray=${CIRC} strokeDashoffset=${CIRC * (1 - pct / 100)} transform="rotate(-90 85 85)"
+              style=${{ filter: 'drop-shadow(0 0 6px rgba(193,102,61,0.6))' }} />
+          </svg>
+          <${M.div} animate=${reduceMotion ? {} : { scale: [1, 1.06, 1] }} transition=${{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            style=${{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 56, height: 56, borderRadius: 14, background: C.terra, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cream, fontWeight: 800, fontSize: 20, boxShadow: '0 0 30px rgba(193,102,61,0.6)' }}>${'</>'}<//>
+          <!-- orbiting dots -->
+          <${M.div} animate=${reduceMotion ? {} : { rotate: 360 }} transition=${{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            style=${{ position: 'absolute', inset: -26 }}>
+            ${ORBIT_DOTS.map((d, i) => html`<span key=${i} style=${{ position: 'absolute', top: '50%', left: '50%', width: d.r * 2, height: d.r * 2, marginLeft: -d.r, marginTop: -d.r, borderRadius: '50%', background: d.c, transform: 'rotate(' + d.a + 'deg) translateX(105px)', boxShadow: '0 0 8px ' + d.c }} />`)}
+          <//>
+        </div>
+        <div style=${{ marginTop: 26, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
+        <div style=${{ marginTop: 10, fontSize: 11, letterSpacing: '0.28em', color: C.terra2, textTransform: 'uppercase' }}>DB Labs — Creative Dev Studio</div>
+        <div style=${{ marginTop: 18, display: 'flex', alignItems: 'baseline', gap: 10 }}>
+          <span style=${{ fontSize: 40, fontWeight: 800, color: C.cream, fontVariantNumeric: 'tabular-nums' }}>${String(pct).padStart(2, '0')}<span style=${{ color: C.terra2, fontSize: 22 }}>%</span></span>
+        </div>
+        <div style=${{ marginTop: 4, fontSize: 12, letterSpacing: '0.12em', color: 'rgba(248,244,239,0.5)', minHeight: 16 }}>${'> '}${statusLabel}<span className="terminal-cursor">_</span></div>
+      <//>
+
+      <!-- right: boot log + tech -->
+      <${M.div} className="loader-panel" initial=${{ opacity: 0, y: 20 }} animate=${{ opacity: 1, y: 0 }} transition=${{ duration: 0.7, delay: 0.15, ease: EASE }}
+        style=${{ background: 'rgba(14,26,46,0.6)', border: '1px solid rgba(248,244,239,0.10)', borderRadius: 16, padding: '22px 24px', backdropFilter: 'blur(6px)' }}>
+        <div style=${{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <span style=${{ fontSize: 12, letterSpacing: '0.14em', color: 'rgba(248,244,239,0.45)' }}>// system boot</span>
+          <span style=${{ fontSize: 11, color: C.green }}>● live</span>
+        </div>
+        <div>${BOOT_STEPS.map((s, i) => html`<${BootStep} key=${i} step=${s} status=${stepStatus(i)} index=${i} />`)}</div>
+        <div style=${{ height: 1, background: 'rgba(248,244,239,0.08)', margin: '14px 0' }} />
+        <div style=${{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          ${BOOT_TECH.map((t, i) => html`<${M.span} key=${t} initial=${{ opacity: 0, scale: 0.8 }} animate=${{ opacity: 1, scale: 1 }} transition=${{ delay: 0.5 + i * 0.09, duration: 0.4 }}
+            style=${{ fontSize: 11, color: 'rgba(248,244,239,0.72)', border: '1px solid rgba(248,244,239,0.14)', borderRadius: 20, padding: '4px 11px' }}>${t}<//>`)}
+        </div>
+      <//>
+    </div>
+
+    <!-- bottom bar -->
+    <div style=${{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 2, padding: 'clamp(16px,3vw,24px) clamp(20px,5vw,40px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+      <span style=${{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.34)' }}>Created by <span style=${{ color: C.terra, fontWeight: 700 }}>DB Labs</span></span>
+      <div style=${{ flex: 1, maxWidth: 280, height: 2, background: 'rgba(248,244,239,0.1)', borderRadius: 2, overflow: 'hidden' }}>
+        <div style=${{ height: '100%', width: pct + '%', background: 'linear-gradient(90deg,' + C.terra + ',' + C.terra2 + ')', boxShadow: '0 0 10px rgba(193,102,61,0.6)' }} />
+      </div>
+      <button id="loaderSkip" style=${{ background: 'transparent', border: '1px solid rgba(248,244,239,0.16)', color: 'rgba(248,244,239,0.5)', fontFamily: mono, fontSize: 11, letterSpacing: '0.14em', padding: '7px 14px', borderRadius: 6, cursor: 'pointer' }}>skip →</button>
+    </div>
+
+    <style>${'@media(max-width:760px){.loader-inner{grid-template-columns:1fr!important;text-align:center}.loader-panel{display:none!important}}'}</style>
+  <//>`;
+}
+
 function App() {
+  const [booted, setBooted] = useState(false);
+  useEffect(() => { document.body.style.overflow = booted ? '' : 'hidden'; }, [booted]);
   return html`<${React.Fragment}>
-    <${ScrollProgress} />
-    <${Nav} />
-    <${Hero} />
-    <${Marquee} />
-    <${Stats} />
-    <${Work} />
-    <${About} />
-    <${Skills} />
-    <${Contact} />
-    <${Footer} />
+    ${booted && html`<${React.Fragment}>
+      <${ScrollProgress} />
+      <${Nav} />
+      <${Hero} />
+      <${Marquee} />
+      <${Stats} />
+      <${Work} />
+      <${About} />
+      <${Skills} />
+      <${Contact} />
+      <${Footer} />
+    <//>`}
+    <${AnimatePresence}>
+      ${!booted && html`<${Loader} key="loader" onDone=${() => setBooted(true)} />`}
+    <//>
   <//>`;
 }
 
 /* ---------------- boot ---------------- */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(html`<${App} />`);
-runLoader();

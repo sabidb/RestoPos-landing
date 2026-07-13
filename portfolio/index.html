@@ -50,25 +50,13 @@
 </head>
 <body>
 
-<!-- LOADER — minimal techy boot (vanilla, runs before the React app mounts) -->
-<div id="loader" style="position: fixed; inset: 0; z-index: 200; background: #0A1220; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: 'JetBrains Mono', monospace;">
-  <div style="position: absolute; inset: -1px; background-image: linear-gradient(rgba(248,244,239,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.035) 1px, transparent 1px); background-size: 46px 46px; animation: loaderGridDrift 9s linear infinite; pointer-events: none;"></div>
-  <div style="position: absolute; width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; border-radius: 50%; background: radial-gradient(circle, rgba(193,102,61,0.16) 0%, transparent 62%); filter: blur(18px); pointer-events: none;"></div>
-  <div style="position: absolute; top: 22px; left: 24px; font-size: 11px; letter-spacing: 0.16em; color: rgba(248,244,239,0.30);">~/db.dev &middot; portfolio</div>
-  <div style="position: relative; z-index: 2; text-align: center; width: min(380px, 84vw);">
-    <div style="font-size: clamp(46px,12vw,88px); font-weight: 800; color: #F8F4EF; letter-spacing: 1px; line-height: 1; white-space: nowrap;">
-      <span id="loaderWord"></span><span id="loaderCaret" style="color: #C1663D; font-weight: 400;" class="terminal-cursor">&#9615;</span>
-    </div>
-    <div style="margin-top: 34px; height: 2px; width: 100%; background: rgba(248,244,239,0.10); border-radius: 2px; overflow: hidden;">
-      <div id="loaderBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #C1663D, #E2A184); box-shadow: 0 0 12px rgba(193,102,61,0.55); transition: width 0.14s linear;"></div>
-    </div>
-    <div style="margin-top: 14px; display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.12em; color: rgba(248,244,239,0.42);">
-      <span id="loaderText">initializing</span>
-      <span><span id="loaderPercent">0</span>%</span>
-    </div>
+<!-- BOOT SPLASH — static, dark, shown for the split second before React mounts.
+     The Framer Motion <Loader/> hides it and takes over. -->
+<div id="boot" style="position: fixed; inset: 0; z-index: 190; background: #0A1220; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+  <div style="display: flex; align-items: center; gap: 12px; color: #F8F4EF; font-weight: 800; font-size: 26px; letter-spacing: 1px;">
+    <span style="width: 44px; height: 44px; border-radius: 11px; background: #C1663D; display: flex; align-items: center; justify-content: center; font-size: 16px;">&lt;/&gt;</span>
+    <span>db<span style="color: #C1663D;">.</span>dev</span>
   </div>
-  <div style="position: absolute; bottom: 26px; left: 24px; z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(248,244,239,0.34);">Created by <span style="color: #C1663D; font-weight: 700;">DB Labs</span></div>
-  <button id="skipLoader" style="position: absolute; bottom: 26px; right: 24px; z-index: 3; background: transparent; border: 1px solid rgba(248,244,239,0.16); color: rgba(248,244,239,0.5); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; padding: 7px 14px; border-radius: 6px; cursor: pointer;">skip &rarr;</button>
 </div>
 
 <div id="root"></div>
