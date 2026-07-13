@@ -161,11 +161,83 @@ function Nav() {
 }
 
 /* ---------------- HERO ---------------- */
+/* ---------------- live backgrounds: aurora mesh + hero 3D wireframe ---------------- */
+const HERO_AURORA = [
+  { style: { top: '-12%', left: '-6%', width: '48vw', height: '48vw', maxWidth: 660, maxHeight: 660, background: 'radial-gradient(circle, rgba(193,102,61,0.30), transparent 60%)' }, anim: { x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.15, 1] }, dur: 18 },
+  { style: { bottom: '-16%', right: '-8%', width: '46vw', height: '46vw', maxWidth: 620, maxHeight: 620, background: 'radial-gradient(circle, rgba(106,147,199,0.22), transparent 60%)' }, anim: { x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }, dur: 22 },
+  { style: { top: '28%', left: '42%', width: '30vw', height: '30vw', maxWidth: 440, maxHeight: 440, background: 'radial-gradient(circle, rgba(111,168,138,0.14), transparent 60%)' }, anim: { x: [0, 30, 0], y: [0, -24, 0] }, dur: 26 },
+];
+const SOFT_AURORA_DARK = [
+  { style: { top: '-18%', right: '-8%', width: '40vw', height: '40vw', maxWidth: 560, maxHeight: 560, background: 'radial-gradient(circle, rgba(193,102,61,0.16), transparent 62%)' }, anim: { x: [0, 40, 0], y: [0, 28, 0], scale: [1, 1.12, 1] }, dur: 20 },
+  { style: { bottom: '-20%', left: '-10%', width: '38vw', height: '38vw', maxWidth: 520, maxHeight: 520, background: 'radial-gradient(circle, rgba(106,147,199,0.14), transparent 62%)' }, anim: { x: [0, -36, 0], y: [0, -22, 0], scale: [1, 1.14, 1] }, dur: 24 },
+];
+const SOFT_AURORA_LIGHT = [
+  { style: { top: '-22%', left: '-8%', width: '42vw', height: '42vw', maxWidth: 540, maxHeight: 540, background: 'radial-gradient(circle, rgba(193,102,61,0.12), transparent 60%)' }, anim: { x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.1, 1] }, dur: 22 },
+  { style: { bottom: '-24%', right: '-8%', width: '42vw', height: '42vw', maxWidth: 540, maxHeight: 540, background: 'radial-gradient(circle, rgba(106,147,199,0.12), transparent 60%)' }, anim: { x: [0, -40, 0], y: [0, -24, 0], scale: [1, 1.12, 1] }, dur: 26 },
+];
+
+function Aurora({ items, blur = 60 }) {
+  return html`<div aria-hidden="true" style=${{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+    ${items.map((b, i) => html`<${M.div} key=${i} animate=${reduceMotion ? {} : b.anim} transition=${{ duration: b.dur, repeat: Infinity, ease: 'easeInOut' }}
+      style=${{ position: 'absolute', borderRadius: '50%', filter: 'blur(' + blur + 'px)', ...b.style }} />`)}
+  </div>`;
+}
+
+// Slowly rotating wireframe geometry in the hero; tilts to cursor, rotates with scroll.
+function HeroWire3D() {
+  const mountRef = useRef(null);
+  useEffect(() => {
+    const mount = mountRef.current, THREE = window.THREE;
+    if (!mount || !THREE) return;
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { return; }
+    let W = mount.clientWidth || 600, H = mount.clientHeight || 600;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H); renderer.setClearColor(0x000000, 0);
+    mount.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100); camera.position.set(0, 0, 7);
+    const group = new THREE.Group(); group.position.x = 1.5; scene.add(group);
+
+    const ico = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.5, 1)), new THREE.LineBasicMaterial({ color: 0xC1663D, transparent: true, opacity: 0.32 }));
+    const dod = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.DodecahedronGeometry(1.65, 0)), new THREE.LineBasicMaterial({ color: 0x6A93C7, transparent: true, opacity: 0.22 }));
+    group.add(ico); group.add(dod);
+    const N = 130, arr = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { const v = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize().multiplyScalar(2.5 + Math.random() * 1.3); arr[i * 3] = v.x; arr[i * 3 + 1] = v.y; arr[i * 3 + 2] = v.z; }
+    const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    const pts = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xE2A184, size: 0.045, transparent: true, opacity: 0.5, sizeAttenuation: true }));
+    group.add(pts);
+
+    const mouse = { x: 0, y: 0 };
+    const onMove = (e) => { mouse.x = (e.clientX / window.innerWidth - 0.5) * 2; mouse.y = (e.clientY / window.innerHeight - 0.5) * 2; };
+    window.addEventListener('pointermove', onMove);
+
+    const render = () => renderer.render(scene, camera);
+    if (reduceMotion) { render(); return () => { window.removeEventListener('pointermove', onMove); renderer.dispose(); if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); }; }
+
+    let raf, last = performance.now();
+    const tick = () => {
+      const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
+      const scroll = window.scrollY / (window.innerHeight || 800);
+      group.rotation.y += dt * 0.18; ico.rotation.z += dt * 0.05; dod.rotation.x -= dt * 0.12;
+      group.rotation.x += ((mouse.y * 0.3 + scroll * 0.7) - group.rotation.x) * 0.05;
+      group.position.x = 1.5 + mouse.x * 0.3;
+      group.position.y = -scroll * 1.4;
+      render(); raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const onResize = () => { W = mount.clientWidth; H = mount.clientHeight; if (!W || !H) return; camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H); };
+    window.addEventListener('resize', onResize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('pointermove', onMove); window.removeEventListener('resize', onResize); renderer.dispose(); if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); };
+  }, []);
+  return html`<div ref=${mountRef} aria-hidden="true" style=${{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />`;
+}
+
 function Hero() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const yGlow = useTransform(scrollYProgress, [0, 1], [0, 260]);
-  const yGrid = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const yContent = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
@@ -189,10 +261,8 @@ function Hero() {
       backgroundImage: 'linear-gradient(rgba(248,244,239,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(248,244,239,0.05) 1px, transparent 1px)',
       backgroundSize: '40px 40px' }}>
 
-      <${M.div} style=${{ position: 'absolute', top: -140, right: -120, width: 500, height: 500, borderRadius: '50%', y: yGlow,
-        background: 'radial-gradient(circle, rgba(193,102,61,0.32) 0%, rgba(193,102,61,0) 70%)', zIndex: 0 }} />
-      <${M.div} style=${{ position: 'absolute', bottom: -160, left: -100, width: 420, height: 420, borderRadius: '50%', y: yGrid,
-        background: 'radial-gradient(circle, rgba(106,147,199,0.22) 0%, transparent 70%)', zIndex: 0 }} />
+      <${Aurora} items=${HERO_AURORA} blur=${70} />
+      <${HeroWire3D} />
 
       <${M.div} className="wrap hero-grid" style=${{ position: 'relative', zIndex: 2, y: yContent, opacity: fade }}>
         <${M.div} variants=${container} initial="hidden" animate="show">
@@ -308,7 +378,8 @@ function WorkCard({ item, i }) {
 
 function Work() {
   return html`<section id="work" style=${{ padding: '96px 0 88px', background: 'linear-gradient(150deg, #2B1B14 0%, #3A2418 45%, #1D2A3F 100%)', position: 'relative', overflow: 'hidden' }}>
-    <${M.div} animate=${reduceMotion ? {} : { y: [0, 30, 0] }} transition=${{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} style=${{ position: 'absolute', top: -80, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%)' }} />
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
+    <${M.div} animate=${reduceMotion ? {} : { y: [0, 30, 0] }} transition=${{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} style=${{ position: 'absolute', top: -80, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%)', zIndex: 0 }} />
     <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} style=${{ marginBottom: 52 }}>
         <div style=${{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
@@ -332,7 +403,8 @@ function About() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const yImg = useTransform(scrollYProgress, [0, 1], [50, -50]);
   return html`<section id="about" ref=${ref} style=${{ padding: '96px 0', background: 'linear-gradient(150deg, #1D2A3F 0%, #26344B 45%, #2B1B14 100%)', position: 'relative', overflow: 'hidden' }}>
-    <div className="wrap about-grid">
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
+    <div className="wrap about-grid" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} y=${0}>
         <${M.div} style=${{ y: yImg, position: 'relative', aspectRatio: '1/1', maxHeight: 380, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(248,244,239,0.12)',
           backgroundImage: 'repeating-linear-gradient(135deg, rgba(193,102,61,0.2) 0px, rgba(193,102,61,0.2) 2px, rgba(248,244,239,0.03) 2px, rgba(248,244,239,0.03) 24px)' }}>
@@ -389,8 +461,9 @@ function Contact() {
   const cbtn = (c, label) => html`<button type="button" onClick=${() => setCountry(c)} style=${{ fontFamily: mono, fontSize: 13, fontWeight: 600, padding: '10px 16px', borderRadius: 9, cursor: 'pointer',
     border: '1px solid ' + (country === c ? C.terra : 'rgba(23,35,58,0.15)'), background: country === c ? 'rgba(193,102,61,0.1)' : '#fff', color: country === c ? C.terra : '#5B6472' }}>${label}</button>`;
 
-  return html`<section id="contact" style=${{ padding: '110px 0', background: C.cream }}>
-    <${Reveal} className="wrap" style=${{ maxWidth: 660 }}>
+  return html`<section id="contact" style=${{ padding: '110px 0', background: C.cream, position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_LIGHT} blur=${72} />
+    <${Reveal} className="wrap" style=${{ maxWidth: 660, position: 'relative', zIndex: 1 }}>
       <div style=${{ textAlign: 'center', marginBottom: 44 }}>
         <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>// 04. contact</div>
         <h2 style=${{ fontSize: 'clamp(28px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 12px', color: C.navy2 }}>Let's build something</h2>
