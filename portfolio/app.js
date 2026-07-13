@@ -448,97 +448,207 @@ function ScrollProgress() {
    LOADER — 6s boot sequence with a 3D assembling cube (Three.js)
    ============================================================ */
 
-/* --- 3D assembling cube (Three.js) — the centerpiece --- */
-function Cube3D({ progressRef }) {
+/* ============================================================
+   3D BUILD SCENES (Three.js) — one is picked per reload, cycling.
+   Each builder adds meshes to `group` and returns { cam, update(p,dt,now) }.
+   ============================================================ */
+const _cl = (t) => Math.min(1, Math.max(0, t));       // clamp 0..1
+const _eo = (t) => 1 - Math.pow(1 - t, 3);            // easeOutCubic
+const slateMat = (THREE) => new THREE.MeshStandardMaterial({ color: 0x2C3E57, metalness: 0.4, roughness: 0.35, transparent: true, opacity: 0.92, emissive: 0x0a1220, emissiveIntensity: 0.4 });
+const edgeMat = (THREE, c) => new THREE.LineBasicMaterial({ color: c || 0xE2A184, transparent: true, opacity: 0.9 });
+const randDir = (THREE) => new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+const randSpin = (THREE) => new THREE.Vector3(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+
+// 1 — Rubik-style cube: 27 blocks fly in from scatter.
+function buildCube(THREE, group) {
+  const S = 1.04, sz = 0.94;
+  const geo = new THREE.BoxGeometry(sz, sz, sz), eg = new THREE.EdgesGeometry(geo);
+  const vox = [];
+  for (let x = -1; x <= 1; x++) for (let y = -1; y <= 1; y++) for (let z = -1; z <= 1; z++) {
+    const m = new THREE.Mesh(geo, slateMat(THREE));
+    const edges = new THREE.LineSegments(eg, edgeMat(THREE));
+    m.add(edges);
+    const home = new THREE.Vector3(x * S, y * S, z * S);
+    const scatter = home.clone().add(randDir(THREE).multiplyScalar(6 + Math.random() * 5));
+    vox.push({ m, edges, home, scatter, spin: randSpin(THREE) });
+    group.add(m);
+  }
+  vox.sort((a, b) => a.home.length() - b.home.length());
+  vox.forEach((v, i) => { v.order = i / (vox.length - 1); });
+  return { cam: { pos: [4.6, 3.5, 6.2], target: [0, 0.1, 0] }, update(p, dt, now) {
+    vox.forEach((v) => {
+      const local = _eo(_cl((p - v.order * 0.7) / 0.3));
+      v.m.position.lerpVectors(v.scatter, v.home, local);
+      v.m.scale.setScalar(0.001 + local);
+      v.m.material.opacity = 0.18 + 0.74 * local; v.edges.material.opacity = 0.12 + 0.82 * local;
+      if (local < 1) { v.m.rotation.x += dt * v.spin.x * (1 - local); v.m.rotation.y += dt * v.spin.y * (1 - local); v.m.rotation.z += dt * v.spin.z * (1 - local); } else v.m.rotation.set(0, 0, 0);
+    });
+    group.rotation.y += dt * 0.6; group.rotation.x = Math.sin(now * 0.0004) * 0.16 + 0.14;
+  } };
+}
+
+// 2 — Twisting tower: slabs drop and stack into a spiralling skyscraper.
+function buildTower(THREE, group) {
+  const L = 10, w = 1.7, h = 0.42, gap = 0.16, totalH = L * (h + gap);
+  const geo = new THREE.BoxGeometry(w, h, w), eg = new THREE.EdgesGeometry(geo);
+  const slabs = [];
+  for (let i = 0; i < L; i++) {
+    const m = new THREE.Mesh(geo, slateMat(THREE));
+    const edges = new THREE.LineSegments(eg, edgeMat(THREE)); m.add(edges);
+    const homeY = i * (h + gap) - totalH / 2 + h;
+    slabs.push({ m, edges, homeY, startY: homeY + 9, twist: i * 0.17, order: i / (L - 1) });
+    group.add(m);
+  }
+  return { cam: { pos: [6.3, 2.0, 6.9], target: [0, 0.1, 0] }, update(p, dt, now) {
+    slabs.forEach((s) => {
+      const local = _eo(_cl((p - s.order * 0.78) / 0.24));
+      s.m.position.y = s.startY + (s.homeY - s.startY) * local;
+      s.m.scale.setScalar(0.001 + local); s.m.rotation.y = s.twist * local;
+      s.m.material.opacity = 0.2 + 0.72 * local; s.edges.material.opacity = 0.12 + 0.82 * local;
+    });
+    group.rotation.y += dt * 0.5;
+  } };
+}
+
+// 3 — Stepped pyramid: blocks fly in bottom-up.
+function buildPyramid(THREE, group) {
+  const S = 0.98, sz = 0.9, base = 4, totalH = base * S;
+  const geo = new THREE.BoxGeometry(sz, sz, sz), eg = new THREE.EdgesGeometry(geo);
+  const vox = [];
+  for (let lvl = 0; lvl < base; lvl++) {
+    const n = base - lvl, y = lvl * S - totalH / 2 + S / 2;
+    for (let gx = 0; gx < n; gx++) for (let gz = 0; gz < n; gz++) {
+      const m = new THREE.Mesh(geo, slateMat(THREE));
+      const edges = new THREE.LineSegments(eg, edgeMat(THREE)); m.add(edges);
+      const home = new THREE.Vector3((gx - (n - 1) / 2) * S, y, (gz - (n - 1) / 2) * S);
+      const scatter = home.clone().add(randDir(THREE).multiplyScalar(6 + Math.random() * 4));
+      vox.push({ m, edges, home, scatter, spin: randSpin(THREE), order: _cl((lvl + Math.random() * 0.4) / base) });
+      group.add(m);
+    }
+  }
+  return { cam: { pos: [5.2, 3.4, 6.2], target: [0, 0, 0] }, update(p, dt, now) {
+    vox.forEach((v) => {
+      const local = _eo(_cl((p - v.order * 0.72) / 0.28));
+      v.m.position.lerpVectors(v.scatter, v.home, local);
+      v.m.scale.setScalar(0.001 + local);
+      v.m.material.opacity = 0.18 + 0.74 * local; v.edges.material.opacity = 0.12 + 0.82 * local;
+      if (local < 1) { v.m.rotation.x += dt * v.spin.x * (1 - local); v.m.rotation.y += dt * v.spin.y * (1 - local); } else v.m.rotation.set(0, 0, 0);
+    });
+    group.rotation.y += dt * 0.55; group.rotation.x = 0.12;
+  } };
+}
+
+// 4 — Point sphere: hundreds of points converge onto a globe.
+function buildSphere(THREE, group) {
+  const N = 540, R = 2.25, gold = Math.PI * (3 - Math.sqrt(5));
+  const home = [], scatter = [], order = [];
+  for (let i = 0; i < N; i++) {
+    const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * gold;
+    home.push(new THREE.Vector3(Math.cos(th) * r * R, y * R, Math.sin(th) * r * R));
+    scatter.push(home[i].clone().add(randDir(THREE).multiplyScalar(5 + Math.random() * 5)));
+    order.push(i / (N - 1));
+  }
+  const arr = new Float32Array(N * 3), geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+  const pts = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xE2A184, size: 0.085, sizeAttenuation: true, transparent: true, opacity: 0.95, depthWrite: false }));
+  group.add(pts);
+  const wire = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(R, 1)), new THREE.LineBasicMaterial({ color: 0x6A93C7, transparent: true, opacity: 0 }));
+  group.add(wire);
+  return { cam: { pos: [0, 1.1, 6.8], target: [0, 0, 0] }, update(p, dt, now) {
+    const a = geo.attributes.position.array;
+    for (let i = 0; i < N; i++) {
+      const local = _eo(_cl((p - order[i] * 0.65) / 0.33)), h = home[i], s = scatter[i];
+      a[i * 3] = s.x + (h.x - s.x) * local; a[i * 3 + 1] = s.y + (h.y - s.y) * local; a[i * 3 + 2] = s.z + (h.z - s.z) * local;
+    }
+    geo.attributes.position.needsUpdate = true;
+    wire.material.opacity = 0.14 * _cl((p - 0.5) / 0.4);
+    group.rotation.y += dt * 0.4;
+  } };
+}
+
+// 5 — DNA helix: two strands of nodes with rungs, spinning.
+function buildHelix(THREE, group) {
+  const T = 26, rad = 1.15, pitch = 0.24, totalH = T * pitch;
+  const sph = new THREE.SphereGeometry(0.13, 14, 14);
+  const nodes = [], rungPos = [];
+  for (let i = 0; i < T; i++) {
+    const ang = i * 0.5, y = i * pitch - totalH / 2;
+    const A = new THREE.Vector3(Math.cos(ang) * rad, y, Math.sin(ang) * rad);
+    const B = new THREE.Vector3(Math.cos(ang + Math.PI) * rad, y, Math.sin(ang + Math.PI) * rad);
+    const mk = (pos, c) => { const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: 0.35, metalness: 0.3, roughness: 0.4, transparent: true, opacity: 1 })); m.position.copy(pos); nodes.push({ m, order: i / (T - 1) }); group.add(m); };
+    mk(A, 0xC1663D); mk(B, 0x6A93C7);
+    rungPos.push(A.x, A.y, A.z, B.x, B.y, B.z);
+  }
+  const rgeo = new THREE.BufferGeometry(); rgeo.setAttribute('position', new THREE.Float32BufferAttribute(rungPos, 3));
+  const rung = new THREE.LineSegments(rgeo, new THREE.LineBasicMaterial({ color: 0xE2A184, transparent: true, opacity: 0 }));
+  group.add(rung);
+  return { cam: { pos: [0, 0, 6.6], target: [0, 0, 0] }, update(p, dt, now) {
+    nodes.forEach((n) => { const local = _eo(_cl((p - n.order * 0.7) / 0.3)); n.m.scale.setScalar(0.001 + local); n.m.material.opacity = local; });
+    rung.material.opacity = 0.5 * _cl((p - 0.15) / 0.6);
+    group.rotation.y += dt * 0.85;
+  } };
+}
+
+const SCENES = [
+  { name: 'cube', build: buildCube },
+  { name: 'tower', build: buildTower },
+  { name: 'pyramid', build: buildPyramid },
+  { name: 'sphere', build: buildSphere },
+  { name: 'helix', build: buildHelix },
+];
+
+// Pick a different scene each reload (cycles); ?scene=N forces one.
+function pickSceneIndex() {
+  try {
+    const params = new URLSearchParams(location.search);
+    if (params.has('scene')) { const n = parseInt(params.get('scene'), 10) || 0; return ((n % SCENES.length) + SCENES.length) % SCENES.length; }
+    const prev = parseInt(localStorage.getItem('db_scene'), 10);
+    const idx = isNaN(prev) ? Math.floor(Math.random() * SCENES.length) : (prev + 1) % SCENES.length;
+    localStorage.setItem('db_scene', String(idx));
+    return idx;
+  } catch (e) { return 0; }
+}
+
+function Scene3D({ progressRef, index }) {
   const mountRef = useRef(null);
   useEffect(() => {
-    const mount = mountRef.current;
-    const THREE = window.THREE;
+    const mount = mountRef.current, THREE = window.THREE;
     if (!mount || !THREE) return;
     let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    } catch (e) { return; }
-
+    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { return; }
     let W = mount.clientWidth || 320, H = mount.clientHeight || 320;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(W, H);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setSize(W, H); renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    camera.position.set(4.6, 3.5, 6.2);
-    camera.lookAt(0, 0.1, 0);
-
     scene.add(new THREE.AmbientLight(0xffffff, 0.62));
     const key = new THREE.PointLight(0xC1663D, 2.6); key.position.set(5, 6, 4); scene.add(key);
     const rim = new THREE.PointLight(0x6A93C7, 1.9); rim.position.set(-6, -2, -4); scene.add(rim);
     const top = new THREE.DirectionalLight(0xffffff, 0.5); top.position.set(0, 8, 3); scene.add(top);
+    const grid = new THREE.GridHelper(24, 24, 0x6A93C7, 0x24344d); grid.material.transparent = true; grid.material.opacity = 0.14; grid.position.y = -2.7; scene.add(grid);
 
     const group = new THREE.Group(); scene.add(group);
+    const inst = (SCENES[index] || SCENES[0]).build(THREE, group);
+    const cam = inst.cam || { pos: [4.6, 3.5, 6.2], target: [0, 0.1, 0] };
+    camera.position.set(cam.pos[0], cam.pos[1], cam.pos[2]);
+    camera.lookAt(cam.target[0], cam.target[1], cam.target[2]);
 
-    const S = 1.04, sz = 0.94;
-    const boxGeo = new THREE.BoxGeometry(sz, sz, sz);
-    const edgeGeo = new THREE.EdgesGeometry(boxGeo);
-    const voxels = [];
-    for (let x = -1; x <= 1; x++) for (let y = -1; y <= 1; y++) for (let z = -1; z <= 1; z++) {
-      const mat = new THREE.MeshStandardMaterial({ color: 0x2C3E57, metalness: 0.4, roughness: 0.35, transparent: true, opacity: 0.92, emissive: 0x0a1220, emissiveIntensity: 0.4 });
-      const mesh = new THREE.Mesh(boxGeo, mat);
-      const edges = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ color: 0xE2A184, transparent: true, opacity: 0.9 }));
-      mesh.add(edges);
-      const home = new THREE.Vector3(x * S, y * S, z * S);
-      const dir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
-      const scatter = home.clone().add(dir.multiplyScalar(6 + Math.random() * 5));
-      const spin = new THREE.Vector3(Math.random() * 3, Math.random() * 3, Math.random() * 3);
-      voxels.push({ mesh, edges, home, scatter, spin });
-      group.add(mesh);
-    }
-    voxels.sort((a, b) => a.home.length() - b.home.length());
-    voxels.forEach((v, i) => { v.order = i / (voxels.length - 1); });
-
-    const grid = new THREE.GridHelper(22, 22, 0x6A93C7, 0x24344d);
-    grid.material.transparent = true; grid.material.opacity = 0.16; grid.position.y = -2.6;
-    scene.add(grid);
-
-    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
     let raf, last = performance.now();
     const tick = () => {
-      const now = performance.now();
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
       const p = Math.min(1, Math.max(0, progressRef.current || 0));
-      voxels.forEach((v) => {
-        const startT = v.order * 0.7;
-        const local = easeOut(Math.min(1, Math.max(0, (p - startT) / 0.3)));
-        v.mesh.position.lerpVectors(v.scatter, v.home, local);
-        v.mesh.scale.setScalar(0.001 + local);
-        v.mesh.material.opacity = 0.18 + 0.74 * local;
-        v.edges.material.opacity = 0.12 + 0.82 * local;
-        if (local < 1) {
-          v.mesh.rotation.x += dt * v.spin.x * (1 - local);
-          v.mesh.rotation.y += dt * v.spin.y * (1 - local);
-          v.mesh.rotation.z += dt * v.spin.z * (1 - local);
-        } else { v.mesh.rotation.set(0, 0, 0); }
-      });
-      group.rotation.y += dt * 0.6;
-      group.rotation.x = Math.sin(now * 0.0004) * 0.16 + 0.14;
+      inst.update(p, dt, now);
       group.scale.setScalar(p >= 1 ? 1 + Math.sin(now * 0.006) * 0.02 : 1);
       renderer.render(scene, camera);
       raf = requestAnimationFrame(tick);
     };
     tick();
 
-    const onResize = () => {
-      W = mount.clientWidth; H = mount.clientHeight;
-      if (!W || !H) return;
-      camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H);
-    };
+    const onResize = () => { W = mount.clientWidth; H = mount.clientHeight; if (!W || !H) return; camera.aspect = W / H; camera.updateProjectionMatrix(); renderer.setSize(W, H); };
     window.addEventListener('resize', onResize);
-    return () => {
-      cancelAnimationFrame(raf); window.removeEventListener('resize', onResize);
-      renderer.dispose();
-      if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
-    };
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); renderer.dispose(); if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); };
   }, []);
   return html`<div ref=${mountRef} style=${{ width: '100%', height: '100%' }} />`;
 }
@@ -581,6 +691,8 @@ function Loader({ onDone }) {
   const [pct, setPct] = useState(0);
   const [done, setDone] = useState(false);
   const progressRef = useRef(0);
+  const [sceneIdx] = useState(pickSceneIndex);
+  const sceneName = (SCENES[sceneIdx] || SCENES[0]).name;
 
   useEffect(() => {
     const boot = document.getElementById('boot');
@@ -618,12 +730,12 @@ function Loader({ onDone }) {
       <${M.div} initial=${{ opacity: 0, y: 20 }} animate=${{ opacity: 1, y: 0 }} transition=${{ duration: 0.7, ease: EASE }}
         style=${{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <div style=${{ width: 'min(340px, 76vw)', height: 'min(300px, 66vw)', position: 'relative' }}>
-          <${Cube3D} progressRef=${progressRef} />
+          <${Scene3D} progressRef=${progressRef} index=${sceneIdx} />
           <!-- percent overlaid at the corner, tabular -->
           <div style=${{ position: 'absolute', left: 0, bottom: 0, display: 'flex', alignItems: 'baseline', gap: 8 }}>
             <span style=${{ fontSize: 34, fontWeight: 800, color: C.cream, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>${String(pct).padStart(2, '0')}<span style=${{ color: C.terra2, fontSize: 18 }}>%</span></span>
           </div>
-          <div style=${{ position: 'absolute', right: 0, bottom: 6, fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>${done ? 'complete' : 'building'}</div>
+          <div style=${{ position: 'absolute', right: 0, bottom: 6, fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>${done ? 'complete' : 'building ' + sceneName}</div>
         </div>
         <div style=${{ marginTop: 20, fontSize: 'clamp(34px,6vw,46px)', fontWeight: 800, color: C.cream, letterSpacing: 1, lineHeight: 1 }}>db<span style=${{ color: C.terra }}>.</span>dev</div>
         <div style=${{ marginTop: 10, fontSize: 11, letterSpacing: '0.28em', color: C.terra2, textTransform: 'uppercase' }}>DB Labs — Creative Dev Studio</div>
