@@ -15,27 +15,64 @@ const WORK_ITEMS = [
   { id: 'restopos', n: '01', name: 'Restopos', initials: 'RP', accent: '#C1663D', link: RESTOPOS_URL, external: true,
     tagline: 'POS & VAT compliance for Saudi retail',
     blurb: 'Billing and point-of-sale for Saudi stores — checkout, automatic VAT, ZATCA e-invoices and government-ready tax reports.',
-    tags: ['POS', 'ZATCA', 'VAT'] },
+    tags: ['POS', 'ZATCA', 'VAT'],
+    detail: 'Restopos is billing and point-of-sale software built for local Saudi stores. It handles day-to-day checkout and invoicing, then automatically calculates VAT on every sale, generates ZATCA-compliant e-invoices, and compiles the periodic tax reports a business submits to the government — so owners stay compliant without manual bookkeeping.',
+    bullets: ['Fast in-store checkout and invoice generation', 'Automatic VAT on every transaction (ZATCA rules)', 'Government-ready tax reports on a schedule', 'Sales, inventory and daily revenue dashboards'],
+    results: ['ZATCA Phase-2 compliant', '2 live restaurants', '<10 min to first invoice'] },
   { id: 'agent', n: '02', name: 'DB Agent', initials: 'DB', accent: '#6A93C7', link: './projects/db-agent/',
     tagline: 'Backend automation for repetitive work',
     blurb: 'A personal automation agent that syncs data, processes orders and forms, and fires notifications — running unattended.',
-    tags: ['Automation', 'Node', 'Integrations'] },
+    tags: ['Automation', 'Node', 'Integrations'],
+    detail: 'A backend automation agent that takes over repetitive operational work — syncing data between tools, processing incoming orders or forms, and triggering the right notifications — so teams stop doing it by hand.',
+    bullets: ['Connects and syncs data across existing tools', 'Processes orders/forms on a schedule or trigger', 'Automatic notifications to staff and customers', 'Runs unattended with error alerts'],
+    results: ['Runs 24/7', 'Zero manual syncing', 'Fully hosted'] },
   { id: 'baloot', n: '03', name: 'Baloot', initials: 'BL', accent: '#C89B3C', link: './projects/baloot/',
     tagline: 'Real-time multiplayer card game',
     blurb: 'A mobile multiplayer take on the Gulf classic — live matchmaking, a full rules engine, private tables and invites.',
-    tags: ['Realtime', 'Multiplayer', 'Game'] },
+    tags: ['Realtime', 'Multiplayer', 'Game'],
+    detail: 'Baloot is a mobile multiplayer card game built around the traditional Gulf card game, with real-time matchmaking so friends and strangers can play together instantly.',
+    bullets: ['Real-time multiplayer with live matchmaking', 'Full Baloot rules engine with scoring and bidding', 'Mobile-first interface for quick sessions', 'Friend invites and private table codes'],
+    results: ['Real-time rooms', 'Full rules engine', 'PWA-installable'] },
   { id: 'mathbro', n: '04', name: 'Mathbro', initials: 'MB', accent: '#6FA88A', link: './projects/mathbro/',
     tagline: 'Gamified math practice for kids',
     blurb: 'Math practice that plays like a game — levels, rewards and a parent progress view, working even offline.',
-    tags: ['EdTech', 'Gamified', 'Kids'] },
+    tags: ['EdTech', 'Gamified', 'Kids'],
+    detail: 'Mathbro turns math practice into a game — kids solve problems to progress through levels and earn rewards, while parents get a simple view of progress over time.',
+    bullets: ['Level-based challenges tuned to grade levels', 'Reward and progress system to keep kids motivated', 'Parent-facing progress view', 'Works offline for practice anywhere'],
+    results: ['Offline-ready', 'Parent dashboard', 'Level system'] },
   { id: 'site', n: '05', name: 'Web Studio', initials: 'WS', accent: '#8E7CC3', link: './projects/web-studio/',
     tagline: 'Fast custom sites for founders',
     blurb: 'Custom personal and business sites, coded from scratch to match the brand — fast, SEO-clean and easy to hand off.',
-    tags: ['Web', 'SEO', 'Design'] },
+    tags: ['Web', 'SEO', 'Design'],
+    detail: 'A fast, custom-built personal or business website — designed and coded from scratch to match the brand, optimized for speed and search, and easy to hand off or update after launch.',
+    bullets: ['Custom design matched to the brand', 'Built for speed and clean SEO', 'Contact/booking forms wired up', 'Simple handoff for future updates'],
+    results: ['48-hour quote', 'SEO-clean', 'Easy handoff'] },
   { id: 'social', n: '06', name: 'DB Social', initials: 'SM', accent: '#E2604A', link: './projects/social/',
     tagline: 'Content systems for client accounts',
     blurb: 'Ongoing content systems — planning, automated publishing and reporting, so accounts stay consistent without daily effort.',
-    tags: ['Content', 'Scheduling', 'Analytics'] },
+    tags: ['Content', 'Scheduling', 'Analytics'],
+    detail: "Ongoing content systems and scheduling tools for client social accounts — planning posts, automating publishing, and reporting on what's working, so clients get consistent output without doing it manually every day.",
+    bullets: ['Content calendar and cross-platform scheduling', 'Automated publishing pipeline', 'Reach and engagement reporting', 'Reusable templates for recurring posts'],
+    results: ['Consistent output', 'Automated publishing', 'Performance reports'] },
+];
+
+// NOTE (DB): testimonials + social links below are editable placeholders — swap in your real quotes/handles.
+const TESTIMONIALS = [
+  { quote: 'DB set up our POS and VAT invoicing in days, not weeks. Every bill is compliant now and closing the day takes minutes.', name: 'Owner', role: 'Broast Al-Bahr', initials: 'BB', accent: '#C1663D' },
+  { quote: 'The site and booking flow he built for us just works — fast, clean, and exactly on brand. Handoff was painless.', name: 'Founder', role: 'Sweet Cinnamon', initials: 'SC', accent: '#8E7CC3' },
+  { quote: 'From a rough idea to a live product with real-time multiplayer — DB shipped the whole thing end to end.', name: 'Product Lead', role: 'Baloot Al-Mamlaka', initials: 'BM', accent: '#C89B3C' },
+];
+const TRUST_LOGOS = ['Broast Al-Bahr', 'Sweet Cinnamon', 'Baloot Al-Mamlaka', 'RestoPOS'];
+const PROCESS = [
+  { n: '01', title: 'Discovery', body: 'We talk through the problem, your users and constraints — then scope a fixed quote within 48 hours.', icon: '🧭' },
+  { n: '02', title: 'Design', body: 'Wireframes and a clickable direction so we agree on the look and flow before a line of code.', icon: '✏️' },
+  { n: '03', title: 'Build', body: 'I build it end to end — frontend, backend and integrations — with progress you can watch.', icon: '⚙️' },
+  { n: '04', title: 'Launch', body: 'We ship, test on real devices, and I hand off clean docs so your team can run it.', icon: '🚀' },
+];
+const SOCIALS = [
+  { label: 'GitHub', href: 'https://github.com/sabidb', abbr: 'GH' },
+  { label: 'LinkedIn', href: '#', abbr: 'in' },
+  { label: 'X', href: '#', abbr: 'X' },
 ];
 
 const SKILLS = ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'AWS', 'Framer Motion', 'Stripe', 'Git', 'Figma'];
@@ -423,17 +460,17 @@ function Stats() {
 }
 
 /* ---------------- WORK ---------------- */
-function WorkCard({ item, i }) {
+function WorkCard({ item, i, onOpen }) {
   const [hover, setHover] = useState(false);
-  return html`<${M.a}
-    href=${item.link} target="_blank" rel="noopener"
+  return html`<${M.button}
+    type="button" data-cursor="1" onClick=${() => onOpen(item)}
     onMouseEnter=${() => setHover(true)} onMouseLeave=${() => setHover(false)}
     initial=${{ opacity: 0, y: 46 }}
     whileInView=${{ opacity: 1, y: 0 }}
     viewport=${{ once: true, margin: '-60px' }}
     transition=${{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE }}
     whileHover=${{ y: -8 }}
-    style=${{ display: 'block', textDecoration: 'none', position: 'relative', borderRadius: 16, overflow: 'hidden',
+    style=${{ display: 'block', width: '100%', textAlign: 'left', font: 'inherit', cursor: 'pointer', position: 'relative', borderRadius: 16, overflow: 'hidden',
       background: C.ink, border: '1px solid rgba(248,244,239,0.10)', padding: 24,
       boxShadow: hover ? '0 26px 50px rgba(0,0,0,0.4)' : '0 10px 24px rgba(0,0,0,0.18)',
       transition: 'box-shadow .3s ease' }}>
@@ -450,13 +487,59 @@ function WorkCard({ item, i }) {
         ${item.tags.map((t) => html`<span key=${t} style=${{ fontFamily: mono, fontSize: 11, color: 'rgba(248,244,239,0.7)', border: '1px solid rgba(248,244,239,0.14)', borderRadius: 20, padding: '4px 11px' }}>${t}</span>`)}
       </div>
       <${M.div} animate=${{ x: hover ? 4 : 0 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: mono, fontSize: 13, fontWeight: 600, color: C.terra2 }}>
-        Visit site <span>↗</span>
+        View case study <span>→</span>
       <//>
     </div>
   <//>`;
 }
 
+function ProjectModal({ item, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+  return html`<${M.div}
+    initial=${{ opacity: 0 }} animate=${{ opacity: 1 }} exit=${{ opacity: 0 }} transition=${{ duration: 0.25 }} onClick=${onClose}
+    style=${{ position: 'fixed', inset: 0, zIndex: 120, background: 'rgba(8,14,24,0.72)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(14px,4vw,40px)', overflowY: 'auto' }}>
+    <${M.div} onClick=${(e) => e.stopPropagation()}
+      initial=${{ opacity: 0, y: 30, scale: 0.97 }} animate=${{ opacity: 1, y: 0, scale: 1 }} exit=${{ opacity: 0, y: 20, scale: 0.98 }} transition=${{ duration: 0.35, ease: EASE }}
+      style=${{ position: 'relative', width: 'min(640px, 100%)', maxHeight: '90vh', overflowY: 'auto', borderRadius: 20, background: C.ink, border: '1px solid rgba(248,244,239,0.12)', boxShadow: '0 40px 90px rgba(0,0,0,0.55)' }}>
+      <div style=${{ position: 'relative', padding: '28px 30px 22px', background: 'linear-gradient(135deg,' + item.accent + '2b, transparent 70%)', borderBottom: '1px solid rgba(248,244,239,0.08)' }}>
+        <button onClick=${onClose} data-cursor="1" aria-label="Close" style=${{ position: 'absolute', top: 18, right: 18, width: 34, height: 34, borderRadius: 9, border: '1px solid rgba(248,244,239,0.18)', background: 'rgba(248,244,239,0.05)', color: C.cream, cursor: 'pointer', fontSize: 18 }}>×</button>
+        <div style=${{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style=${{ width: 54, height: 54, borderRadius: 13, background: 'linear-gradient(135deg,' + item.accent + ', #17233A 150%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: mono, fontWeight: 800, fontSize: 18, color: C.cream }}>${item.initials}</div>
+          <div>
+            <div style=${{ fontSize: 22, fontWeight: 800, color: C.cream }}>${item.name}</div>
+            <div style=${{ fontFamily: mono, fontSize: 13, color: item.accent }}>${item.tagline}</div>
+          </div>
+        </div>
+      </div>
+      <div style=${{ padding: '24px 30px 30px' }}>
+        <p style=${{ fontSize: 15.5, lineHeight: 1.7, color: 'rgba(248,244,239,0.78)', margin: '0 0 22px' }}>${item.detail}</p>
+        <div style=${{ fontFamily: mono, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.terra2, marginBottom: 12 }}>What it does</div>
+        <div style=${{ display: 'grid', gap: 10, marginBottom: 24 }}>
+          ${item.bullets.map((btxt) => html`<div key=${btxt} style=${{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <span style=${{ color: C.green, marginTop: 1 }}>✓</span>
+            <span style=${{ fontSize: 14.5, lineHeight: 1.55, color: 'rgba(248,244,239,0.75)' }}>${btxt}</span>
+          </div>`)}
+        </div>
+        ${item.results && html`<div style=${{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 26 }}>
+          ${item.results.map((r) => html`<span key=${r} style=${{ fontFamily: mono, fontSize: 12, color: C.cream, background: 'rgba(248,244,239,0.06)', border: '1px solid rgba(248,244,239,0.14)', borderRadius: 20, padding: '6px 13px' }}>${r}</span>`)}
+        </div>`}
+        <div style=${{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <${M.a} href=${item.link} target="_blank" rel="noopener" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }}
+            style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.terra, color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 14, fontWeight: 600, padding: '13px 22px', borderRadius: 8 }}>Visit live site ↗<//>
+          <button onClick=${onClose} data-cursor="1" style=${{ background: 'transparent', border: '1px solid rgba(248,244,239,0.2)', color: C.cream, fontFamily: mono, fontSize: 14, padding: '13px 20px', borderRadius: 8, cursor: 'pointer' }}>Close</button>
+        </div>
+      </div>
+    <//>
+  <//>`;
+}
+
 function Work() {
+  const [active, setActive] = useState(null);
+  useEffect(() => { document.body.style.overflow = active ? 'hidden' : ''; return () => { document.body.style.overflow = ''; }; }, [active]);
   return html`<section id="work" className="snap-start" style=${{ padding: '96px 0 88px', background: 'linear-gradient(150deg, #2B1B14 0%, #3A2418 45%, #1D2A3F 100%)', position: 'relative', overflow: 'hidden' }}>
     <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
     <${M.div} animate=${reduceMotion ? {} : { y: [0, 30, 0] }} transition=${{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} style=${{ position: 'absolute', top: -80, left: -100, width: 340, height: 340, borderRadius: '50%', background: 'radial-gradient(circle, rgba(193,102,61,0.28) 0%, transparent 70%)', zIndex: 0 }} />
@@ -467,12 +550,70 @@ function Work() {
             <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// 01. selected work</div>
             <h2 style=${{ fontSize: 'clamp(28px,4vw,40px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>Projects built for real clients</h2>
           </div>
-          <p style=${{ maxWidth: 380, color: 'rgba(248,244,239,0.6)', fontSize: 15, lineHeight: 1.6, margin: 0 }}>Point-of-sale systems, automation agents, games and sites — each one has its own live microsite. Tap to open.</p>
+          <p style=${{ maxWidth: 380, color: 'rgba(248,244,239,0.6)', fontSize: 15, lineHeight: 1.6, margin: 0 }}>Point-of-sale systems, automation agents, games and sites. Tap any card for the case study — each also has its own live microsite.</p>
         </div>
       <//>
       <div className="work-grid">
-        ${WORK_ITEMS.map((item, i) => html`<${WorkCard} key=${item.id} item=${item} i=${i} />`)}
+        ${WORK_ITEMS.map((item, i) => html`<${WorkCard} key=${item.id} item=${item} i=${i} onOpen=${setActive} />`)}
       </div>
+    </div>
+    <${AnimatePresence}>${active && html`<${ProjectModal} key="pm" item=${active} onClose=${() => setActive(null)} />`}<//>
+  </section>`;
+}
+
+/* ---------------- TESTIMONIALS ---------------- */
+function Testimonials() {
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+  const card = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+  return html`<section style=${{ padding: '90px 0', background: C.ink, position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${70} />
+    <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
+      <${Reveal} style=${{ textAlign: 'center', marginBottom: 44 }}>
+        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// what clients say</div>
+        <h2 style=${{ fontSize: 'clamp(26px,3.6vw,38px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>Trusted by the teams I build for</h2>
+      <//>
+      <${M.div} variants=${container} initial="hidden" whileInView="show" viewport=${{ once: true, margin: '-60px' }} className="test-grid" style=${{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20, marginBottom: 44 }}>
+        ${TESTIMONIALS.map((t) => html`<${M.div} key=${t.role} variants=${card}
+          style=${{ background: C.navy2, border: '1px solid rgba(248,244,239,0.1)', borderRadius: 16, padding: '26px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style=${{ color: '#E8B84B', fontSize: 14, letterSpacing: 2 }}>★★★★★</div>
+          <p style=${{ fontSize: 15, lineHeight: 1.65, color: 'rgba(248,244,239,0.82)', margin: 0, flex: 1 }}>“${t.quote}”</p>
+          <div style=${{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style=${{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg,' + t.accent + ', #17233A 150%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: mono, fontWeight: 800, fontSize: 14, color: C.cream }}>${t.initials}</div>
+            <div>
+              <div style=${{ fontSize: 14, fontWeight: 700, color: C.cream }}>${t.name}</div>
+              <div style=${{ fontFamily: mono, fontSize: 12, color: 'rgba(248,244,239,0.55)' }}>${t.role}</div>
+            </div>
+          </div>
+        <//>`)}
+      <//>
+      <${Reveal} style=${{ borderTop: '1px solid rgba(248,244,239,0.1)', paddingTop: 28, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '18px 40px' }}>
+        <span style=${{ fontFamily: mono, fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.4)' }}>Trusted by</span>
+        ${TRUST_LOGOS.map((l) => html`<span key=${l} style=${{ fontSize: 16, fontWeight: 700, color: 'rgba(248,244,239,0.55)' }}>${l}</span>`)}
+      <//>
+    </div>
+  </section>`;
+}
+
+/* ---------------- PROCESS ---------------- */
+function Process() {
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
+  const step = { hidden: { opacity: 0, y: 26 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } } };
+  return html`<section style=${{ padding: '92px 0', background: 'linear-gradient(150deg, #2B1B14 0%, #1D2A3F 100%)', position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
+    <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
+      <${Reveal} style=${{ marginBottom: 44 }}>
+        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// how i work</div>
+        <h2 style=${{ fontSize: 'clamp(26px,3.6vw,38px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>From idea to launched product</h2>
+      <//>
+      <${M.div} variants=${container} initial="hidden" whileInView="show" viewport=${{ once: true, margin: '-60px' }} className="process-grid" style=${{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20 }}>
+        ${PROCESS.map((s) => html`<${M.div} key=${s.n} variants=${step}
+          style=${{ position: 'relative', background: 'rgba(14,26,46,0.6)', border: '1px solid rgba(248,244,239,0.1)', borderRadius: 16, padding: '26px 22px' }}>
+          <div style=${{ fontSize: 26, marginBottom: 14 }}>${s.icon}</div>
+          <div style=${{ fontFamily: mono, fontSize: 12, color: C.terra2, marginBottom: 6 }}>${s.n}</div>
+          <div style=${{ fontSize: 18, fontWeight: 800, color: C.cream, marginBottom: 8 }}>${s.title}</div>
+          <p style=${{ fontSize: 13.5, lineHeight: 1.6, color: 'rgba(248,244,239,0.65)', margin: 0 }}>${s.body}</p>
+        <//>`)}
+      <//>
     </div>
   </section>`;
 }
@@ -524,22 +665,38 @@ function Skills() {
 }
 
 /* ---------------- CONTACT ---------------- */
+// FormSubmit needs no backend/keys; first submission triggers a one-time
+// activation email to OWNER_EMAIL — confirm it once and the form goes live.
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/' + OWNER_EMAIL;
 function Contact() {
   const [country, setCountry] = useState('sa');
   const [f, setF] = useState({ name: '', email: '', type: '', msg: '' });
+  const [status, setStatus] = useState('idle'); // idle | sending | ok | err
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
   const build = () => [
     "Hi DB Labs! I'd like to work together.",
-    f.name && `Name: ${f.name}`,
-    f.email && `Email: ${f.email}`,
-    f.type && `Project: ${f.type}`,
-    f.msg && `Notes: ${f.msg}`,
+    f.name && `Name: ${f.name}`, f.email && `Email: ${f.email}`,
+    f.type && `Project: ${f.type}`, f.msg && `Notes: ${f.msg}`,
   ].filter(Boolean).join('\n');
-  const wa = (e) => { e.preventDefault(); window.open(`https://wa.me/${WHATSAPP_NUMBERS[country]}?text=${encodeURIComponent(build())}`, '_blank', 'noopener'); };
+  const wa = () => window.open(`https://wa.me/${WHATSAPP_NUMBERS[country]}?text=${encodeURIComponent(build())}`, '_blank', 'noopener');
   const mail = () => { window.location.href = `mailto:${OWNER_EMAIL}?subject=${encodeURIComponent('New project enquiry')}&body=${encodeURIComponent(build())}`; };
 
+  const send = async (e) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: f.name, email: f.email, project: f.type, message: f.msg, _subject: 'New enquiry from db.dev', _template: 'table' }),
+      });
+      if (!res.ok) throw new Error('bad status');
+      setStatus('ok'); setF({ name: '', email: '', type: '', msg: '' });
+    } catch (err) { setStatus('err'); }
+  };
+
   const input = { padding: '15px 18px', borderRadius: 10, border: '1px solid rgba(23,35,58,0.15)', fontFamily: 'Inter, sans-serif', fontSize: 15, background: '#fff', color: C.navy2, width: '100%' };
-  const cbtn = (c, label) => html`<button type="button" onClick=${() => setCountry(c)} style=${{ fontFamily: mono, fontSize: 13, fontWeight: 600, padding: '10px 16px', borderRadius: 9, cursor: 'pointer',
+  const cbtn = (c, label) => html`<button type="button" onClick=${() => setCountry(c)} data-cursor="1" style=${{ fontFamily: mono, fontSize: 13, fontWeight: 600, padding: '10px 16px', borderRadius: 9, cursor: 'pointer',
     border: '1px solid ' + (country === c ? C.terra : 'rgba(23,35,58,0.15)'), background: country === c ? 'rgba(193,102,61,0.1)' : '#fff', color: country === c ? C.terra : '#5B6472' }}>${label}</button>`;
 
   return html`<section id="contact" className="snap-start" style=${{ padding: '110px 0', background: C.cream, position: 'relative', overflow: 'hidden' }}>
@@ -548,9 +705,15 @@ function Contact() {
       <div style=${{ textAlign: 'center', marginBottom: 44 }}>
         <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>// 04. contact</div>
         <h2 style=${{ fontSize: 'clamp(28px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 12px', color: C.navy2 }}>Let's build something</h2>
-        <p style=${{ fontSize: 16, color: '#5B6472', margin: 0 }}>Fill this in and reach me on WhatsApp or by email — I reply within a day.</p>
+        <p style=${{ fontSize: 16, color: '#5B6472', margin: 0 }}>Send the form and it lands straight in my inbox — or reach me on WhatsApp / email. I reply within a day.</p>
       </div>
-      <form onSubmit=${wa} style=${{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      ${status === 'ok'
+        ? html`<${M.div} initial=${{ opacity: 0, y: 16 }} animate=${{ opacity: 1, y: 0 }} style=${{ textAlign: 'center', background: '#fff', border: '1px solid rgba(111,168,138,0.4)', borderRadius: 16, padding: '44px 30px' }}>
+            <div style=${{ width: 60, height: 60, margin: '0 auto 16px', borderRadius: '50%', background: 'rgba(111,168,138,0.15)', border: '2px solid ' + C.green, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green, fontSize: 26, fontWeight: 800 }}>✓</div>
+            <h3 style=${{ margin: '0 0 8px', color: C.navy2, fontSize: 20 }}>Message sent!</h3>
+            <p style=${{ margin: 0, color: '#5B6472' }}>Thanks — I'll get back to you within a day.</p>
+          <//>`
+        : html`<form onSubmit=${send} style=${{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div className="two-col">
           <input required placeholder="Your name" value=${f.name} onChange=${set('name')} style=${input} />
           <input required type="email" placeholder="Email address" value=${f.email} onChange=${set('email')} style=${input} />
@@ -565,28 +728,42 @@ function Contact() {
           <option>Something else</option>
         </select>
         <textarea placeholder="Tell me about your project" rows="5" value=${f.msg} onChange=${set('msg')} style=${{ ...input, resize: 'vertical' }}></textarea>
+        ${status === 'err' && html`<div style=${{ fontSize: 13, color: '#B5462F', background: 'rgba(193,102,61,0.08)', border: '1px solid rgba(193,102,61,0.3)', borderRadius: 8, padding: '10px 14px' }}>Couldn't send just now — please use WhatsApp or email below.</div>`}
+        <div style=${{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 2, alignItems: 'center' }}>
+          <${Magnetic}><${M.button} type="submit" data-cursor="1" disabled=${status === 'sending'} whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.terra, color: C.cream, border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 28px', borderRadius: 30, cursor: 'pointer', opacity: status === 'sending' ? 0.7 : 1 }}>${status === 'sending' ? 'Sending…' : 'Send message'}<//><//>
+          <span style=${{ fontFamily: mono, fontSize: 12, color: '#8a8378' }}>or</span>
+          <${M.button} type="button" onClick=${wa} data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: '#04110a', border: 'none', fontFamily: mono, fontSize: 14, fontWeight: 700, padding: '13px 20px', borderRadius: 30, cursor: 'pointer' }}>💬 WhatsApp<//>
+          <${M.button} type="button" onClick=${mail} data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', color: C.navy2, border: '1px solid rgba(23,35,58,0.2)', fontFamily: mono, fontSize: 14, fontWeight: 600, padding: '13px 20px', borderRadius: 30, cursor: 'pointer' }}>✉️ Email<//>
+        </div>
         <div>
-          <div style=${{ fontFamily: mono, fontSize: 12, color: '#5B6472', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Reach me on</div>
-          <div style=${{ display: 'flex', gap: 10 }}>${cbtn('sa', '🇸🇦 Saudi Arabia')}${cbtn('in', '🇮🇳 India')}</div>
+          <span style=${{ fontFamily: mono, fontSize: 12, color: '#8a8378', marginRight: 10 }}>WhatsApp region:</span>
+          ${cbtn('sa', '🇸🇦 SA')} ${cbtn('in', '🇮🇳 India')}
         </div>
-        <div style=${{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 4 }}>
-          <${Magnetic}><${M.button} type="submit" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: '#04110a', border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 700, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>💬 Send on WhatsApp<//><//>
-          <${Magnetic}><${M.button} type="button" onClick=${mail} data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.terra, color: C.cream, border: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 30, cursor: 'pointer' }}>✉️ Send by email<//><//>
-        </div>
-      </form>
+      </form>`}
     <//>
   </section>`;
 }
 
 /* ---------------- FOOTER ---------------- */
 function Footer() {
-  return html`<footer style=${{ background: C.navy2, padding: '38px clamp(20px,5vw,48px)' }}>
+  const soc = (s) => html`<${M.a} key=${s.label} href=${s.href} target="_blank" rel="noopener" data-cursor="1" aria-label=${s.label}
+    whileHover=${{ y: -3, borderColor: C.terra2 }}
+    style=${{ width: 38, height: 38, borderRadius: 10, border: '1px solid rgba(248,244,239,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 13, fontWeight: 700 }}>${s.abbr}<//>`;
+  return html`<footer style=${{ background: C.navy2, padding: '44px clamp(20px,5vw,48px)' }}>
     <div className="wrap footer-row" style=${{ padding: 0 }}>
-      <div style=${{ display: 'flex', alignItems: 'center', gap: 22, flexWrap: 'wrap' }}>
-        <span style=${{ color: 'rgba(248,244,239,0.5)', fontFamily: mono, fontSize: 13 }}>© 2026 db.dev · Created by <span style=${{ color: C.terra2, fontWeight: 600 }}>DB Labs</span></span>
+      <div style=${{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style=${{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: mono, fontWeight: 700, fontSize: 18, color: C.cream }}>
+          <span style=${{ width: 30, height: 30, borderRadius: 7, background: C.terra, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800 }}>${'</>'}</span>
+          db<span style=${{ color: C.terra }}>.</span>dev
+        </div>
+        <span style=${{ color: 'rgba(248,244,239,0.5)', fontFamily: mono, fontSize: 13 }}>© 2026 · Created by <span style=${{ color: C.terra2, fontWeight: 600 }}>DB Labs</span></span>
       </div>
-      <span style=${{ color: 'rgba(248,244,239,0.35)', fontFamily: mono, fontSize: 12 }}>${'<built_with_care />'}</span>
-      <a href="#contact" style=${{ color: C.terra2, fontFamily: mono, fontSize: 13, textDecoration: 'none', fontWeight: 600 }}>contact() →</a>
+      <div style=${{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        ${SOCIALS.map(soc)}
+        <${M.a} href="./resume.pdf" target="_blank" rel="noopener" data-cursor="1" whileHover=${{ y: -3 }}
+          style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(248,244,239,0.2)', color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 13, fontWeight: 600, padding: '9px 16px', borderRadius: 10 }}>résumé ↓<//>
+        <${M.a} href="#contact" data-cursor="1" whileHover=${{ y: -3 }} style=${{ color: C.terra2, fontFamily: mono, fontSize: 13, textDecoration: 'none', fontWeight: 600, marginLeft: 4 }}>contact() →<//>
+      </div>
     </div>
   </footer>`;
 }
@@ -925,9 +1102,12 @@ function Loader({ onDone }) {
   <//>`;
 }
 
+const seenLoader = (() => { try { return sessionStorage.getItem('db_booted') === '1'; } catch (e) { return false; } })();
 function App() {
-  const [booted, setBooted] = useState(false);
+  const [booted, setBooted] = useState(seenLoader);
+  useEffect(() => { const boot = document.getElementById('boot'); if (boot) boot.style.display = 'none'; }, []);
   useEffect(() => { document.body.style.overflow = booted ? '' : 'hidden'; }, [booted]);
+  const finishBoot = () => { try { sessionStorage.setItem('db_booted', '1'); } catch (e) {} setBooted(true); };
   return html`<${React.Fragment}>
     ${booted && html`<${React.Fragment}>
       <${ScrollProgress} />
@@ -936,7 +1116,9 @@ function App() {
       <${Marquee} />
       <${Stats} />
       <${Work} />
+      <${Testimonials} />
       <${About} />
+      <${Process} />
       <${Skills} />
       <${Contact} />
       <${Footer} />
@@ -945,7 +1127,7 @@ function App() {
       <${CursorFX} />
     <//>`}
     <${AnimatePresence}>
-      ${!booted && html`<${Loader} key="loader" onDone=${() => setBooted(true)} />`}
+      ${!booted && html`<${Loader} key="loader" onDone=${finishBoot} />`}
     <//>
   <//>`;
 }
