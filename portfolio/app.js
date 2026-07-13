@@ -627,11 +627,10 @@ function About() {
     <${Aurora} items=${SOFT_AURORA_DARK} blur=${64} />
     <div className="wrap about-grid" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} y=${0}>
-        <${M.div} style=${{ y: yImg, position: 'relative', aspectRatio: '1/1', maxHeight: 380, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(248,244,239,0.12)',
-          backgroundImage: 'repeating-linear-gradient(135deg, rgba(193,102,61,0.2) 0px, rgba(193,102,61,0.2) 2px, rgba(248,244,239,0.03) 2px, rgba(248,244,239,0.03) 24px)' }}>
-          <div style=${{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style=${{ fontFamily: mono, fontSize: 13, color: C.cream, background: 'rgba(19,31,53,0.75)', padding: '8px 16px', borderRadius: 6 }}>workspace photo</span>
-          </div>
+        <${M.div} style=${{ y: yImg, position: 'relative', aspectRatio: '1/1', maxHeight: 420, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(248,244,239,0.12)', boxShadow: '0 24px 60px rgba(0,0,0,0.35)' }}>
+          <img src="./workspace.jpg" alt="DB — full-stack developer" loading="lazy" style=${{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
+          <div style=${{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(19,31,53,0.5), transparent 55%)', pointerEvents: 'none' }} />
+          <div style=${{ position: 'absolute', left: 16, bottom: 14, fontFamily: mono, fontSize: 12, letterSpacing: '0.06em', color: 'rgba(248,244,239,0.85)' }}>DB · <span style=${{ color: C.terra2 }}>DB Labs</span></div>
         <//>
       <//>
       <${Reveal} delay=${0.1}>
