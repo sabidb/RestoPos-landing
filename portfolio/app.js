@@ -56,7 +56,7 @@ const C = {
 
 /* ---------- loader data (the React Loader component is defined lower) ---------- */
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const LOADER_MS = reduceMotion ? 1200 : 6000;
+const LOADER_MS = reduceMotion ? 1200 : 10000;
 
 // Boot-log steps — each flips to "done" as the progress bar passes its threshold.
 const BOOT_STEPS = [
