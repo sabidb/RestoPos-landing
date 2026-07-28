@@ -54,6 +54,20 @@ const isActive = (href: string) => path === href;
       >
         Book Demo
       </a>
+
+      <!-- Try Now — the primary action: opens the app, where the free 14-day
+           trial starts. Solid gold with a breathing halo so it outranks both
+           Book Demo and Sign in without shouting. -->
+      <a
+        href={APP_URL}
+        class="try-now ease-out-quad group inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2 text-[13px] font-semibold tracking-wide text-charcoal transition-transform duration-300 hover:-translate-y-0.5 hover:bg-gold-bright"
+      >
+        Try Now
+        <span
+          aria-hidden="true"
+          class="ease-out-quad inline-block transition-transform duration-300 group-hover:translate-x-1"
+        >→</span>
+      </a>
     </div>
 
     <button
@@ -80,6 +94,12 @@ const isActive = (href: string) => path === href;
       }
       <a href={APP_URL} class="text-sm text-bone/80">Sign in</a>
       <a href="/contact" class="text-sm font-medium text-gold">Book Demo →</a>
+      <a
+        href={APP_URL}
+        class="try-now mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold tracking-wide text-charcoal"
+      >
+        Try Now <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </header>

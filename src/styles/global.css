@@ -135,6 +135,37 @@ textarea:focus-visible {
 }
 
 /* ---------------------------------------------------------------------------
+   Try Now — the primary call to action, in the navbar and the hero. A gold
+   halo breathes outwards from the pill roughly every 3.6s: enough to catch the
+   eye on a page a visitor is scanning, quiet enough for "billing, done
+   quietly". The resting shadow lives on the class rather than in a utility so
+   the button still reads as raised when the global reduced-motion rule
+   neutralises the animation.
+--------------------------------------------------------------------------- */
+.try-now {
+  box-shadow:
+    0 0 0 1px rgba(197, 160, 89, 0.3),
+    0 8px 30px -12px rgba(197, 160, 89, 0.45);
+  animation: try-now-halo 3.6s var(--ease-out-quad) infinite;
+}
+
+@keyframes try-now-halo {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(197, 160, 89, 0.3),
+      0 8px 30px -12px rgba(197, 160, 89, 0.45),
+      0 0 0 0 rgba(197, 160, 89, 0.34);
+  }
+  55% {
+    box-shadow:
+      0 0 0 1px rgba(197, 160, 89, 0.3),
+      0 8px 30px -12px rgba(197, 160, 89, 0.45),
+      0 0 0 12px rgba(197, 160, 89, 0);
+  }
+}
+
+/* ---------------------------------------------------------------------------
    3D tilt — transforms are driven by JS (see Hero.astro); this provides the
    spring-back transition and preserves depth for child layers.
 --------------------------------------------------------------------------- */
