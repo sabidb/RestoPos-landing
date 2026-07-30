@@ -15,13 +15,22 @@ const pillars = [
   {
     label: 'Speed',
     title: 'Built for the rush',
-    body: 'Order, print, and close a table in seconds — on the same tablet your staff already knows how to use.',
+    body: 'Order, ring up, and close a sale in seconds — on the same tablet or terminal your staff already knows how to use.',
   },
   {
     label: 'Clarity',
     title: 'One number you can trust',
     body: 'Daily closes, VAT breakdowns, and branch reports that reconcile to the riyal — every time.',
   },
+];
+
+const businessTypes = [
+  { icon: '🍽️', name: 'Restaurants & cafés', body: 'Dine-in, parcel and telephone orders with smart kitchen tickets and table flow.' },
+  { icon: '🛒', name: 'Supermarkets & grocery', body: 'A barcode-first retail mode built for high-volume checkout and stock.' },
+  { icon: '🏪', name: 'Retail & convenience', body: 'Fast counter billing for shops of any size, with inventory and daily closes.' },
+  { icon: '💊', name: 'Pharmacies', body: 'Compliant, itemised invoicing with bilingual receipts your customers can trust.' },
+  { icon: '💈', name: 'Salons & services', body: 'Ring up services and products together, print a compliant bill in seconds.' },
+  { icon: '☁️', name: 'Cloud & multi-branch', body: 'Run every branch under one account, with isolated data per VAT number.' },
 ];
 ---
 
@@ -65,7 +74,7 @@ const pillars = [
         <div class="font-mono text-display-md font-extrabold text-gold">
           <span data-count="2" data-suffix="">0</span>
         </div>
-        <p class="mt-2 text-sm text-bone/55">restaurants already live</p>
+        <p class="mt-2 text-sm text-bone/55">businesses already live</p>
       </div>
     </div>
   </section>
@@ -83,6 +92,35 @@ const pillars = [
               <span class="text-[11px] uppercase tracking-widest text-gold">{p.label}</span>
               <h3 class="mt-4 text-xl font-semibold text-bone">{p.title}</h3>
               <p class="mt-3 text-sm leading-relaxed text-bone/55">{p.body}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Built for every kind of business -->
+  <section class="mx-auto max-w-6xl px-6 pb-4 md:px-8">
+    <div data-reveal>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Who it's for</p>
+      <h2 class="max-w-2xl text-balance text-display-lg font-bold text-bone">
+        One POS for your business — whatever you sell.
+      </h2>
+      <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+        RestoPOS started in restaurants, but the same compliant, bilingual core now runs shops,
+        supermarkets, pharmacies and service counters across Saudi Arabia. Same ZATCA reporting,
+        same reports — a rhythm tuned to how you sell.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+      {
+        businessTypes.map((b, i) => (
+          <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
+            <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+              <span class="text-2xl" aria-hidden="true">{b.icon}</span>
+              <h3 class="mt-4 font-semibold text-bone">{b.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-bone/50">{b.body}</p>
             </div>
           </div>
         ))

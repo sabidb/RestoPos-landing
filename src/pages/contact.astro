@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 
 const fields = [
   { label: 'Full name', name: 'name' },
-  { label: 'Restaurant name', name: 'restaurant' },
+  { label: 'Business name', name: 'business' },
 ];
 ---
 
@@ -16,8 +16,8 @@ const fields = [
           Let's get your first invoice printing.
         </h1>
         <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
-          Tell us about your restaurant and we'll set up a demo tailored to your branches,
-          printers, and menu. Send it straight to us on WhatsApp or by email.
+          Tell us about your business and we'll set up a demo tailored to your branches,
+          printers, and products. Send it straight to us on WhatsApp or by email.
         </p>
       </div>
 
@@ -153,7 +153,7 @@ const fields = [
     const lines = [
       'Hi RestoPOS! I\'d like a demo.',
       val('name') && `Name: ${val('name')}`,
-      val('restaurant') && `Restaurant: ${val('restaurant')}`,
+      val('business') && `Business: ${val('business')}`,
       val('phone') && `Phone: ${val('phone')}`,
       val('branches') && `Branches: ${val('branches')}`,
       val('message') && `Notes: ${val('message')}`,
