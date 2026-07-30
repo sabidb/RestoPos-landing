@@ -1,0 +1,12 @@
+---
+// Bilingual text helper — renders the English and Arabic side by side; CSS
+// (global.css) shows whichever matches the current language (html.lang-ar).
+// Usage: <Bi en="Pricing" ar="الأسعار" />
+interface Props {
+  en: string;
+  ar: string;
+  class?: string;
+}
+const { en, ar, class: cls } = Astro.props;
+---
+<span class={cls}><span data-en>{en}</span><span data-ar lang="ar">{ar}</span></span>
