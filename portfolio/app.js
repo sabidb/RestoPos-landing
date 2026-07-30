@@ -13,20 +13,23 @@ const RESTOPOS_URL = 'https://resto-pos-landing.vercel.app/';
 
 const WORK_ITEMS = [
   { id: 'restopos', n: '01', name: 'Restopos', initials: 'RP', accent: '#C1663D', link: RESTOPOS_URL, external: true,
-    tagline: 'POS & VAT compliance for Saudi retail',
-    blurb: 'Billing and point-of-sale for Saudi stores — checkout, automatic VAT, ZATCA e-invoices and government-ready tax reports.',
+    shot: './shots/restopos.jpg',
+    tagline: 'POS, billing & VAT compliance for any business',
+    blurb: 'Billing and point-of-sale for any business — fast checkout, automatic VAT, ZATCA e-invoices and government-ready tax reports.',
     tags: ['POS', 'ZATCA', 'VAT'],
-    detail: 'Restopos is billing and point-of-sale software built for local Saudi stores. It handles day-to-day checkout and invoicing, then automatically calculates VAT on every sale, generates ZATCA-compliant e-invoices, and compiles the periodic tax reports a business submits to the government — so owners stay compliant without manual bookkeeping.',
-    bullets: ['Fast in-store checkout and invoice generation', 'Automatic VAT on every transaction (ZATCA rules)', 'Government-ready tax reports on a schedule', 'Sales, inventory and daily revenue dashboards'],
-    results: ['ZATCA Phase-2 compliant', '2 live restaurants', '<10 min to first invoice'] },
+    detail: 'Restopos is billing and point-of-sale software for any business in Saudi Arabia — retail shops, restaurants, cafés, salons, pharmacies and service counters alike. It handles day-to-day checkout and invoicing, then automatically calculates VAT on every sale, generates ZATCA-compliant e-invoices, and compiles the periodic tax reports a business submits to the government — so owners stay compliant without manual bookkeeping.',
+    bullets: ['Fast checkout and invoice generation for any counter', 'Automatic VAT on every transaction (ZATCA rules)', 'Government-ready tax reports on a schedule', 'Sales, inventory and daily revenue dashboards', 'Multi-branch and multi-cashier ready'],
+    results: ['ZATCA Phase-2 compliant', 'Live with real businesses', '<10 min to first invoice'] },
   { id: 'agent', n: '02', name: 'DB Agent', initials: 'DB', accent: '#6A93C7', link: './projects/db-agent/',
+    shot: './shots/agent.jpg',
     tagline: 'Backend automation for repetitive work',
     blurb: 'A personal automation agent that syncs data, processes orders and forms, and fires notifications — running unattended.',
     tags: ['Automation', 'Node', 'Integrations'],
-    detail: 'A backend automation agent that takes over repetitive operational work — syncing data between tools, processing incoming orders or forms, and triggering the right notifications — so teams stop doing it by hand.',
-    bullets: ['Connects and syncs data across existing tools', 'Processes orders/forms on a schedule or trigger', 'Automatic notifications to staff and customers', 'Runs unattended with error alerts'],
+    detail: 'A backend automation agent that takes over the repetitive operational work in your business — syncing data between tools, processing incoming orders or forms, and triggering the right notifications — so your team stops doing it by hand.',
+    bullets: ['Connects and syncs data across the tools you already use', 'Processes orders/forms on a schedule or trigger', 'Automatic notifications to staff and customers', 'Runs unattended with error alerts', 'Fully hosted and monitored'],
     results: ['Runs 24/7', 'Zero manual syncing', 'Fully hosted'] },
   { id: 'baloot', n: '03', name: 'Baloot', initials: 'BL', accent: '#C89B3C', link: './projects/baloot/',
+    shot: './shots/baloot.jpg',
     tagline: 'Real-time multiplayer card game',
     blurb: 'A mobile multiplayer take on the Gulf classic — live matchmaking, a full rules engine, private tables and invites.',
     tags: ['Realtime', 'Multiplayer', 'Game'],
@@ -34,6 +37,7 @@ const WORK_ITEMS = [
     bullets: ['Real-time multiplayer with live matchmaking', 'Full Baloot rules engine with scoring and bidding', 'Mobile-first interface for quick sessions', 'Friend invites and private table codes'],
     results: ['Real-time rooms', 'Full rules engine', 'PWA-installable'] },
   { id: 'mathbro', n: '04', name: 'Mathbro', initials: 'MB', accent: '#6FA88A', link: './projects/mathbro/',
+    shot: './shots/mathbro.jpg',
     tagline: 'Gamified math practice for kids',
     blurb: 'Math practice that plays like a game — levels, rewards and a parent progress view, working even offline.',
     tags: ['EdTech', 'Gamified', 'Kids'],
@@ -41,19 +45,43 @@ const WORK_ITEMS = [
     bullets: ['Level-based challenges tuned to grade levels', 'Reward and progress system to keep kids motivated', 'Parent-facing progress view', 'Works offline for practice anywhere'],
     results: ['Offline-ready', 'Parent dashboard', 'Level system'] },
   { id: 'site', n: '05', name: 'Web Studio', initials: 'WS', accent: '#8E7CC3', link: './projects/web-studio/',
-    tagline: 'Fast custom sites for founders',
+    shot: './shots/site.jpg',
+    tagline: 'Fast custom sites for any business',
     blurb: 'Custom personal and business sites, coded from scratch to match the brand — fast, SEO-clean and easy to hand off.',
     tags: ['Web', 'SEO', 'Design'],
-    detail: 'A fast, custom-built personal or business website — designed and coded from scratch to match the brand, optimized for speed and search, and easy to hand off or update after launch.',
-    bullets: ['Custom design matched to the brand', 'Built for speed and clean SEO', 'Contact/booking forms wired up', 'Simple handoff for future updates'],
+    detail: 'A fast, custom-built website for your business — designed and coded from scratch to match the brand, optimized for speed and search, and easy to hand off or update after launch.',
+    bullets: ['Custom design matched to your brand', 'Built for speed and clean SEO', 'Contact/booking forms wired up', 'Simple handoff for future updates'],
     results: ['48-hour quote', 'SEO-clean', 'Easy handoff'] },
   { id: 'social', n: '06', name: 'DB Social', initials: 'SM', accent: '#E2604A', link: './projects/social/',
-    tagline: 'Content systems for client accounts',
+    shot: './shots/social.jpg',
+    tagline: 'Content systems for your accounts',
     blurb: 'Ongoing content systems — planning, automated publishing and reporting, so accounts stay consistent without daily effort.',
     tags: ['Content', 'Scheduling', 'Analytics'],
-    detail: "Ongoing content systems and scheduling tools for client social accounts — planning posts, automating publishing, and reporting on what's working, so clients get consistent output without doing it manually every day.",
+    detail: "Ongoing content systems and scheduling tools for your business's social accounts — planning posts, automating publishing, and reporting on what's working, so you get consistent output without doing it manually every day.",
     bullets: ['Content calendar and cross-platform scheduling', 'Automated publishing pipeline', 'Reach and engagement reporting', 'Reusable templates for recurring posts'],
     results: ['Consistent output', 'Automated publishing', 'Performance reports'] },
+];
+
+/* ---------- services (what DB Labs does for your business) ---------- */
+const SERVICES = [
+  { icon: '🧾', title: 'POS & Billing Systems', accent: '#C1663D',
+    body: 'Point-of-sale and invoicing for any business, with automatic VAT and ZATCA Phase-2 e-invoicing built in.',
+    items: ['Fast checkout & invoicing', 'Automatic VAT on every sale', 'ZATCA-compliant e-invoices', 'Government-ready tax reports', 'Sales & inventory dashboards', 'Multi-branch & multi-cashier'] },
+  { icon: '⚙️', title: 'Business Automation', accent: '#6A93C7',
+    body: 'Backend agents that take over the repetitive work in your business so your team stops doing it by hand.',
+    items: ['Sync data across your tools', 'Process orders & forms automatically', 'Scheduled & trigger-based jobs', 'Staff & customer notifications', 'Runs 24/7 with error alerts'] },
+  { icon: '🌐', title: 'Websites & Landing Pages', accent: '#8E7CC3',
+    body: 'Fast, custom-coded sites that match your brand and are built to convert visitors and rank on search.',
+    items: ['Custom design to your brand', 'SEO-clean & fast-loading', 'Contact & booking forms wired up', 'Mobile-first & responsive', 'Easy handoff & future updates'] },
+  { icon: '📱', title: 'Web & Mobile Apps', accent: '#6FA88A',
+    body: 'Full products from idea to launch — real-time apps, dashboards and games that actually ship.',
+    items: ['Real-time & multiplayer features', 'Web, mobile & installable PWAs', 'Custom dashboards & admin panels', 'Secure auth & payments', 'Built to scale as you grow'] },
+  { icon: '📈', title: 'Social Media & Content', accent: '#E2604A',
+    body: 'Ongoing content systems that keep your accounts consistent and growing without daily effort.',
+    items: ['Content calendar & scheduling', 'Automated cross-platform publishing', 'Reach & engagement reporting', 'Reusable post templates'] },
+  { icon: '🛠️', title: 'Support & Maintenance', accent: '#C89B3C',
+    body: 'After launch I keep it running — updates, monitoring and quick fixes whenever you need them.',
+    items: ['Ongoing updates & improvements', 'Uptime & error monitoring', 'Fast turnaround on fixes', 'Direct WhatsApp / email line'] },
 ];
 
 // NOTE (DB): testimonials + social links below are editable placeholders — swap in your real quotes/handles.
@@ -227,7 +255,7 @@ function Nav() {
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
   useMotionValueEvent(scrollY, 'change', (v) => setSolid(v > 40));
-  const links = [['work', '01'], ['about', '02'], ['skills', '03'], ['contact', '04']];
+  const links = [['services', '01'], ['work', '02'], ['about', '03'], ['skills', '04'], ['contact', '05']];
   const linkStyle = { color: C.cream, textDecoration: 'none', fontSize: 14, fontWeight: 500, opacity: 0.85, padding: '8px 14px', fontFamily: mono };
 
   return html`
@@ -256,7 +284,7 @@ function Nav() {
         ${open && html`<${M.div} key="mm"
           initial=${{ opacity: 0 }} animate=${{ opacity: 1 }} exit=${{ opacity: 0 }}
           style=${{ position: 'fixed', inset: 0, zIndex: 70, background: C.navy2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 28 }}>
-          ${[['work', 'Work'], ['about', 'About'], ['skills', 'Skills'], ['contact', 'Contact']].map(([id, label]) =>
+          ${[['services', 'Services'], ['work', 'Work'], ['about', 'About'], ['skills', 'Skills'], ['contact', 'Contact']].map(([id, label]) =>
             html`<a key=${id} href=${'#' + id} onClick=${() => setOpen(false)} style=${{ color: C.cream, textDecoration: 'none', fontSize: 28, fontWeight: 600 }}>${label}</a>`)}
           <button onClick=${() => setOpen(false)} style=${{ position: 'absolute', top: 26, right: 34, background: 'none', border: 'none', color: C.cream, fontSize: 32, cursor: 'pointer' }}>×</button>
         <//>`}
@@ -387,7 +415,7 @@ function Hero() {
           <${M.div} variants=${up} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(193,102,61,0.15)', border: '1px solid rgba(193,102,61,0.4)', color: C.terra2, fontFamily: mono, fontSize: 13, fontWeight: 500, padding: '7px 16px', borderRadius: 5, marginBottom: 26 }}>${'> whoami: full-stack developer'}</>
           <${SplitReveal} segments=${HEADLINE} style=${{ fontFamily: mono, fontSize: 'clamp(28px,4.4vw,40px)', lineHeight: 1.32, fontWeight: 700, letterSpacing: '-0.02em', color: C.cream, margin: '0 0 22px' }} />
           <${M.p} variants=${up} style=${{ fontSize: 'clamp(16px,2vw,19px)', lineHeight: 1.6, color: 'rgba(248,244,239,0.68)', maxWidth: 470, margin: '0 0 36px' }}>
-            I design and build products for restaurants, communities and startups — from POS systems to social apps — end to end.
+            I design and build software for your business — from point-of-sale and automation to apps, games and the websites that sell them — end to end.
           </>
           <${M.div} variants=${up} style=${{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <${Magnetic}><${M.a} href="#contact" data-cursor="1" whileHover=${{ y: -3 }} whileTap=${{ scale: 0.97 }} style=${{ background: C.terra, color: C.cream, textDecoration: 'none', fontFamily: mono, fontSize: 15, fontWeight: 600, padding: '15px 26px', borderRadius: 6, boxShadow: '0 12px 30px rgba(193,102,61,0.35)' }}>book_a_call()<//><//>
@@ -459,6 +487,56 @@ function Stats() {
   </section>`;
 }
 
+/* ---------------- SERVICES ---------------- */
+function ServiceCard({ s, i }) {
+  const [hover, setHover] = useState(false);
+  return html`<${M.div}
+    onMouseEnter=${() => setHover(true)} onMouseLeave=${() => setHover(false)}
+    initial=${{ opacity: 0, y: 40 }}
+    whileInView=${{ opacity: 1, y: 0 }}
+    viewport=${{ once: true, margin: '-60px' }}
+    transition=${{ duration: 0.55, delay: (i % 3) * 0.08, ease: EASE }}
+    whileHover=${{ y: -6 }}
+    style=${{ position: 'relative', borderRadius: 16, overflow: 'hidden', background: C.ink,
+      border: '1px solid ' + (hover ? s.accent + '66' : 'rgba(248,244,239,0.10)'), padding: 26,
+      boxShadow: hover ? '0 24px 48px rgba(0,0,0,0.38)' : '0 8px 22px rgba(0,0,0,0.16)',
+      transition: 'border-color .3s ease, box-shadow .3s ease' }}>
+    <${M.div} animate=${{ opacity: hover ? 0.2 : 0.09 }} style=${{ position: 'absolute', top: -50, right: -50, width: 170, height: 170, borderRadius: '50%', background: 'radial-gradient(circle, ' + s.accent + ' 0%, transparent 70%)' }} />
+    <div style=${{ position: 'relative' }}>
+      <div style=${{ width: 52, height: 52, borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, marginBottom: 18, background: 'linear-gradient(135deg, ' + s.accent + '33, rgba(23,35,58,0.4))', border: '1px solid ' + s.accent + '44' }}>${s.icon}</div>
+      <h3 style=${{ fontSize: 19, fontWeight: 800, color: C.cream, margin: '0 0 10px' }}>${s.title}</h3>
+      <p style=${{ fontSize: 14, lineHeight: 1.62, color: 'rgba(248,244,239,0.62)', margin: '0 0 18px' }}>${s.body}</p>
+      <div style=${{ display: 'grid', gap: 9 }}>
+        ${s.items.map((it) => html`<div key=${it} style=${{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
+          <span style=${{ color: s.accent, marginTop: 1, fontSize: 13 }}>▹</span>
+          <span style=${{ fontSize: 13.5, lineHeight: 1.5, color: 'rgba(248,244,239,0.78)' }}>${it}</span>
+        </div>`)}
+      </div>
+    </div>
+  <//>`;
+}
+
+function Services() {
+  return html`<section id="services" className="snap-start" style=${{ padding: '96px 0 88px', background: 'linear-gradient(150deg, #1D2A3F 0%, #17233A 55%, #2B1B14 100%)', position: 'relative', overflow: 'hidden' }}>
+    <${Aurora} items=${SOFT_AURORA_DARK} blur=${66} />
+    <${M.div} animate=${reduceMotion ? {} : { y: [0, 26, 0] }} transition=${{ duration: 15, repeat: Infinity, ease: 'easeInOut' }} style=${{ position: 'absolute', top: -70, right: -90, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(106,147,199,0.22) 0%, transparent 70%)', zIndex: 0 }} />
+    <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
+      <${Reveal} style=${{ marginBottom: 52 }}>
+        <div style=${{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// 01. services</div>
+            <h2 style=${{ fontSize: 'clamp(28px,4vw,40px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>What I build for your business</h2>
+          </div>
+          <p style=${{ maxWidth: 400, color: 'rgba(248,244,239,0.6)', fontSize: 15, lineHeight: 1.6, margin: 0 }}>Whatever you run — a shop, a café, a clinic, a startup — I build the software that runs it: billing, automation, sites and apps, end to end.</p>
+        </div>
+      <//>
+      <div className="services-grid" style=${{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        ${SERVICES.map((s, i) => html`<${ServiceCard} key=${s.title} s=${s} i=${i} />`)}
+      </div>
+    </div>
+  </section>`;
+}
+
 /* ---------------- WORK ---------------- */
 function WorkCard({ item, i, onOpen }) {
   const [hover, setHover] = useState(false);
@@ -471,9 +549,17 @@ function WorkCard({ item, i, onOpen }) {
     transition=${{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE }}
     whileHover=${{ y: -8 }}
     style=${{ display: 'block', width: '100%', textAlign: 'left', font: 'inherit', cursor: 'pointer', position: 'relative', borderRadius: 16, overflow: 'hidden',
-      background: C.ink, border: '1px solid rgba(248,244,239,0.10)', padding: 24,
+      background: C.ink, border: '1px solid rgba(248,244,239,0.10)', padding: 0,
       boxShadow: hover ? '0 26px 50px rgba(0,0,0,0.4)' : '0 10px 24px rgba(0,0,0,0.18)',
       transition: 'box-shadow .3s ease' }}>
+    ${item.shot && html`<div style=${{ position: 'relative', aspectRatio: '16/10', overflow: 'hidden', borderBottom: '1px solid rgba(248,244,239,0.08)', background: C.navy2 }}>
+      <${M.img} src=${item.shot} alt=${item.name + ' — real product screenshot'} loading="lazy"
+        animate=${{ scale: hover ? 1.05 : 1 }} transition=${{ duration: 0.5, ease: EASE }}
+        style=${{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
+      <div style=${{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, ' + C.ink + ' 2%, rgba(14,26,46,0.25) 40%, transparent 70%)', pointerEvents: 'none' }} />
+      <span style=${{ position: 'absolute', top: 12, left: 12, fontFamily: mono, fontSize: 10.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.9)', background: 'rgba(8,14,24,0.55)', backdropFilter: 'blur(4px)', border: '1px solid rgba(248,244,239,0.16)', borderRadius: 20, padding: '4px 10px' }}>live preview</span>
+    </div>`}
+    <div style=${{ padding: 24, position: 'relative' }}>
     <${M.div} animate=${{ opacity: hover ? 0.18 : 0.08 }} style=${{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, ' + item.accent + ' 0%, transparent 70%)' }} />
     <div style=${{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
       <div style=${{ width: 52, height: 52, borderRadius: 12, background: 'linear-gradient(135deg,' + item.accent + ' 0%, #17233A 150%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: mono, fontWeight: 800, fontSize: 17, color: C.cream, boxShadow: '0 8px 20px ' + item.accent + '55' }}>${item.initials}</div>
@@ -489,6 +575,7 @@ function WorkCard({ item, i, onOpen }) {
       <${M.div} animate=${{ x: hover ? 4 : 0 }} style=${{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: mono, fontSize: 13, fontWeight: 600, color: C.terra2 }}>
         View case study <span>→</span>
       <//>
+    </div>
     </div>
   <//>`;
 }
@@ -515,6 +602,10 @@ function ProjectModal({ item, onClose }) {
           </div>
         </div>
       </div>
+      ${item.shot && html`<div style=${{ position: 'relative', margin: '0', borderBottom: '1px solid rgba(248,244,239,0.08)', overflow: 'hidden', background: C.navy2 }}>
+        <img src=${item.shot} alt=${item.name + ' — real product screenshot'} style=${{ width: '100%', display: 'block' }} />
+        <span style=${{ position: 'absolute', bottom: 12, right: 12, fontFamily: mono, fontSize: 10.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(248,244,239,0.9)', background: 'rgba(8,14,24,0.6)', backdropFilter: 'blur(4px)', border: '1px solid rgba(248,244,239,0.16)', borderRadius: 20, padding: '4px 10px' }}>real screenshot</span>
+      </div>`}
       <div style=${{ padding: '24px 30px 30px' }}>
         <p style=${{ fontSize: 15.5, lineHeight: 1.7, color: 'rgba(248,244,239,0.78)', margin: '0 0 22px' }}>${item.detail}</p>
         <div style=${{ fontFamily: mono, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.terra2, marginBottom: 12 }}>What it does</div>
@@ -547,10 +638,10 @@ function Work() {
       <${Reveal} style=${{ marginBottom: 52 }}>
         <div style=${{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
           <div>
-            <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// 01. selected work</div>
-            <h2 style=${{ fontSize: 'clamp(28px,4vw,40px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>Projects built for real clients</h2>
+            <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 12 }}>// 02. selected work</div>
+            <h2 style=${{ fontSize: 'clamp(28px,4vw,40px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.cream }}>Real products, built end to end</h2>
           </div>
-          <p style=${{ maxWidth: 380, color: 'rgba(248,244,239,0.6)', fontSize: 15, lineHeight: 1.6, margin: 0 }}>Point-of-sale systems, automation agents, games and sites. Tap any card for the case study — each also has its own live microsite.</p>
+          <p style=${{ maxWidth: 380, color: 'rgba(248,244,239,0.6)', fontSize: 15, lineHeight: 1.6, margin: 0 }}>Point-of-sale systems, automation agents, games and sites — every card is a real, shipped product with its own live site. Tap for the case study and a real screenshot.</p>
         </div>
       <//>
       <div className="work-grid">
@@ -634,7 +725,7 @@ function About() {
         <//>
       <//>
       <${Reveal} delay=${0.1}>
-        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 16 }}>// 02. about</div>
+        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra2, marginBottom: 16 }}>// 03. about</div>
         <h2 style=${{ fontSize: 'clamp(26px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 22px', color: C.cream }}>A developer who ships the whole product</h2>
         <p style=${{ fontSize: 17, lineHeight: 1.7, color: 'rgba(248,244,239,0.75)', margin: '0 0 18px', maxWidth: 560 }}>I'm DB — I build software for small businesses and founders who need something working, not just wireframed. Point-of-sale systems, backend agents, games, and the sites that sell them.</p>
         <p style=${{ fontSize: 17, lineHeight: 1.7, color: 'rgba(248,244,239,0.75)', margin: 0, maxWidth: 560 }}>On-call for clients across the world, I take a project from a napkin sketch to a live product — design, code, and the handoff after launch.</p>
@@ -651,7 +742,7 @@ function Skills() {
     <${Aurora} items=${SOFT_AURORA_LIGHT} blur=${76} />
     <div className="wrap" style=${{ position: 'relative', zIndex: 1 }}>
       <${Reveal} style=${{ textAlign: 'center', marginBottom: 44 }}>
-        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>${'// 03. skills & tools'}</div>
+        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>${'// 04. skills & tools'}</div>
         <h2 style=${{ fontSize: 'clamp(26px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, color: C.navy2 }}>What I build with</h2>
       <//>
       <${M.div} variants=${container} initial="hidden" whileInView="show" viewport=${{ once: true, margin: '-40px' }}
@@ -702,7 +793,7 @@ function Contact() {
     <${Aurora} items=${SOFT_AURORA_LIGHT} blur=${72} />
     <${Reveal} className="wrap" style=${{ maxWidth: 660, position: 'relative', zIndex: 1 }}>
       <div style=${{ textAlign: 'center', marginBottom: 44 }}>
-        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>// 04. contact</div>
+        <div style=${{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.terra, marginBottom: 14 }}>// 05. contact</div>
         <h2 style=${{ fontSize: 'clamp(28px,3.6vw,36px)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 12px', color: C.navy2 }}>Let's build something</h2>
         <p style=${{ fontSize: 16, color: '#5B6472', margin: 0 }}>Send the form and it lands straight in my inbox — or reach me on WhatsApp / email. I reply within a day.</p>
       </div>
@@ -719,11 +810,13 @@ function Contact() {
         </div>
         <select required value=${f.type} onChange=${set('type')} style=${input}>
           <option value="">Project type</option>
-          <option>POS / restaurant system</option>
+          <option>POS / billing system</option>
           <option>Backend / automation agent</option>
+          <option>Web or mobile app</option>
           <option>Game</option>
-          <option>Personal or business website</option>
+          <option>Business website / landing page</option>
           <option>Social media handling</option>
+          <option>Support & maintenance</option>
           <option>Something else</option>
         </select>
         <textarea placeholder="Tell me about your project" rows="5" value=${f.msg} onChange=${set('msg')} style=${{ ...input, resize: 'vertical' }}></textarea>
@@ -1112,6 +1205,7 @@ function App() {
       <${Hero} />
       <${Marquee} />
       <${Stats} />
+      <${Services} />
       <${Work} />
       <${Testimonials} />
       <${About} />
