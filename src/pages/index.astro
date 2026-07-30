@@ -3,67 +3,51 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Compliance from '../components/Compliance.astro';
 import DemoCta from '../components/DemoCta.astro';
-import Bi from '../components/Bi.astro';
 
 const trust = ['Broast Al-Bahr', 'Sweet Cinnamon'];
 
 const pillars = [
   {
     label: 'Compliance',
-    labelAr: 'الامتثال',
     title: 'ZATCA Phase 2, handled',
-    titleAr: 'المرحلة الثانية من هيئة الزكاة، بلا عناء',
     body: "Every invoice is signed, QR-coded, and reported the moment it's printed. No spreadsheets, no manual uploads to Fatoora.",
-    bodyAr: 'كل فاتورة مُوقّعة ومزوّدة برمز QR ومُبلّغة لحظة طباعتها. لا جداول ولا رفع يدوي إلى منصة فاتورة.',
   },
   {
     label: 'Speed',
-    labelAr: 'السرعة',
     title: 'Built for the rush',
-    titleAr: 'مصمّم لأوقات الذروة',
     body: 'Order, ring up, and close a sale in seconds — on the same tablet or terminal your staff already knows how to use.',
-    bodyAr: 'اطلب واحسب وأغلق البيع في ثوانٍ — على نفس الجهاز اللوحي أو الطرفية التي يعرفها موظفوك.',
   },
   {
     label: 'Clarity',
-    labelAr: 'الوضوح',
     title: 'One number you can trust',
-    titleAr: 'رقم واحد تثق به',
     body: 'Daily closes, VAT breakdowns, and branch reports that reconcile to the riyal — every time.',
-    bodyAr: 'إقفالات يومية وتفصيل لضريبة القيمة المضافة وتقارير فروع تتطابق حتى الريال — في كل مرة.',
   },
 ];
 
 const businessTypes = [
-  { icon: '🍽️', name: 'Restaurants & cafés', nameAr: 'المطاعم والمقاهي', body: 'Dine-in, parcel and telephone orders with smart kitchen tickets and table flow.', bodyAr: 'طلبات محلية وسفري وهاتفية مع تذاكر مطبخ ذكية وإدارة للطاولات.' },
-  { icon: '🛒', name: 'Supermarkets & grocery', nameAr: 'الأسواق والبقالات', body: 'A barcode-first retail mode built for high-volume checkout and stock.', bodyAr: 'وضع تجزئة يعتمد على الباركود مصمّم للبيع السريع وإدارة المخزون.' },
-  { icon: '🏪', name: 'Retail & convenience', nameAr: 'المتاجر والتموينات', body: 'Fast counter billing for shops of any size, with inventory and daily closes.', bodyAr: 'فوترة سريعة على الكاشير لأي متجر، مع مخزون وإقفالات يومية.' },
-  { icon: '💊', name: 'Pharmacies', nameAr: 'الصيدليات', body: 'Compliant, itemised invoicing with bilingual receipts your customers can trust.', bodyAr: 'فوترة متوافقة ومفصّلة مع إيصالات ثنائية اللغة يثق بها عملاؤك.' },
-  { icon: '💈', name: 'Salons & services', nameAr: 'الصالونات والخدمات', body: 'Ring up services and products together, print a compliant bill in seconds.', bodyAr: 'احسب الخدمات والمنتجات معاً، واطبع فاتورة متوافقة في ثوانٍ.' },
-  { icon: '☁️', name: 'Cloud & multi-branch', nameAr: 'السحابة وتعدد الفروع', body: 'Run every branch under one account, with isolated data per VAT number.', bodyAr: 'أدر كل فروعك من حساب واحد، ببيانات معزولة لكل رقم ضريبي.' },
+  { icon: '🍽️', name: 'Restaurants & cafés', body: 'Dine-in, parcel and telephone orders with smart kitchen tickets and table flow.' },
+  { icon: '🛒', name: 'Supermarkets & grocery', body: 'A barcode-first retail mode built for high-volume checkout and stock.' },
+  { icon: '🏪', name: 'Retail & convenience', body: 'Fast counter billing for shops of any size, with inventory and daily closes.' },
+  { icon: '💊', name: 'Pharmacies', body: 'Compliant, itemised invoicing with bilingual receipts your customers can trust.' },
+  { icon: '💈', name: 'Salons & services', body: 'Ring up services and products together, print a compliant bill in seconds.' },
+  { icon: '☁️', name: 'Cloud & multi-branch', body: 'Run every branch under one account, with isolated data per VAT number.' },
 ];
 
 const steps = [
   {
     n: '01',
     title: 'Sign up in minutes',
-    titleAr: 'سجّل في دقائق',
     body: 'Create your account, add your business details and branches, and connect your printers — no installation, no on-site visit needed.',
-    bodyAr: 'أنشئ حسابك، وأضف بيانات منشأتك وفروعها، واربط طابعاتك — دون تثبيت ودون زيارة ميدانية.',
   },
   {
     n: '02',
     title: 'We handle ZATCA onboarding',
-    titleAr: 'نتولّى ربطك بهيئة الزكاة',
     body: 'Our automated Fatoora pipeline registers your devices and runs the full 7-step compliance onboarding for you. You supply one portal OTP — we do the rest.',
-    bodyAr: 'نظام فاتورة الآلي لدينا يسجّل أجهزتك ويُكمل خطوات الامتثال السبع نيابةً عنك. تزوّدنا برمز تحقق واحد من المنصة — ونتولّى الباقي.',
   },
   {
     n: '03',
     title: 'Start billing',
-    titleAr: 'ابدأ الفوترة',
     body: 'Print your first fully compliant invoice in under 10 minutes — signed, QR-coded and reported to ZATCA automatically, every time.',
-    bodyAr: 'اطبع أول فاتورة متوافقة تماماً في أقل من عشر دقائق — مُوقّعة ومزوّدة برمز QR ومُبلّغة لهيئة الزكاة تلقائياً، في كل مرة.',
   },
 ];
 
@@ -72,78 +56,53 @@ const steps = [
 const testimonials = [
   {
     quote: 'Setup took a day and every bill is compliant now. Closing the day went from an hour of reconciling to a couple of minutes.',
-    quoteAr: 'استغرق الإعداد يوماً واحداً، وكل فاتورة الآن متوافقة. صار إقفال اليوم يأخذ دقيقتين بدل ساعة من المطابقة.',
     name: 'Restaurant owner',
-    nameAr: 'صاحب مطعم',
     place: 'Makkah',
-    placeAr: 'مكة المكرمة',
   },
   {
     quote: 'The Manager Console lets me watch all my branches from my phone. I see today’s sales the moment they happen.',
-    quoteAr: 'لوحة المدير تتيح لي متابعة كل فروعي من جوالي. أرى مبيعات اليوم لحظة حدوثها.',
     name: 'Multi-branch owner',
-    nameAr: 'صاحب عدة فروع',
     place: 'Jeddah',
-    placeAr: 'جدة',
   },
   {
     quote: 'Barcode checkout is quick and the VAT is always right. Customers get a proper e-invoice on every sale.',
-    quoteAr: 'الدفع بالباركود سريع وضريبة القيمة المضافة صحيحة دائماً. يحصل العملاء على فاتورة إلكترونية سليمة في كل عملية.',
     name: 'Supermarket manager',
-    nameAr: 'مدير سوبر ماركت',
     place: 'Riyadh',
-    placeAr: 'الرياض',
   },
 ];
 
 const faqs = [
   {
     q: 'Is RestoPOS fully ZATCA Phase 2 compliant?',
-    qAr: 'هل ريستو بي أو إس متوافق تماماً مع المرحلة الثانية من هيئة الزكاة؟',
     a: 'Yes. Every invoice is cryptographically signed, QR-coded and reported to Fatoora in real time through a dedicated reporting queue — not end-of-day batches.',
-    aAr: 'نعم. كل فاتورة مُوقّعة تشفيرياً ومزوّدة برمز QR ومُبلّغة إلى منصة فاتورة فورياً عبر طابور إبلاغ مخصّص — وليس دفعات آخر اليوم.',
   },
   {
     q: 'How long does it take to get started?',
-    qAr: 'كم يستغرق البدء؟',
     a: 'Most businesses print their first compliant invoice within 10 minutes. Our automated onboarding handles the ZATCA and Fatoora device registration for you.',
-    aAr: 'معظم المنشآت تطبع أول فاتورة متوافقة خلال عشر دقائق. يتولّى نظام الربط الآلي لدينا تسجيل أجهزتك لدى هيئة الزكاة ومنصة فاتورة.',
   },
   {
     q: 'Do I need special hardware?',
-    qAr: 'هل أحتاج أجهزة خاصة؟',
     a: 'No. RestoPOS runs on the tablets you already have, with direct thermal printing (QZ Tray) and a native Windows desktop app for POS terminals.',
-    aAr: 'لا. يعمل ريستو بي أو إس على الأجهزة اللوحية التي لديك، مع طباعة حرارية مباشرة (QZ Tray) وتطبيق سطح مكتب ويندوز لطرفيات نقاط البيع.',
   },
   {
     q: 'Does it work for businesses other than restaurants?',
-    qAr: 'هل يعمل مع أعمال غير المطاعم؟',
     a: 'Yes. The same core runs restaurants, cafés, retail shops, supermarkets (barcode mode), pharmacies and service counters — same compliance, a rhythm tuned to how you sell.',
-    aAr: 'نعم. نفس النظام يدير المطاعم والمقاهي والمتاجر والأسواق (وضع الباركود) والصيدليات وكاونترات الخدمات — نفس الامتثال، بإيقاع يناسب طريقة بيعك.',
   },
   {
     q: 'Is everything bilingual?',
-    qAr: 'هل كل شيء ثنائي اللغة؟',
     a: 'Every screen, receipt and report is Arabic and English by default — not translated as an afterthought.',
-    aAr: 'كل شاشة وإيصال وتقرير بالعربية والإنجليزية افتراضياً — وليس ترجمة لاحقة.',
   },
   {
     q: 'Can I run more than one branch?',
-    qAr: 'هل يمكنني إدارة أكثر من فرع؟',
     a: 'Yes. Run every branch under one account with fully isolated data per VAT number, shared reporting and a single subscription.',
-    aAr: 'نعم. أدر كل فرع من حساب واحد ببيانات معزولة تماماً لكل رقم ضريبي، وتقارير مشتركة، واشتراك واحد.',
   },
   {
     q: 'What kind of support do I get?',
-    qAr: 'ما نوع الدعم الذي أحصل عليه؟',
     a: 'Live chat inside the admin panel on every plan, plus WhatsApp and email. We reply within a day.',
-    aAr: 'محادثة مباشرة داخل لوحة الإدارة في كل الباقات، إضافةً إلى واتساب والبريد الإلكتروني. نردّ خلال يوم.',
   },
   {
     q: 'Are there contracts or setup fees?',
-    qAr: 'هل هناك عقود أو رسوم إعداد؟',
     a: 'No setup fees and no per-invoice charges. Plans are billed monthly and you can cancel any time.',
-    aAr: 'لا رسوم إعداد ولا رسوم لكل فاتورة. الباقات شهرية ويمكنك الإلغاء في أي وقت.',
   },
 ];
 ---
@@ -156,7 +115,7 @@ const faqs = [
     <div
       class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 border-y border-hairline py-6"
     >
-      <span class="text-xs uppercase tracking-widest text-bone/40"><Bi en="Trusted by" ar="يثق بنا" /></span>
+      <span class="text-xs uppercase tracking-widest text-bone/40">Trusted by</span>
       <div class="flex flex-wrap gap-x-10 gap-y-3">
         {trust.map((name) => <span class="text-sm font-medium text-bone/60">{name}</span>)}
       </div>
@@ -170,25 +129,25 @@ const faqs = [
         <div class="font-mono text-display-md font-extrabold text-gold">
           <span data-count="15" data-suffix="%">0</span>
         </div>
-        <p class="mt-2 text-sm text-bone/55"><Bi en="VAT calculated automatically" ar="ضريبة القيمة المضافة تُحتسب تلقائياً" /></p>
+        <p class="mt-2 text-sm text-bone/55">VAT calculated automatically</p>
       </div>
       <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.08s">
         <div class="font-mono text-display-md font-extrabold text-gold">
           <span data-count="100" data-suffix="%">0</span>
         </div>
-        <p class="mt-2 text-sm text-bone/55"><Bi en="ZATCA Phase 2 compliant" ar="متوافق مع المرحلة الثانية لهيئة الزكاة" /></p>
+        <p class="mt-2 text-sm text-bone/55">ZATCA Phase 2 compliant</p>
       </div>
       <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.16s">
         <div class="font-mono text-display-md font-extrabold text-gold">
-          &lt;<span data-count="10" data-suffix="">0</span> <Bi en="min" ar="دقيقة" />
+          &lt;<span data-count="10" data-suffix="">0</span> min
         </div>
-        <p class="mt-2 text-sm text-bone/55"><Bi en="to your first invoice" ar="حتى أول فاتورة لك" /></p>
+        <p class="mt-2 text-sm text-bone/55">to your first invoice</p>
       </div>
       <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.24s">
         <div class="font-mono text-display-md font-extrabold text-gold">
           <span data-count="2" data-suffix="">0</span>
         </div>
-        <p class="mt-2 text-sm text-bone/55"><Bi en="businesses already live" ar="منشأة تعمل بالفعل" /></p>
+        <p class="mt-2 text-sm text-bone/55">businesses already live</p>
       </div>
     </div>
   </section>
@@ -196,10 +155,7 @@ const faqs = [
   <!-- Pillars -->
   <section class="mx-auto max-w-6xl px-6 py-28 md:px-8">
     <h2 class="max-w-xl text-balance text-display-lg font-bold text-bone" data-reveal>
-      <Bi
-        en="Three things a POS in Saudi Arabia has to get right."
-        ar="ثلاثة أمور يجب أن يتقنها نظام نقاط البيع في السعودية."
-      />
+      Three things a POS in Saudi Arabia has to get right.
     </h2>
     <div class="mt-16 grid gap-8 md:grid-cols-3">
       {
@@ -210,9 +166,9 @@ const faqs = [
               data-zoom-to="1.09"
               class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30"
             >
-              <span class="text-[11px] uppercase tracking-widest text-gold"><Bi en={p.label} ar={p.labelAr} /></span>
-              <h3 class="mt-4 text-xl font-semibold text-bone"><Bi en={p.title} ar={p.titleAr} /></h3>
-              <p class="mt-3 text-sm leading-relaxed text-bone/55"><Bi en={p.body} ar={p.bodyAr} /></p>
+              <span class="text-[11px] uppercase tracking-widest text-gold">{p.label}</span>
+              <h3 class="mt-4 text-xl font-semibold text-bone">{p.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-bone/55">{p.body}</p>
             </div>
           </div>
         ))
@@ -223,15 +179,14 @@ const faqs = [
   <!-- Built for every kind of business -->
   <section class="mx-auto max-w-6xl px-6 pb-4 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold"><Bi en="Who it's for" ar="لمن هذا النظام" /></p>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Who it's for</p>
       <h2 class="max-w-2xl text-balance text-display-lg font-bold text-bone">
-        <Bi en="One POS for your business — whatever you sell." ar="نظام واحد لأعمالك — مهما كان ما تبيعه." />
+        One POS for your business — whatever you sell.
       </h2>
       <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
-        <Bi
-          en="RestoPOS started in restaurants, but the same compliant, bilingual core now runs shops, supermarkets, pharmacies and service counters across Saudi Arabia. Same ZATCA reporting, same reports — a rhythm tuned to how you sell."
-          ar="بدأ ريستو بي أو إس في المطاعم، لكن النظام نفسه المتوافق وثنائي اللغة يدير الآن المتاجر والأسواق والصيدليات وكاونترات الخدمات في جميع أنحاء السعودية. نفس الإبلاغ لهيئة الزكاة، ونفس التقارير — بإيقاع يناسب طريقة بيعك."
-        />
+        RestoPOS started in restaurants, but the same compliant, bilingual core now runs shops,
+        supermarkets, pharmacies and service counters across Saudi Arabia. Same ZATCA reporting,
+        same reports — a rhythm tuned to how you sell.
       </p>
     </div>
 
@@ -241,8 +196,8 @@ const faqs = [
           <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
             <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
               <span class="text-2xl" aria-hidden="true">{b.icon}</span>
-              <h3 class="mt-4 font-semibold text-bone"><Bi en={b.name} ar={b.nameAr} /></h3>
-              <p class="mt-2 text-sm leading-relaxed text-bone/50"><Bi en={b.body} ar={b.bodyAr} /></p>
+              <h3 class="mt-4 font-semibold text-bone">{b.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-bone/50">{b.body}</p>
             </div>
           </div>
         ))
@@ -255,15 +210,13 @@ const faqs = [
   <!-- Up and running in 3 steps -->
   <section class="mx-auto max-w-6xl px-6 py-24 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold"><Bi en="Getting started" ar="ابدأ الآن" /></p>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Getting started</p>
       <h2 class="max-w-2xl text-balance text-display-md font-bold text-bone">
-        <Bi en="Up and running in three steps." ar="جاهز للعمل في ثلاث خطوات." />
+        Up and running in three steps.
       </h2>
       <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
-        <Bi
-          en="We do the compliance heavy lifting so you can get to your first invoice fast — no installation, no paperwork, no waiting."
-          ar="نتحمّل عبء الامتثال نيابةً عنك لتصل إلى أول فاتورة بسرعة — دون تثبيت ودون أوراق ودون انتظار."
-        />
+        We do the compliance heavy lifting so you can get to your first invoice fast — no
+        installation, no paperwork, no waiting.
       </p>
     </div>
 
@@ -279,8 +232,8 @@ const faqs = [
             <span class="flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">
               {s.n}
             </span>
-            <h3 class="mt-6 text-lg font-semibold text-bone"><Bi en={s.title} ar={s.titleAr} /></h3>
-            <p class="mt-2 max-w-xs text-sm leading-relaxed text-bone/55"><Bi en={s.body} ar={s.bodyAr} /></p>
+            <h3 class="mt-6 text-lg font-semibold text-bone">{s.title}</h3>
+            <p class="mt-2 max-w-xs text-sm leading-relaxed text-bone/55">{s.body}</p>
           </div>
         ))
       }
@@ -290,9 +243,9 @@ const faqs = [
   <!-- Testimonials (placeholder — replace with real customer quotes) -->
   <section class="mx-auto max-w-6xl px-6 py-8 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold"><Bi en="What owners say" ar="ماذا يقول أصحاب الأعمال" /></p>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">What owners say</p>
       <h2 class="max-w-2xl text-balance text-display-md font-bold text-bone">
-        <Bi en="Trusted at the till across Saudi Arabia." ar="موثوق عند الدفع في جميع أنحاء السعودية." />
+        Trusted at the till across Saudi Arabia.
       </h2>
     </div>
 
@@ -303,11 +256,11 @@ const faqs = [
             <figure class="ease-out-quad flex h-full flex-col rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
               <span aria-hidden="true" class="font-mono text-3xl leading-none text-gold/60">“</span>
               <blockquote class="mt-3 flex-1 text-sm leading-relaxed text-bone/75">
-                <Bi en={t.quote} ar={t.quoteAr} />
+                {t.quote}
               </blockquote>
               <figcaption class="mt-6 border-t border-hairline pt-4 text-sm">
-                <span class="font-semibold text-bone"><Bi en={t.name} ar={t.nameAr} /></span>
-                <span class="text-bone/40"> · <Bi en={t.place} ar={t.placeAr} /></span>
+                <span class="font-semibold text-bone">{t.name}</span>
+                <span class="text-bone/40"> · {t.place}</span>
               </figcaption>
             </figure>
           </div>
@@ -319,9 +272,9 @@ const faqs = [
   <!-- FAQ -->
   <section class="mx-auto max-w-3xl px-6 py-24 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold"><Bi en="FAQ" ar="الأسئلة الشائعة" /></p>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">FAQ</p>
       <h2 class="text-balance text-display-md font-bold text-bone">
-        <Bi en="Questions, answered." ar="أسئلتك، مُجابة." />
+        Questions, answered.
       </h2>
     </div>
 
@@ -333,8 +286,8 @@ const faqs = [
             style={`--reveal-delay: ${(i % 4) * 0.06}s`}
             class="group"
           >
-            <summary class="ease-out-quad flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-start font-medium text-bone transition-colors duration-300 hover:text-gold [&::-webkit-details-marker]:hidden">
-              <Bi en={f.q} ar={f.qAr} />
+            <summary class="ease-out-quad flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left font-medium text-bone transition-colors duration-300 hover:text-gold [&::-webkit-details-marker]:hidden">
+              {f.q}
               <span
                 aria-hidden="true"
                 class="ease-out-quad shrink-0 text-gold transition-transform duration-300 group-open:rotate-45"
@@ -342,7 +295,7 @@ const faqs = [
                 ＋
               </span>
             </summary>
-            <p class="pb-5 text-sm leading-relaxed text-bone/55"><Bi en={f.a} ar={f.aAr} /></p>
+            <p class="pb-5 text-sm leading-relaxed text-bone/55">{f.a}</p>
           </details>
         ))
       }

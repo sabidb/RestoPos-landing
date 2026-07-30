@@ -1,6 +1,5 @@
 ---
 import DashboardPreview from './DashboardPreview.astro';
-import Bi from './Bi.astro';
 import { APP_URL } from '../config';
 ---
 
@@ -21,39 +20,38 @@ import { APP_URL } from '../config';
 
   <div class="mx-auto max-w-4xl text-center">
     <p class="mb-6 text-[12px] uppercase tracking-[0.2em] text-gold">
-      <Bi en="Business billing, done quietly" ar="فوترة أعمالك، بهدوء تام" />
+      Business billing, done quietly
     </p>
     <h1 class="text-balance text-display-xl font-extrabold text-bone">
-      <Bi en="Every bill," ar="كل فاتورة،" /><br />
+      Every bill,<br />
       <span class="bilingual" data-bilingual>
         <span data-lang="ar" lang="ar">متوافقة تماماً</span>
         <span data-lang="en" aria-hidden="true">fully compliant</span>
       </span><span class="text-gold">.</span>
     </h1>
     <p class="mx-auto mt-8 max-w-lg text-balance text-lg leading-relaxed text-bone/60">
-      <Bi
-        en="RestoPOS is ZATCA Phase 2-certified point of sale for your business — restaurants, cafés, retail shops, supermarkets, salons and pharmacies — taking every sale from the till to the Fatoora portal, without the paperwork in between."
-        ar="ريستو بي أو إس نظام نقاط بيع معتمد للمرحلة الثانية من هيئة الزكاة والضريبة والجمارك، لكل أعمالك — المطاعم والمقاهي والمتاجر والأسواق والصالونات والصيدليات — يأخذ كل عملية بيع من الكاشير إلى منصة فاتورة دون أي أوراق بينهما."
-      />
+      RestoPOS is ZATCA Phase 2-certified point of sale for your business — restaurants, cafés,
+      retail shops, supermarkets, salons and pharmacies — taking every sale from the till to the
+      Fatoora portal, without the paperwork in between.
     </p>
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
       <a
         href={APP_URL}
         class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110"
       >
-        <Bi en="Register now" ar="سجّل الآن" />
+        Register now
       </a>
       <a
         href="/contact"
         class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50"
       >
-        <Bi en="Request a demo" ar="اطلب عرضاً توضيحياً" />
+        Request a demo
       </a>
       <a
         href="/features"
         class="ease-out-quad whitespace-nowrap px-2 py-3.5 text-sm font-medium text-bone/60 transition-colors duration-300 hover:text-bone"
       >
-        <Bi en="See how it works →" ar="شاهد كيف يعمل ←" />
+        See how it works →
       </a>
     </div>
   </div>

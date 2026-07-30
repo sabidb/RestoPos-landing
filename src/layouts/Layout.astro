@@ -28,22 +28,10 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Tajawal:wght@400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
-    <!-- Apply the saved language before paint so there's no flash of the
-         wrong language / direction. -->
-    <script is:inline>
-      try {
-        if (localStorage.getItem('restopos-lang') === 'ar') {
-          var h = document.documentElement;
-          h.classList.add('lang-ar');
-          h.setAttribute('dir', 'rtl');
-          h.setAttribute('lang', 'ar');
-        }
-      } catch (e) {}
-    </script>
   </head>
   <body class="flex min-h-screen flex-col">
     <div id="scroll-progress" aria-hidden="true"></div>
@@ -54,23 +42,6 @@ const {
     <Footer />
 
     <script>
-      // Language toggle (English ⇄ Arabic). The saved choice is applied before
-      // paint by the inline script in <head>; here we wire the navbar buttons.
-      const LANG_KEY = 'restopos-lang';
-      const setLang = (l: string) => {
-        const ar = l === 'ar';
-        const h = document.documentElement;
-        h.classList.toggle('lang-ar', ar);
-        h.setAttribute('dir', ar ? 'rtl' : 'ltr');
-        h.setAttribute('lang', ar ? 'ar' : 'en');
-        try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
-      };
-      document.querySelectorAll('[data-lang-toggle]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          setLang(document.documentElement.classList.contains('lang-ar') ? 'en' : 'ar');
-        });
-      });
-
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // Reveal-on-scroll: [data-reveal] elements fade up when they enter view.

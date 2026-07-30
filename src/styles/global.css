@@ -265,30 +265,6 @@ textarea:focus-visible {
   text-wrap: balance;
 }
 
-/* ---------------------------------------------------------------------------
-   Bilingual (English / Arabic) — the <Bi> helper renders both languages; we
-   show whichever matches the active language. `html.lang-ar` is set (before
-   paint) by the no-flash script in Layout.astro, and toggled by the navbar
-   language button. In Arabic the whole document flips to RTL and picks up an
-   Arabic typeface, while numbers/monospace stay in JetBrains Mono.
---------------------------------------------------------------------------- */
-[data-ar] {
-  display: none;
-}
-html.lang-ar [data-en] {
-  display: none;
-}
-html.lang-ar [data-ar] {
-  display: inline;
-}
-html.lang-ar body {
-  font-family: "Tajawal", var(--font-sans);
-}
-html.lang-ar .font-mono,
-html.lang-ar [class*="font-mono"] {
-  font-family: var(--font-mono);
-}
-
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {

@@ -1,25 +1,18 @@
 ---
 import ZatcaReceipt from './ZatcaReceipt.jsx';
-import Bi from './Bi.astro';
 
 const points = [
   {
     title: 'ZATCA Phase 2, handled',
-    titleAr: 'المرحلة الثانية من هيئة الزكاة، بلا عناء',
     body: "Every invoice is cryptographically signed, QR-coded, and reported to Fatoora at the point of billing — through a dedicated reporting queue, not end-of-day batches.",
-    bodyAr: 'كل فاتورة مُوقّعة تشفيرياً ومزوّدة برمز QR ومُبلّغة إلى منصة فاتورة لحظة إصدارها — عبر طابور إبلاغ مخصّص، وليس دفعات آخر اليوم.',
   },
   {
     title: 'Cryptographic stamp on every receipt',
-    titleAr: 'ختم تشفيري على كل إيصال',
     body: 'Each simplified tax invoice carries a compliant QR code and cryptographic stamp, verifiable by any ZATCA scanner.',
-    bodyAr: 'كل فاتورة ضريبية مبسّطة تحمل رمز QR متوافقاً وختماً تشفيرياً يمكن التحقق منه بأي قارئ من هيئة الزكاة.',
   },
   {
     title: 'Arabic and English, natively',
-    titleAr: 'العربية والإنجليزية، بشكل أصيل',
     body: 'Every screen, receipt, and report is bilingual by default — not translated as an afterthought.',
-    bodyAr: 'كل شاشة وإيصال وتقرير ثنائي اللغة افتراضياً — وليس ترجمة لاحقة.',
   },
 ];
 ---
@@ -33,20 +26,18 @@ const points = [
 
   <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
     <div data-reveal>
-      <p class="text-[12px] uppercase tracking-[0.2em] text-gold"><Bi en="Compliance" ar="الامتثال" /></p>
+      <p class="text-[12px] uppercase tracking-[0.2em] text-gold">Compliance</p>
       <h2 class="mt-4 text-balance text-display-lg font-extrabold text-bone">
-        <Bi en="Built for ZATCA. Trusted at the till." ar="مبني لهيئة الزكاة. موثوق عند الدفع." />
+        Built for ZATCA.<br />Trusted at the till.
       </h2>
       <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
-        <Bi
-          en="Every order placed in RestoPOS becomes a fully compliant e-invoice — stamped, QR-coded and reported to ZATCA without your staff lifting a finger."
-          ar="كل طلب يُسجَّل في ريستو بي أو إس يتحوّل إلى فاتورة إلكترونية متوافقة تماماً — مختومة ومزوّدة برمز QR ومُبلّغة إلى هيئة الزكاة دون أن يحرّك موظفوك ساكناً."
-        />
+        Every order placed in RestoPOS becomes a fully compliant e-invoice — stamped, QR-coded and
+        reported to ZATCA without your staff lifting a finger.
       </p>
 
       <ul class="mt-10 space-y-6">
         {
-          points.map(({ title, titleAr, body, bodyAr }) => (
+          points.map(({ title, body }) => (
             <li class="flex gap-4">
               <span
                 aria-hidden="true"
@@ -55,8 +46,8 @@ const points = [
                 ✓
               </span>
               <div>
-                <h3 class="font-semibold text-bone"><Bi en={title} ar={titleAr} /></h3>
-                <p class="mt-1 text-sm leading-relaxed text-bone/50"><Bi en={body} ar={bodyAr} /></p>
+                <h3 class="font-semibold text-bone">{title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-bone/50">{body}</p>
               </div>
             </li>
           ))

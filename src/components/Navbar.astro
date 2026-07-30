@@ -1,13 +1,12 @@
 ---
 import LogoMark from './LogoMark.astro';
-import Bi from './Bi.astro';
 import { APP_URL } from '../config';
 
 const links = [
-  { href: '/', label: 'Home', ar: 'الرئيسية' },
-  { href: '/features', label: 'Features', ar: 'المميزات' },
-  { href: '/pricing', label: 'Pricing', ar: 'الأسعار' },
-  { href: '/contact', label: 'Contact', ar: 'تواصل معنا' },
+  { href: '/', label: 'Home' },
+  { href: '/features', label: 'Features' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -27,7 +26,7 @@ const isActive = (href: string) => path === href;
 
     <div class="hidden items-center gap-8 md:flex">
       {
-        links.map(({ href, label, ar }) => (
+        links.map(({ href, label }) => (
           <a
             href={href}
             class:list={[
@@ -36,7 +35,7 @@ const isActive = (href: string) => path === href;
             ]}
             aria-current={isActive(href) ? 'page' : undefined}
           >
-            <Bi en={label} ar={ar} />
+            {label}
           </a>
         ))
       }
@@ -45,25 +44,15 @@ const isActive = (href: string) => path === href;
         href={APP_URL}
         class="ease-out-quad text-[13px] tracking-wide text-bone/70 transition-colors duration-300 hover:text-bone"
       >
-        <Bi en="Sign in" ar="تسجيل الدخول" />
+        Sign in
       </a>
-
-      <!-- Language toggle — shows the language you can switch TO -->
-      <button
-        type="button"
-        data-lang-toggle
-        aria-label="Switch language"
-        class="ease-out-quad rounded-full border border-hairline px-3 py-1.5 text-[12px] font-medium tracking-wide text-bone/80 transition-colors duration-300 hover:border-gold/40 hover:text-gold"
-      >
-        <span data-en lang="ar">عربي</span><span data-ar>English</span>
-      </button>
 
       <!-- Book Demo — subtle glassmorphism, brand gold -->
       <a
         href="/contact"
         class="ease-out-quad rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-[13px] font-medium tracking-wide text-gold shadow-[inset_0_1px_0_rgba(220,192,138,0.15)] backdrop-blur-md transition-all duration-300 hover:bg-gold hover:text-charcoal"
       >
-        <Bi en="Book Demo" ar="احجز عرضاً" />
+        Book Demo
       </a>
 
       <!-- Try Now — the primary action: opens the app, where the free 14-day
@@ -73,7 +62,7 @@ const isActive = (href: string) => path === href;
         href={APP_URL}
         class="try-now ease-out-quad group inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2 text-[13px] font-semibold tracking-wide text-charcoal transition-transform duration-300 hover:-translate-y-0.5 hover:bg-gold-bright"
       >
-        <Bi en="Try Now" ar="جرّبه الآن" />
+        Try Now
         <span
           aria-hidden="true"
           class="ease-out-quad inline-block transition-transform duration-300 group-hover:translate-x-1"
@@ -97,27 +86,19 @@ const isActive = (href: string) => path === href;
   <div id="mobile-menu" hidden class="border-b border-hairline bg-charcoal md:hidden">
     <div class="flex flex-col gap-4 px-6 py-4">
       {
-        links.map(({ href, label, ar }) => (
+        links.map(({ href, label }) => (
           <a href={href} class="text-sm text-bone/80">
-            <Bi en={label} ar={ar} />
+            {label}
           </a>
         ))
       }
-      <a href={APP_URL} class="text-sm text-bone/80"><Bi en="Sign in" ar="تسجيل الدخول" /></a>
-      <button
-        type="button"
-        data-lang-toggle
-        aria-label="Switch language"
-        class="self-start rounded-full border border-hairline px-3 py-1.5 text-[12px] font-medium text-bone/80"
-      >
-        <span data-en lang="ar">عربي</span><span data-ar>English</span>
-      </button>
-      <a href="/contact" class="text-sm font-medium text-gold"><Bi en="Book Demo →" ar="احجز عرضاً ←" /></a>
+      <a href={APP_URL} class="text-sm text-bone/80">Sign in</a>
+      <a href="/contact" class="text-sm font-medium text-gold">Book Demo →</a>
       <a
         href={APP_URL}
         class="try-now mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold tracking-wide text-charcoal"
       >
-        <Bi en="Try Now" ar="جرّبه الآن" /> <span aria-hidden="true">→</span>
+        Try Now <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>
