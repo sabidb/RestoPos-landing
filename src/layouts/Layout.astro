@@ -90,6 +90,47 @@ const {
       // Scroll progress bar + parallax on [data-parallax] elements.
       const bar = document.getElementById('scroll-progress');
       const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+
+      // Scroll-linked zoom: each [data-zoom] (and .zoom-frame .zoom-media)
+      // scales with its position in the viewport — the "live zoom" effect.
+      const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
+      const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+      const zoomEls = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-zoom], .zoom-frame')
+      ).map((el) => ({
+        el,
+        target: (el.classList.contains('zoom-frame')
+          ? el.querySelector<HTMLElement>('.zoom-media')
+          : el) as HTMLElement | null,
+        mode: el.dataset.zoom || (el.classList.contains('zoom-frame') ? 'through' : 'in'),
+      }));
+
+      const applyZoom = () => {
+        const vh = window.innerHeight;
+        for (const { el, target, mode } of zoomEls) {
+          if (!target) continue;
+          const rect = el.getBoundingClientRect();
+          // p: 0 when the element's top hits the viewport bottom, 1 when its
+          // bottom hits the viewport top — how far it has crossed the screen.
+          const p = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
+          let scale = 1;
+          if (mode === 'through') {
+            const from = parseFloat(el.dataset.zoomFrom || '0.96');
+            const to = parseFloat(el.dataset.zoomTo || '1.08');
+            scale = from + (to - from) * p;
+          } else if (mode === 'focus') {
+            const peak = parseFloat(el.dataset.zoomTo || '1.06');
+            const tri = 1 - Math.abs(p - 0.5) * 2; // 0 → 1 → 0, peak centred
+            scale = 1 + (peak - 1) * easeOut(clamp(tri, 0, 1));
+          } else {
+            const from = parseFloat(el.dataset.zoomFrom || '0.9');
+            const to = parseFloat(el.dataset.zoomTo || '1');
+            scale = from + (to - from) * easeOut(clamp(p / 0.5, 0, 1));
+          }
+          target.style.transform = `scale(${scale.toFixed(4)})`;
+        }
+      };
+
       let ticking = false;
       const onScroll = () => {
         if (ticking) return;
@@ -103,11 +144,13 @@ const {
               const speed = parseFloat(el.dataset.parallax || '0.15');
               el.style.transform = `translateY(${window.scrollY * speed}px)`;
             }
+            applyZoom();
           }
           ticking = false;
         });
       };
       window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
     </script>
   </body>

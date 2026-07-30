@@ -198,6 +198,35 @@ textarea:focus-visible {
 }
 
 /* ---------------------------------------------------------------------------
+   Scroll-linked zoom — the live "zoom in / out" effect. Each [data-zoom]
+   element gets a scale() driven by its position in the viewport (computed in
+   Layout.astro on every scroll frame). Modes:
+     data-zoom="through"  cinematic zoom-in as it passes (hero mockup, images)
+     data-zoom="focus"    grows entering, shrinks leaving — peaks when centred
+     data-zoom="in"       gentle zoom-up as it enters, then rests at 1
+   Tune with data-zoom-from / data-zoom-to. For images, wrap in .zoom-frame
+   (fixed, overflow-hidden) around a .zoom-media child so the frame stays put
+   while the picture scales inside it.
+--------------------------------------------------------------------------- */
+[data-zoom] {
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.zoom-frame {
+  overflow: hidden;
+}
+
+.zoom-frame .zoom-media {
+  display: block;
+  width: 100%;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------------------
    Bilingual word — Arabic and English swap every 2.6s (script in Hero.astro).
 --------------------------------------------------------------------------- */
 .bilingual {
@@ -255,5 +284,9 @@ textarea:focus-visible {
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+  [data-zoom],
+  .zoom-frame .zoom-media {
+    transform: none !important;
   }
 }
