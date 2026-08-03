@@ -4,49 +4,102 @@ import { APP_URL } from '../config';
 
 const plans = [
   {
-    name: 'Starter',
+    name: 'Basic',
     price: '99',
     period: '/ month',
     tagline: 'For one location getting started with compliant billing.',
     features: [
-      '1 branch, up to 2 devices',
+      '1 branch · 2 devices · 2 users',
       'ZATCA Phase 2 invoicing — signed, QR-coded, auto-reported to Fatoora',
-      'Thermal & PDF receipts',
-      'KOT kitchen ticket printing',
-      'Close Day reports & Transactions tab',
+      'Thermal & PDF receipts · KOT kitchen tickets',
+      'Close Day reports & Transactions log',
+      '7-day reporting history',
       'Priority chat support',
     ],
     highlighted: false,
   },
   {
-    name: 'Growth',
+    name: 'Professional',
     price: '149',
     period: '/ month',
     tagline: 'For businesses growing past a single branch.',
     features: [
-      'Up to 3 branches, unlimited devices',
-      'Everything in Starter',
-      'Manager Console — live "today" counter, Close Day history, WhatsApp share, PDF export',
-      'ZATCA status banner',
-      'Device-level login approval & access control',
-      'Priority chat support',
+      'Up to 3 branches · unlimited devices · 5 users',
+      'Everything in Basic',
+      'Manager Console — live "today" counter, Close Day history, exports',
+      'Advanced reports · 30-day history · hourly sales patterns',
+      'Device login approval & access control',
+      'Custom / branded invoices',
     ],
     highlighted: true,
   },
   {
-    name: 'Pro',
+    name: 'Premium',
     price: '249',
     period: '/ month',
     tagline: 'For chains and supermarket groups that want it all.',
     features: [
-      'Unlimited branches',
-      'Everything in Growth',
-      'Supermarket / retail mode',
-      'Windows desktop app option',
-      'Dedicated ZATCA/Fatoora onboarding',
-      'Priority support with faster SLA',
+      'Unlimited branches & users',
+      'Everything in Professional',
+      'Supermarket / retail (barcode) mode',
+      'Windows desktop app (offline-capable)',
+      'Full analytics · 90+ day history · white-label branding',
+      '24/7 priority support · dedicated ZATCA onboarding',
     ],
     highlighted: false,
+  },
+];
+
+// Full feature matrix — every plan, side by side. Values: true = included,
+// false = not in this plan, string = the specific limit/level for that plan.
+const compare = [
+  {
+    group: 'Core & compliance',
+    rows: [
+      { label: 'ZATCA Phase 2 e-invoicing — signed, QR, auto-reported to Fatoora', basic: true, pro: true, prem: true },
+      { label: 'Thermal & PDF receipts · 4 bill styles', basic: true, pro: true, prem: true },
+      { label: 'KOT kitchen tickets (Dine-in / Parcel / Telephone)', basic: true, pro: true, prem: true },
+      { label: 'Close Day reconciliation & Transactions log', basic: true, pro: true, prem: true },
+      { label: 'Arabic & English — every screen and receipt', basic: true, pro: true, prem: true },
+    ],
+  },
+  {
+    group: 'Branches, devices & users',
+    rows: [
+      { label: 'Branches', basic: '1', pro: 'Up to 3', prem: 'Unlimited' },
+      { label: 'Devices (POS terminals)', basic: '2', pro: 'Unlimited', prem: 'Unlimited' },
+      { label: 'Users per branch', basic: '2', pro: '5', prem: 'Unlimited' },
+      { label: 'Device login approval & access control', basic: false, pro: true, prem: true },
+    ],
+  },
+  {
+    group: 'Reporting & analytics',
+    rows: [
+      { label: 'Sales & VAT reports', basic: 'Basic', pro: 'Advanced', prem: 'Full analytics' },
+      { label: 'Reporting history', basic: '7 days', pro: '30 days', prem: '90+ days' },
+      { label: 'Manager Console — live "today" counter & Close Day history', basic: false, pro: true, prem: true },
+      { label: 'Hourly sales patterns', basic: false, pro: true, prem: true },
+      { label: 'ZATCA reported / pending status banner', basic: false, pro: true, prem: true },
+      { label: 'WhatsApp share & PDF / CSV export', basic: false, pro: true, prem: true },
+      { label: 'Custom / branded invoices', basic: false, pro: true, prem: true },
+    ],
+  },
+  {
+    group: 'Advanced',
+    rows: [
+      { label: 'Supermarket / retail (barcode) mode', basic: false, pro: false, prem: true },
+      { label: 'Windows desktop app (offline-capable)', basic: false, pro: false, prem: true },
+      { label: 'White-label branding', basic: false, pro: false, prem: true },
+      { label: 'Dedicated ZATCA / Fatoora onboarding', basic: false, pro: false, prem: true },
+    ],
+  },
+  {
+    group: 'Support',
+    rows: [
+      { label: 'Priority chat inside the admin panel', basic: true, pro: true, prem: true },
+      { label: 'In-app support tickets', basic: true, pro: true, prem: true },
+      { label: 'Response time', basic: 'Next business day', pro: 'Same day', prem: '24/7 priority' },
+    ],
   },
 ];
 ---
@@ -60,8 +113,8 @@ const plans = [
           One price, no surprise invoices of our own.
         </h1>
         <p class="mx-auto mt-6 max-w-xl leading-relaxed text-bone/55">
-          Every plan includes ZATCA Phase 2 compliance. No setup fees, no per-invoice charges —
-          cancel any time.
+          Every plan includes ZATCA Phase 2 compliance and priority chat support. No setup
+          fees, no per-invoice charges — cancel any time.
         </p>
       </div>
     </section>
@@ -118,10 +171,69 @@ const plans = [
       }
     </section>
 
+    <!-- Full comparison — so customers see exactly what each plan unlocks -->
+    <section class="mx-auto mt-28 max-w-5xl px-6 md:px-8" data-reveal>
+      <h2 class="text-center text-2xl font-bold text-bone">Compare every feature</h2>
+      <p class="mx-auto mt-3 max-w-lg text-center text-sm leading-relaxed text-bone/50">
+        Everything each plan includes, side by side — so you know exactly what you're choosing.
+      </p>
+
+      <div class="mt-12 overflow-x-auto">
+        <table class="w-full min-w-[680px] border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-hairline">
+              <th class="py-4 pr-4 text-left font-medium text-bone/40"></th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-bone">
+                Basic<br /><span class="text-xs font-normal text-bone/40">SAR 99 / mo</span>
+              </th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-gold">
+                Professional<br /><span class="text-xs font-normal text-bone/40">SAR 149 / mo</span>
+              </th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-bone">
+                Premium<br /><span class="text-xs font-normal text-bone/40">SAR 249 / mo</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              compare.map((section) => (
+                <Fragment>
+                  <tr>
+                    <td
+                      colspan="4"
+                      class="pt-8 pb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-gold"
+                    >
+                      {section.group}
+                    </td>
+                  </tr>
+                  {section.rows.map((row) => (
+                    <tr class="border-b border-hairline/40">
+                      <td class="py-3 pr-4 text-bone/70">{row.label}</td>
+                      {[row.basic, row.pro, row.prem].map((v) => (
+                        <td class="px-4 py-3 text-center">
+                          {v === true ? (
+                            <span class="text-gold">✓</span>
+                          ) : v === false ? (
+                            <span class="text-bone/20">–</span>
+                          ) : (
+                            <span class="text-bone/70">{v}</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </Fragment>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="mx-auto mt-24 max-w-3xl px-6 text-center md:px-8">
       <p class="text-sm text-bone/40" data-reveal>
         All prices exclude 15% VAT. Billed monthly in Saudi riyals.<br />
-        Manager Console unlocks at Growth; Supermarket mode is a Pro feature.
+        Manager Console unlocks at Professional; Supermarket mode & the desktop app are Premium features.
       </p>
     </section>
   </div>
