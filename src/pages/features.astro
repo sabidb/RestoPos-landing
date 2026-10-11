@@ -24,38 +24,47 @@ const features = [
   {
     title: 'Multi-branch, one account',
     body: 'Run every branch under one tenant with fully isolated data per VAT number, shared reporting, and a single subscription.',
+    i: '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>',
   },
   {
     title: 'Thermal printing that just works',
     body: 'Direct QZ Tray integration — silent printing with no browser dialogs, auto-reconnect so printers never drop mid-shift, tuned for legibility on any thermal paper.',
+    i: '<rect x="6" y="9" width="12" height="7" rx="1"/><path d="M6 9V4h12v5M8 16v4h8v-4M16 12.5h.01"/>',
   },
   {
     title: 'Arabic and English, natively',
     body: 'Every screen, receipt, and report is bilingual by default — not translated as an afterthought.',
+    i: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
   },
   {
     title: 'Smart kitchen tickets',
     body: 'KOTs print the moment an order lands, auto-labelled Telephone, Parcel, or Dine-in based on order type.',
+    i: '<path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
   },
   {
     title: 'Receipt styles with live preview',
     body: 'Four preset bill styles — including bilingual Arabic/English layouts — previewed live and set in thermal-safe fonts.',
+    i: '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 13l9 5 9-5"/>',
   },
   {
     title: 'Windows desktop app',
     body: 'A native desktop wrapper with automatic updates, for businesses running Windows POS terminals instead of tablets.',
+    i: '<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/>',
   },
   {
     title: 'Close Day & Transactions',
     body: 'End-of-day archiving that reconciles to the riyal, next to a full transaction log you can audit any time.',
+    i: '<rect x="6" y="4" width="12" height="18" rx="1.5"/><path d="M9 4V3h6v1M9 10l1.5 1.5L13 9M9 15h5"/>',
   },
   {
     title: 'Supermarket mode',
     body: 'The same core switches into a barcode-first retail flow for grocery and convenience formats.',
+    i: '<path d="M4 6v12M7 6v12M10 6v12M13.5 6v12M16 6v12M19 6v12"/>',
   },
   {
     title: 'Support built in',
     body: 'Live chat inside the admin panel — talk to us without leaving the dashboard, on every plan’s admin tools.',
+    i: '<path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/>',
   },
 ];
 ---
@@ -111,8 +120,11 @@ const features = [
         {
           features.map((f, i) => (
             <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
-              <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
-                <h3 class="font-semibold text-bone">{f.title}</h3>
+              <div class="ease-out-quad group h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/5 text-gold transition-colors duration-500 group-hover:bg-gold/10" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={f.i}></svg>
+                </div>
+                <h3 class="mt-5 font-semibold text-bone">{f.title}</h3>
                 <p class="mt-3 text-sm leading-relaxed text-bone/50">{f.body}</p>
               </div>
             </div>
