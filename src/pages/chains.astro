@@ -1,0 +1,206 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DemoCta from '../components/DemoCta.astro';
+
+// Built-in, already-shipping multi-branch capabilities. No bespoke-dev claims:
+// every item here is something the product does today.
+const capabilities = [
+  {
+    title: 'One account, every branch',
+    body: 'Run all your outlets under a single tenant. Each branch keeps its own VAT number and fully isolated data, while you see them together — no separate logins to juggle.',
+  },
+  {
+    title: 'Consolidated reporting',
+    body: 'Sales, VAT collected and invoice counts roll up across every branch into one view, or drill into a single outlet. Compare branches side by side without exporting a thing.',
+  },
+  {
+    title: 'Per-branch Close Day',
+    body: 'Each branch closes its own shift and reconciles to the riyal against Fatoora. Head office sees every Close Day in one timeline, matched and variance-checked.',
+  },
+  {
+    title: 'Device control per outlet',
+    body: 'A default-deny model: every till at every branch logs in individually, and no new device bills a single riyal until an owner approves it — approvals you manage centrally.',
+  },
+  {
+    title: 'One subscription, many sites',
+    body: 'Add a branch without a new contract or a new install. Billing stays on a single subscription, so growth is a setting, not a procurement cycle.',
+  },
+  {
+    title: 'Same compliance, everywhere',
+    body: 'Every branch reports to Fatoora through the same ZATCA Phase 2-certified pipeline. Open an outlet in a new city and compliance is identical on day one.',
+  },
+];
+
+// The "complete service" side, stated truthfully as hands-on onboarding — not
+// custom software written per client.
+const service = [
+  {
+    n: '01',
+    title: 'We map your branches',
+    body: 'A call to understand how your outlets actually run — VAT numbers, menus, printers, roles — so the account is set up to match your operation, not a template.',
+  },
+  {
+    n: '02',
+    title: 'We onboard each branch to Fatoora',
+    body: 'Our automated 7-step ZATCA onboarding runs per outlet — device registration through production reporting. You supply one portal OTP per branch; we handle the rest.',
+  },
+  {
+    n: '03',
+    title: 'We train your teams',
+    body: 'Till staff, branch managers and head office each get walked through the parts they use — in Arabic or English — so go-live is a normal shift, not a scramble.',
+  },
+  {
+    n: '04',
+    title: 'We stay on the line',
+    body: 'Live chat sits inside the admin panel, and a named contact handles the questions that only come up once you are live across sites.',
+  },
+];
+---
+
+<Layout
+  title="For Chains & Multi-Branch — RestoPOS"
+  description="Run every branch of your restaurant or retail business on one ZATCA-compliant RestoPOS account — consolidated reporting, per-branch VAT isolation, central device control, and hands-on onboarding for every outlet."
+>
+  <div class="pb-8 pt-40">
+    <!-- Hero -->
+    <section class="mx-auto max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">For chains &amp; multi-branch</p>
+        <h1 class="max-w-3xl text-balance text-display-lg font-extrabold text-bone">
+          Run the whole chain from one screen.
+        </h1>
+        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+          Two branches or twenty, RestoPOS runs them on one account — each outlet with its own VAT
+          number and isolated data, all rolling up into one compliant view. And we set every branch
+          up for you, outlet by outlet, so going multi-site is a decision, not a project.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a
+            href="/contact"
+            class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110"
+          >
+            Talk to our team
+          </a>
+          <a
+            href="/features"
+            class="ease-out-quad whitespace-nowrap px-2 py-3.5 text-sm font-medium text-bone/60 transition-colors duration-300 hover:text-bone"
+          >
+            See all features →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- All-branches dashboard mock -->
+    <section class="mx-auto mt-20 max-w-5xl px-6 md:px-8">
+      <div
+        data-reveal
+        class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/60 p-5 shadow-gold backdrop-blur-xl md:p-7"
+      >
+        <div class="flex items-center justify-between font-mono text-[11px] text-bone/40">
+          <span>TODAY · ALL BRANCHES</span>
+          <span class="text-leaf-bright">● LIVE</span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-4">
+          <span class="text-display-md font-semibold text-bone">SAR 148,920</span>
+          <span class="font-mono text-sm text-leaf-bright">+9.2%</span>
+        </div>
+        <div class="mt-6 grid gap-px overflow-hidden rounded-xl bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+          {
+            [
+              { b: 'Olaya', v: 'SAR 52,180', s: '342 inv', ok: true },
+              { b: 'Al Malqa', v: 'SAR 41,090', s: '268 inv', ok: true },
+              { b: 'Khobar', v: 'SAR 33,470', s: '211 inv', ok: true },
+              { b: 'Jeddah · Tahlia', v: 'SAR 22,180', s: '154 inv', ok: true },
+            ].map((x) => (
+              <div class="bg-charcoal p-4 font-mono text-[11px]">
+                <div class="flex items-center justify-between text-bone/40">
+                  <span>{x.b}</span>
+                  <span class="text-leaf-bright">●</span>
+                </div>
+                <p class="mt-2 text-base text-bone">{x.v}</p>
+                <div class="mt-1 flex items-center justify-between text-bone/50">
+                  <span>{x.s}</span>
+                  <span class="text-leaf-bright">Fatoora ✓</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Capability grid -->
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <h2 class="max-w-xl text-balance text-display-md font-bold text-bone" data-reveal>
+        Built for more than one location.
+      </h2>
+      <p class="mt-5 max-w-lg leading-relaxed text-bone/55" data-reveal>
+        Multi-branch isn't a bolt-on — it's how the product is built. Each outlet stays independent
+        where the law needs it to, and joined up where you need it to be.
+      </p>
+      <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {
+          capabilities.map((c, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
+              <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+                <h3 class="font-semibold text-bone">{c.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-bone/50">{c.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Complete service — honest "we set it up" section -->
+    <section class="relative mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Complete service</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">
+          We don't just hand you a login.
+        </h2>
+        <p class="mt-5 max-w-lg leading-relaxed text-bone/55">
+          Going multi-site has moving parts — a VAT number per branch, printers, staff, Fatoora
+          onboarding each outlet. We do that work with you, so every branch opens ready to bill.
+        </p>
+      </div>
+
+      <div
+        aria-hidden="true"
+        class="absolute left-[15px] mt-16 hidden h-[calc(100%-13rem)] w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent md:block md:left-1/2 md:-translate-x-1/2"
+      >
+      </div>
+      <div class="relative mt-14 grid gap-10 md:grid-cols-2 md:gap-x-16 md:gap-y-14">
+        {
+          service.map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 2) * 0.1}s`}>
+              <div class="flex gap-5">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">
+                  {s.n}
+                </span>
+                <div>
+                  <h3 class="text-lg font-semibold text-bone">{s.title}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-bone/55">{s.body}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Reassurance line -->
+    <section class="mx-auto mt-32 max-w-3xl px-6 text-center md:px-8">
+      <p class="text-balance text-xl leading-relaxed text-bone/70" data-reveal>
+        Every branch runs the same ZATCA Phase 2-certified core — so whether you have one outlet or
+        a dozen across the Kingdom, compliance is identical and your head office sees all of it at
+        once.
+      </p>
+    </section>
+
+    <div class="mt-32">
+      <DemoCta />
+    </div>
+  </div>
+</Layout>
