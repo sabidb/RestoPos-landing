@@ -5,16 +5,16 @@ import DashboardPreview from '../components/DashboardPreview.astro';
 import AppMock from '../components/AppMock.astro';
 import { APP_URL } from '../config';
 
-// Eight things we build. Icons are inline SVG (no emoji) for a cleaner B2B feel.
+// Eight things we build. Inline line-icons (no emoji) for a cleaner B2B feel.
 const build = [
-  { t: 'POS & Billing Solutions', d: 'ZATCA Phase 2 point of sale with signed, QR-coded invoices and Fatoora reporting.', href: '/features' },
-  { t: 'Custom iOS & Android Apps', d: 'Native mobile apps built around your brand and your operation.', href: '/custom-development' },
-  { t: 'Online Ordering Platforms', d: 'Your own branded delivery, pickup and dine-in ordering app.', href: '/ordering' },
-  { t: 'Restaurant Management', d: 'Menus, kitchen tickets, staff roles and daily closes in one system.', href: '/features' },
-  { t: 'Multi-Branch Systems', d: 'Run every branch under one account with per-branch VAT isolation.', href: '/chains' },
-  { t: 'Custom Admin Dashboards', d: 'Control panels and reporting built for how your business actually runs.', href: '/custom-development' },
-  { t: 'Business Websites', d: 'Fast, modern marketing sites and web apps for growing businesses.', href: '/custom-development' },
-  { t: 'API & Integrations', d: 'Connect RestoPOS or your systems to the tools you already use.', href: '/custom-development' },
+  { t: 'POS & Billing Solutions', d: 'ZATCA Phase 2 point of sale with signed, QR-coded invoices and Fatoora reporting.', href: '/features', i: '<path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8M8 12h8M8 16h5"/>' },
+  { t: 'Custom iOS & Android Apps', d: 'Native mobile apps built around your brand and your operation.', href: '/custom-development', i: '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/>' },
+  { t: 'Online Ordering Platforms', d: 'Your own branded delivery, pickup and dine-in ordering app.', href: '/ordering', i: '<path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/>' },
+  { t: 'Restaurant Management', d: 'Menus, kitchen tickets, staff roles and daily closes in one system.', href: '/features', i: '<rect x="6" y="4" width="12" height="18" rx="1.5"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>' },
+  { t: 'Multi-Branch Systems', d: 'Run every branch under one account with per-branch VAT isolation.', href: '/chains', i: '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>' },
+  { t: 'Custom Admin Dashboards', d: 'Control panels and reporting built for how your business actually runs.', href: '/custom-development', i: '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="4" rx="1"/><rect x="13" y="10" width="7" height="10" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/>' },
+  { t: 'Business Websites', d: 'Fast, modern marketing sites and web apps for growing businesses.', href: '/custom-development', i: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  { t: 'API & Integrations', d: 'Connect RestoPOS or your systems to the tools you already use.', href: '/custom-development', i: '<path d="M9.5 14.5l5-5"/><path d="M10 7l1-1a4 4 0 0 1 6 6l-1 1"/><path d="M14 17l-1 1a4 4 0 0 1-6-6l1-1"/>' },
 ];
 
 const why = [
@@ -169,8 +169,8 @@ const faqs = [
       {
         build.map((b, i) => (
           <a href={b.href} data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`} class="ease-out-quad group bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-gold/30 text-gold" aria-hidden="true">
-              <span class="h-2 w-2 rounded-sm bg-gold"></span>
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/5 text-gold transition-colors duration-500 group-hover:bg-gold/10" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={b.i}></svg>
             </div>
             <h3 class="mt-5 text-sm font-semibold text-bone">{b.t}</h3>
             <p class="mt-2 text-xs leading-relaxed text-bone/50">{b.d}</p>
