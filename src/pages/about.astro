@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DemoCta from '../components/DemoCta.astro';
+
+const values = [
+  { t: 'Built around real workflows', d: 'We design software to match how a business actually operates — then make it faster.' },
+  { t: 'Maintainable technology', d: 'We build software meant to last and to grow, not throwaway demos.' },
+  { t: 'Compliance taken seriously', d: 'ZATCA Phase 2 e-invoicing and careful data handling are part of how we build.' },
+  { t: 'A partner, not a vendor', d: 'We stay involved after launch — support, maintenance and new features as you grow.' },
+];
+---
+
+<Layout
+  title="About Us — RestoPOS"
+  description="RestoPOS is a business software and custom app development company — building the RestoPOS POS platform and tailored software for restaurants and growing businesses. Head office in Iritty, Kannur, Kerala, India."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-3xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">About us</p>
+        <h1 class="text-balance text-display-lg font-extrabold text-bone">Technology built around the business using it.</h1>
+      </div>
+      <div data-reveal style="--reveal-delay: 0.1s" class="mt-8 space-y-5 text-[15px] leading-relaxed text-bone/65">
+        <p>
+          RestoPOS is a business software company with two sides. We build and run the
+          <strong class="font-semibold text-bone/90">RestoPOS platform</strong> — a ZATCA Phase 2 point-of-sale
+          and billing system for restaurants, cafés, supermarkets, retail and service businesses. And
+          we build <strong class="font-semibold text-bone/90">custom software</strong> — mobile apps, ordering
+          systems, dashboards, websites and the backends behind them — for clients who need something
+          made for their exact operation.
+        </p>
+        <p>
+          The problem we solve is the same in both: businesses run on software that was never built
+          for how they actually work. Billing that doesn’t match local compliance. Ordering locked
+          inside an aggregator. Reports that don’t reconcile. We build technology that fits the
+          business instead of forcing the business to fit the technology.
+        </p>
+        <p>
+          Our approach is practical software engineering — understand the workflow, design the
+          experience, build it to scale, and support it after launch. We care about compliance,
+          clean interfaces and maintainable code, so what we ship keeps working as you grow.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-6xl px-6 md:px-8">
+      <div class="grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((v, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 4) * 0.07}s`} class="bg-charcoal p-7">
+              <h3 class="text-sm font-semibold text-bone">{v.t}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-bone/50">{v.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-6xl px-6 md:px-8">
+      <div data-reveal class="rounded-3xl border border-hairline bg-charcoal-soft/40 p-8 md:p-10">
+        <p class="text-[11px] uppercase tracking-widest text-gold">Head Office</p>
+        <p class="mt-3 text-xl font-semibold text-bone">Iritty, Kannur</p>
+        <p class="text-bone/60">Kerala, India</p>
+        <p class="mt-5 max-w-lg text-sm leading-relaxed text-bone/50">
+          Based in Kerala, we work with businesses locally and internationally — including
+          restaurants and retailers in Saudi Arabia, where our ZATCA Phase 2 compliance is built in.
+        </p>
+        <a href="/contact" class="ease-out-quad mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gold transition-all duration-300 hover:gap-3">Get in touch →</a>
+      </div>
+    </section>
+
+    <div class="mt-28">
+      <DemoCta />
+    </div>
+  </div>
+</Layout>

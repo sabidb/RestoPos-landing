@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const updated = 'October 2025';
+
+const sections = [
+  { h: 'About these terms', b: 'These terms apply to your use of this website, operated by RestoPOS (head office: Iritty, Kannur, Kerala, India). By using this website you agree to these terms.' },
+  { h: 'Use of the website', b: 'You may use this website to learn about our products and services and to contact us. You agree not to misuse it, attempt to disrupt it, or use it for any unlawful purpose.' },
+  { h: 'Products and services', b: 'Information on this website describes our RestoPOS platform and custom development services. Specific features, scope, timelines and pricing for any engagement are confirmed in a separate agreement or quotation.' },
+  { h: 'Enquiries and quotations', b: 'Submitting an enquiry or demo request does not create a contract. Any work we undertake is governed by a separate written agreement.' },
+  { h: 'Intellectual property', b: 'The RestoPOS name, logo, website content and design are owned by us or our licensors and may not be copied or reused without permission.' },
+  { h: 'Third-party services', b: 'Our contact options rely on third-party services such as WhatsApp and email providers, which operate under their own terms.' },
+  { h: 'Limitation of liability', b: 'This website is provided on an “as is” basis. To the extent permitted by law, we are not liable for any loss arising from your use of the website itself.' },
+  { h: 'Changes', b: 'We may update these terms from time to time. The latest version will always be available on this page.' },
+  { h: 'Contact', b: 'Questions about these terms can be sent to us through our contact page.' },
+];
+---
+
+<Layout title="Terms of Service — RestoPOS" description="The terms that apply to use of the RestoPOS website.">
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-3xl px-6 md:px-8">
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Legal</p>
+      <h1 class="text-balance text-display-lg font-extrabold text-bone">Terms of Service</h1>
+      <p class="mt-4 text-sm text-bone/40">Last updated: {updated}</p>
+      <div class="mt-12 space-y-10">
+        {
+          sections.map((s) => (
+            <div>
+              <h2 class="text-lg font-semibold text-bone">{s.h}</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-bone/60">{s.b}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-14 rounded-xl border border-hairline bg-charcoal-soft/40 p-5 text-xs leading-relaxed text-bone/40">
+        These are general terms provided for transparency. For legally binding terms, have them
+        reviewed by a qualified professional for your jurisdiction.
+      </p>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DemoCta from '../components/DemoCta.astro';
+
+const services = [
+  { t: 'Custom Android Apps', d: 'Native Android applications built around your brand and workflow.' },
+  { t: 'Custom iOS Apps', d: 'Native iPhone and iPad apps, published under your own name.' },
+  { t: 'Restaurant Ordering Apps', d: 'Branded delivery, pickup and dine-in ordering for your customers.' },
+  { t: 'Delivery & Pickup Systems', d: 'Order capture and fulfilment flows wired into your operation.' },
+  { t: 'Customer Mobile Apps', d: 'Loyalty, reordering and engagement apps for your regulars.' },
+  { t: 'Management Dashboards', d: 'Admin consoles and reporting built for how you actually run things.' },
+  { t: 'Kitchen Display Systems', d: 'Screen-based kitchen workflows that replace paper tickets.' },
+  { t: 'Driver Applications', d: 'Dispatch and delivery apps for your own fleet.' },
+  { t: 'Multi-Branch Systems', d: 'Central management with per-branch data and controls.' },
+  { t: 'Business Websites & Web Apps', d: 'Fast, modern marketing sites and full web applications.' },
+  { t: 'Backend & API Integration', d: 'APIs, data pipelines and connections to the tools you use.' },
+  { t: 'Workflow Automation', d: 'Cloud-based systems that remove manual, repetitive work.' },
+];
+
+const process = [
+  { n: '01', t: 'Discover', d: 'We learn your business, goals and requirements.' },
+  { n: '02', t: 'Design', d: 'We plan the experience, the architecture and the scope.' },
+  { n: '03', t: 'Develop', d: 'We build, integrate and test the software.' },
+  { n: '04', t: 'Launch & Support', d: 'We deploy, onboard your team and support you.' },
+];
+---
+
+<Layout
+  title="Custom Software Development — RestoPOS"
+  description="RestoPOS builds custom software — native iOS and Android apps, restaurant ordering and delivery systems, admin dashboards, websites, APIs and automation — tailored to your brand and workflow."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Custom software development</p>
+        <h1 class="max-w-3xl text-balance text-display-lg font-extrabold text-bone">
+          Software built for your business, not borrowed from someone else’s.
+        </h1>
+        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+          Beyond the RestoPOS platform, we design and build custom applications tailored to your
+          branding, your operating workflow and your commercial requirements — mobile apps, ordering
+          systems, dashboards, websites and the backends that power them.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="/contact" class="brand-gradient ease-out-quad rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">Discuss Your Project</a>
+          <a href="/our-work" class="ease-out-quad rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">See Our Work</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-24 max-w-6xl px-6 md:px-8">
+      <h2 class="max-w-lg text-balance text-display-md font-bold text-bone" data-reveal>What we develop.</h2>
+      <div class="mt-12 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.07}s`} class="ease-out-quad bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
+              <h3 class="text-sm font-semibold text-bone">{s.t}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-bone/50">{s.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-28 max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">How we work</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">From your idea to a working solution.</h2>
+      </div>
+      <div class="relative mt-14 grid gap-10 md:grid-cols-4 md:gap-6">
+        <div aria-hidden="true" class="absolute left-[15px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent md:left-0 md:right-0 md:top-[15px] md:bottom-auto md:h-px md:w-full md:bg-gradient-to-r"></div>
+        {
+          process.map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 0.1}s`} class="relative">
+              <span class="flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">{s.n}</span>
+              <h3 class="mt-6 text-lg font-semibold text-bone">{s.t}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-bone/55">{s.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="mt-28">
+      <DemoCta />
+    </div>
+  </div>
+</Layout>

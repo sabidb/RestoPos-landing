@@ -1,299 +1,289 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Compliance from '../components/Compliance.astro';
 import DemoCta from '../components/DemoCta.astro';
+import { APP_URL } from '../config';
 
-const trust = ['Broast Al-Bahr', 'Sweet Cinnamon'];
-
-const pillars = [
-  {
-    label: 'Compliance',
-    title: 'ZATCA Phase 2, handled',
-    body: "Every invoice is signed, QR-coded, and reported the moment it's printed. No spreadsheets, no manual uploads to Fatoora.",
-  },
-  {
-    label: 'Speed',
-    title: 'Built for the rush',
-    body: 'Order, ring up, and close a sale in seconds — on the same tablet or terminal your staff already knows how to use.',
-  },
-  {
-    label: 'Clarity',
-    title: 'One number you can trust',
-    body: 'Daily closes, VAT breakdowns, and branch reports that reconcile to the riyal — every time.',
-  },
+// Eight things we build. Icons are inline SVG (no emoji) for a cleaner B2B feel.
+const build = [
+  { t: 'POS & Billing Solutions', d: 'ZATCA Phase 2 point of sale with signed, QR-coded invoices and Fatoora reporting.', href: '/features' },
+  { t: 'Custom iOS & Android Apps', d: 'Native mobile apps built around your brand and your operation.', href: '/custom-development' },
+  { t: 'Online Ordering Platforms', d: 'Your own branded delivery, pickup and dine-in ordering app.', href: '/ordering' },
+  { t: 'Restaurant Management', d: 'Menus, kitchen tickets, staff roles and daily closes in one system.', href: '/features' },
+  { t: 'Multi-Branch Systems', d: 'Run every branch under one account with per-branch VAT isolation.', href: '/chains' },
+  { t: 'Custom Admin Dashboards', d: 'Control panels and reporting built for how your business actually runs.', href: '/custom-development' },
+  { t: 'Business Websites', d: 'Fast, modern marketing sites and web apps for growing businesses.', href: '/custom-development' },
+  { t: 'API & Integrations', d: 'Connect RestoPOS or your systems to the tools you already use.', href: '/custom-development' },
 ];
 
-const businessTypes = [
-  { icon: '🍽️', name: 'Restaurants & cafés', body: 'Dine-in, parcel and telephone orders with smart kitchen tickets and table flow.' },
-  { icon: '🛒', name: 'Supermarkets & grocery', body: 'A barcode-first retail mode built for high-volume checkout and stock.' },
-  { icon: '🏪', name: 'Retail & convenience', body: 'Fast counter billing for shops of any size, with inventory and daily closes.' },
-  { icon: '💊', name: 'Pharmacies', body: 'Compliant, itemised invoicing with bilingual receipts your customers can trust.' },
-  { icon: '💈', name: 'Salons & services', body: 'Ring up services and products together, print a compliant bill in seconds.' },
-  { icon: '☁️', name: 'Cloud & multi-branch', body: 'Run every branch under one account, with isolated data per VAT number.' },
+// Real projects DB has built — screenshots live in /public/shots.
+const work = [
+  { name: 'Baloot Al-Mamlaka', cat: 'Mobile game · Arabic RTL', img: '/shots/baloot.jpg', href: '/our-work' },
+  { name: 'Mathbro', cat: 'Education web app', img: '/shots/mathbro.jpg', href: '/our-work' },
+  { name: 'DB Agent', cat: 'AI product', img: '/shots/agent.jpg', href: '/our-work' },
 ];
 
-const steps = [
-  {
-    n: '01',
-    title: 'Sign up in minutes',
-    body: 'Create your account, add your business details and branches, and connect your printers — no installation, no on-site visit needed.',
-  },
-  {
-    n: '02',
-    title: 'We handle ZATCA onboarding',
-    body: 'Our automated Fatoora pipeline registers your devices and runs the full 7-step compliance onboarding for you. You supply one portal OTP — we do the rest.',
-  },
-  {
-    n: '03',
-    title: 'Start billing',
-    body: 'Print your first fully compliant invoice in under 10 minutes — signed, QR-coded and reported to ZATCA automatically, every time.',
-  },
+const why = [
+  { t: 'Software around your workflow', d: 'We design to how your business actually operates — not a template you have to bend to.' },
+  { t: 'Professional UI/UX', d: 'Clean, modern interfaces your staff and customers find easy to use.' },
+  { t: 'Scalable architecture', d: 'Built to grow with you — more branches, more users, more orders.' },
+  { t: 'Multi-branch where you need it', d: 'Central visibility with per-branch data isolation, built in.' },
+  { t: 'Secure engineering practices', d: 'Signed invoices, device-level access control, and careful data handling.' },
+  { t: 'Ongoing development & support', d: 'A technology partner for the long run — maintenance and new features as you grow.' },
 ];
 
-// PLACEHOLDER testimonials — swap these quotes and names for real customer
-// feedback before you publish. Attribution is intentionally generic for now.
-const testimonials = [
-  {
-    quote: 'Setup took a day and every bill is compliant now. Closing the day went from an hour of reconciling to a couple of minutes.',
-    name: 'Restaurant owner',
-    place: 'Makkah',
-  },
-  {
-    quote: 'The Manager Console lets me watch all my branches from my phone. I see today’s sales the moment they happen.',
-    name: 'Multi-branch owner',
-    place: 'Jeddah',
-  },
-  {
-    quote: 'Barcode checkout is quick and the VAT is always right. Customers get a proper e-invoice on every sale.',
-    name: 'Supermarket manager',
-    place: 'Riyadh',
-  },
+const industries = [
+  'Restaurants', 'Cafés', 'Broasted Chicken', 'Cloud Kitchens',
+  'Supermarkets', 'Retail', 'Multi-Branch Food', 'Service Businesses',
+];
+
+const process = [
+  { n: '01', t: 'Discover', d: 'We learn your business, goals and requirements before writing a line of code.' },
+  { n: '02', t: 'Design', d: 'We plan the solution, the user experience and the architecture.' },
+  { n: '03', t: 'Develop', d: 'We build, integrate and test the software your business needs.' },
+  { n: '04', t: 'Launch & Support', d: 'We deploy, onboard your team, and support you under an agreed plan.' },
 ];
 
 const faqs = [
-  {
-    q: 'Is RestoPOS fully ZATCA Phase 2 compliant?',
-    a: 'Yes. Every invoice is cryptographically signed, QR-coded and reported to Fatoora in real time through a dedicated reporting queue — not end-of-day batches.',
-  },
-  {
-    q: 'How long does it take to get started?',
-    a: 'Most businesses print their first compliant invoice within 10 minutes. Our automated onboarding handles the ZATCA and Fatoora device registration for you.',
-  },
-  {
-    q: 'Do I need special hardware?',
-    a: 'No. RestoPOS runs on the tablets you already have, with direct thermal printing (QZ Tray) and a native Windows desktop app for POS terminals.',
-  },
-  {
-    q: 'Does it work for businesses other than restaurants?',
-    a: 'Yes. The same core runs restaurants, cafés, retail shops, supermarkets (barcode mode), pharmacies and service counters — same compliance, a rhythm tuned to how you sell.',
-  },
-  {
-    q: 'Is everything bilingual?',
-    a: 'Every screen, receipt and report is Arabic and English by default — not translated as an afterthought.',
-  },
-  {
-    q: 'Can I run more than one branch?',
-    a: 'Yes. Run every branch under one account with fully isolated data per VAT number, shared reporting and a single subscription.',
-  },
-  {
-    q: 'What kind of support do I get?',
-    a: 'Live chat inside the admin panel on every plan, plus WhatsApp and email. We reply within a day.',
-  },
-  {
-    q: 'Are there contracts or setup fees?',
-    a: 'No setup fees and no per-invoice charges. Plans are billed monthly and you can cancel any time.',
-  },
+  { q: 'What is RestoPOS?', a: 'RestoPOS is a business management and point-of-sale platform — and a software studio. We offer a ready-to-use POS with ZATCA Phase 2 e-invoicing, and we also build custom mobile apps, ordering systems and business software tailored to each client.' },
+  { q: 'Do you develop customized mobile applications?', a: 'Yes. We build native iOS and Android apps — customer ordering apps, admin dashboards, and other business apps — designed around your brand and workflow.' },
+  { q: 'Can you develop apps for restaurants with multiple branches?', a: 'Yes. Multi-branch is built into the RestoPOS platform — one account, per-branch VAT isolation and consolidated reporting — and we can extend it for larger or custom operations.' },
+  { q: 'Does RestoPOS support ZATCA e-invoicing?', a: 'Yes. RestoPOS is ZATCA Phase 2-certified: invoices are cryptographically signed, QR-coded and reported to Fatoora.' },
+  { q: 'Can RestoPOS integrate with an existing ordering application?', a: 'Yes — integration with external ordering systems is supported, and we can build custom integrations where needed.' },
+  { q: 'Can you build both Android and iOS applications?', a: 'Yes, for both platforms, published under your own brand.' },
+  { q: 'How is custom software pricing calculated?', a: 'Custom work is quoted per project, based on scope and requirements. Share your idea on the contact page and we’ll prepare a tailored quotation.' },
+  { q: 'Do you provide ongoing maintenance and technical support?', a: 'Yes. We offer maintenance and ongoing development under agreed support plans, plus in-app live chat for the RestoPOS platform.' },
+  { q: 'How can I request a demo or quotation?', a: 'Use the Request a Demo button or the contact page — tell us about your business and what you need, and we’ll follow up on WhatsApp or by email.' },
 ];
 ---
 
-<Layout>
-  <Hero />
+<Layout
+  title="RestoPOS — Business Software & Custom App Development"
+  description="RestoPOS builds business management software and custom applications — ZATCA Phase 2 POS and billing, branded restaurant ordering apps, and tailored iOS, Android and web software for businesses in Saudi Arabia and beyond."
+>
+  <!-- ============================ HERO ============================ -->
+  <section class="relative overflow-x-clip px-6 pb-20 pt-36 md:px-8 md:pt-44">
+    <div aria-hidden="true" data-parallax="0.18" class="pointer-events-none absolute left-1/4 top-0 -z-10 h-[32rem] w-[40rem] -translate-x-1/2 rounded-full bg-leaf/[0.07] blur-[140px] will-change-transform"></div>
+    <div aria-hidden="true" data-parallax="-0.1" class="pointer-events-none absolute right-1/4 top-10 -z-10 h-[32rem] w-[40rem] translate-x-1/2 rounded-full bg-gold/[0.06] blur-[140px] will-change-transform"></div>
 
-  <!-- Trust bar -->
-  <div class="px-6 md:px-8" data-reveal>
-    <div
-      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 border-y border-hairline py-6"
-    >
-      <span class="text-xs uppercase tracking-widest text-bone/40">Trusted by</span>
-      <div class="flex flex-wrap gap-x-10 gap-y-3">
-        {trust.map((name) => <span class="text-sm font-medium text-bone/60">{name}</span>)}
+    <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
+      <div>
+        <p class="mb-6 text-[12px] uppercase tracking-[0.2em] text-gold">Business software &amp; custom development</p>
+        <h1 class="text-balance text-display-xl font-extrabold leading-[0.98] text-bone">
+          Powerful software.<br /><span class="text-gold">Built around your business.</span>
+        </h1>
+        <p class="mt-7 max-w-lg text-balance text-lg leading-relaxed text-bone/60">
+          From smart billing and restaurant management to fully customized mobile apps and digital
+          platforms, RestoPOS builds technology designed around how your business actually works.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="#divisions" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">
+            Explore Our Solutions
+          </a>
+          <a href="/contact" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">
+            Discuss Your Project
+          </a>
+        </div>
+        <div class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-xs text-bone/40">
+          <span>✓ ZATCA Phase 2-certified</span>
+          <span>✓ Bilingual Arabic &amp; English</span>
+          <span>✓ iOS · Android · Web</span>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Stats band (count-up on scroll) -->
-  <section class="mx-auto max-w-6xl px-6 pt-24 md:px-8">
-    <div class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline md:grid-cols-4">
-      <div class="bg-charcoal px-6 py-8 text-center" data-reveal>
-        <div class="font-mono text-display-md font-extrabold text-gold">
-          <span data-count="15" data-suffix="%">0</span>
-        </div>
-        <p class="mt-2 text-sm text-bone/55">VAT calculated automatically</p>
-      </div>
-      <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.08s">
-        <div class="font-mono text-display-md font-extrabold text-gold">
-          <span data-count="100" data-suffix="%">0</span>
-        </div>
-        <p class="mt-2 text-sm text-bone/55">ZATCA Phase 2 compliant</p>
-      </div>
-      <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.16s">
-        <div class="font-mono text-display-md font-extrabold text-gold">
-          &lt;<span data-count="10" data-suffix="">0</span> min
-        </div>
-        <p class="mt-2 text-sm text-bone/55">to your first invoice</p>
-      </div>
-      <div class="bg-charcoal px-6 py-8 text-center" data-reveal style="--reveal-delay: 0.24s">
-        <div class="font-mono text-display-md font-extrabold text-gold">
-          <span data-count="2" data-suffix="">0</span>
-        </div>
-        <p class="mt-2 text-sm text-bone/55">businesses already live</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pillars -->
-  <section class="mx-auto max-w-6xl px-6 py-28 md:px-8">
-    <h2 class="max-w-xl text-balance text-display-lg font-bold text-bone" data-reveal>
-      Three things a POS in Saudi Arabia has to get right.
-    </h2>
-    <div class="mt-16 grid gap-8 md:grid-cols-3">
-      {
-        pillars.map((p, i) => (
-          <div data-reveal style={`--reveal-delay: ${i * 0.1}s`}>
-            <div
-              data-zoom="focus"
-              data-zoom-to="1.09"
-              class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30"
-            >
-              <span class="text-[11px] uppercase tracking-widest text-gold">{p.label}</span>
-              <h3 class="mt-4 text-xl font-semibold text-bone">{p.title}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-bone/55">{p.body}</p>
-            </div>
+      <!-- Right: real product visuals (desktop + phone), floating -->
+      <div class="relative [perspective:1600px]">
+        <div class="animate-float">
+          <div data-tilt class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/80 p-2 shadow-gold backdrop-blur-xl">
+            <img src="/shots/restopos-features.jpg" width="2040" height="1230" loading="eager" decoding="async" alt="RestoPOS platform — features overview" class="rounded-xl" />
           </div>
-        ))
-      }
+        </div>
+        <!-- Phone: a real custom app we built -->
+        <div class="absolute -bottom-8 -left-4 w-32 rotate-[-6deg] sm:w-40 lg:-left-10">
+          <div class="light-sweep overflow-hidden rounded-[1.6rem] border border-hairline bg-charcoal-soft p-1.5 shadow-gold">
+            <img src="/shots/baloot.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="A custom mobile app built by RestoPOS" class="h-40 rounded-[1.2rem] object-cover object-top sm:h-52" />
+          </div>
+          <p class="mt-2 text-center font-mono text-[10px] text-bone/35">custom app</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Built for every kind of business -->
-  <section class="mx-auto max-w-6xl px-6 pb-4 md:px-8">
+  <!-- ===================== TWO DIVISIONS ===================== -->
+  <section id="divisions" class="mx-auto max-w-6xl scroll-mt-24 px-6 pt-28 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Who it's for</p>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">What we do</p>
       <h2 class="max-w-2xl text-balance text-display-lg font-bold text-bone">
-        One POS for your business — whatever you sell.
+        Technology solutions for every stage of your business.
       </h2>
-      <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
-        RestoPOS started in restaurants, but the same compliant, bilingual core now runs shops,
-        supermarkets, pharmacies and service counters across Saudi Arabia. Same ZATCA reporting,
-        same reports — a rhythm tuned to how you sell.
-      </p>
     </div>
 
-    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-      {
-        businessTypes.map((b, i) => (
-          <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
-            <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
-              <span class="text-2xl" aria-hidden="true">{b.icon}</span>
-              <h3 class="mt-4 font-semibold text-bone">{b.name}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-bone/50">{b.body}</p>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <Compliance />
-
-  <!-- Up and running in 3 steps -->
-  <section class="mx-auto max-w-6xl px-6 py-24 md:px-8">
-    <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Getting started</p>
-      <h2 class="max-w-2xl text-balance text-display-md font-bold text-bone">
-        Up and running in three steps.
-      </h2>
-      <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
-        We do the compliance heavy lifting so you can get to your first invoice fast — no
-        installation, no paperwork, no waiting.
-      </p>
-    </div>
-
-    <div class="relative mt-16 grid gap-10 md:grid-cols-3 md:gap-8">
-      <div
-        aria-hidden="true"
-        class="absolute left-[15px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent md:left-0 md:right-0 md:top-[15px] md:bottom-auto md:h-px md:w-full md:bg-gradient-to-r"
-      >
+    <div class="mt-14 grid gap-6 lg:grid-cols-2">
+      <!-- Card A -->
+      <div data-reveal class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
+        <div class="border-b border-hairline p-3">
+          <img src="/shots/restopos.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="RestoPOS platform" class="rounded-2xl" />
+        </div>
+        <div class="flex flex-1 flex-col p-8">
+          <span class="text-[11px] uppercase tracking-widest text-gold">RestoPOS Platform</span>
+          <h3 class="mt-3 text-xl font-semibold text-bone">Smart business management with RestoPOS</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone/55">
+            Simplify billing, manage operations, generate compliant invoices, and get clear
+            visibility into your business through one integrated platform.
+          </p>
+          <ul class="mt-5 flex flex-wrap gap-2 text-xs text-bone/60">
+            {['POS & billing', 'ZATCA e-invoicing', 'Reporting', 'Multi-branch'].map((x) => (
+              <li class="rounded-md border border-hairline px-2.5 py-1">{x}</li>
+            ))}
+          </ul>
+          <a href="/features" class="ease-out-quad mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-gold transition-transform duration-300 hover:gap-3">
+            Explore Platform →
+          </a>
+        </div>
       </div>
+
+      <!-- Card B -->
+      <div data-reveal style="--reveal-delay: 0.1s" class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
+        <div class="border-b border-hairline p-3">
+          <img src="/shots/mathbro.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="A custom application built by RestoPOS" class="rounded-2xl" />
+        </div>
+        <div class="flex flex-1 flex-col p-8">
+          <span class="text-[11px] uppercase tracking-widest text-gold">Custom Software Development</span>
+          <h3 class="mt-3 text-xl font-semibold text-bone">Custom software built for your business</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone/55">
+            From branded mobile apps to complex management platforms, we develop tailored software
+            designed to fit your exact operational requirements.
+          </p>
+          <ul class="mt-5 flex flex-wrap gap-2 text-xs text-bone/60">
+            {['iOS & Android', 'Web apps', 'Dashboards', 'Integrations'].map((x) => (
+              <li class="rounded-md border border-hairline px-2.5 py-1">{x}</li>
+            ))}
+          </ul>
+          <a href="/custom-development" class="ease-out-quad mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-gold transition-transform duration-300 hover:gap-3">
+            Explore Development Services →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT WE BUILD ===================== -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <h2 class="max-w-xl text-balance text-display-md font-bold text-bone" data-reveal>
+      Everything your business needs, powered by technology.
+    </h2>
+    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-4">
       {
-        steps.map((s, i) => (
-          <div data-reveal style={`--reveal-delay: ${i * 0.12}s`} class="relative">
-            <span class="flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">
-              {s.n}
-            </span>
-            <h3 class="mt-6 text-lg font-semibold text-bone">{s.title}</h3>
-            <p class="mt-2 max-w-xs text-sm leading-relaxed text-bone/55">{s.body}</p>
-          </div>
+        build.map((b, i) => (
+          <a href={b.href} data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`} class="ease-out-quad group bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-gold/30 text-gold" aria-hidden="true">
+              <span class="h-2 w-2 rounded-sm bg-gold"></span>
+            </div>
+            <h3 class="mt-5 text-sm font-semibold text-bone">{b.t}</h3>
+            <p class="mt-2 text-xs leading-relaxed text-bone/50">{b.d}</p>
+            <span class="ease-out-quad mt-4 inline-block text-xs font-medium text-gold/80 transition-colors group-hover:text-gold">Learn more →</span>
+          </a>
         ))
       }
     </div>
   </section>
 
-  <!-- Testimonials (placeholder — replace with real customer quotes) -->
-  <section class="mx-auto max-w-6xl px-6 py-8 md:px-8">
+  <!-- ===================== OUR WORK TEASER ===================== -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
+      <div>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Our work</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">Software built for real businesses.</h2>
+      </div>
+      <a href="/our-work" class="ease-out-quad text-sm font-semibold text-gold hover:gap-3">View Our Work →</a>
+    </div>
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        work.map((w, i) => (
+          <a href={w.href} data-reveal style={`--reveal-delay: ${i * 0.08}s`} class="ease-out-quad group overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
+            <div class="overflow-hidden">
+              <img src={w.img} width="2040" height="1230" loading="lazy" decoding="async" alt={`${w.name} — ${w.cat}`} class="ease-out-quad aspect-[16/10] w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+            </div>
+            <div class="p-6">
+              <h3 class="font-semibold text-bone">{w.name}</h3>
+              <p class="mt-1 text-xs text-bone/45">{w.cat}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===================== WHY CHOOSE ===================== -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Why RestoPOS</p>
+        <h2 class="text-balance text-display-md font-bold text-bone">More than software. A technology partner for your business.</h2>
+        <p class="mt-6 max-w-sm leading-relaxed text-bone/55">
+          We build maintainable technology around real workflows — and stay with you as your
+          business grows.
+        </p>
+      </div>
+      <div class="grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2">
+        {
+          why.map((w, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 2) * 0.08}s`} class="bg-charcoal p-6">
+              <h3 class="text-sm font-semibold text-bone">{w.t}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-bone/50">{w.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INDUSTRIES ===================== -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <h2 class="text-balance text-display-md font-bold text-bone" data-reveal>Industries we serve.</h2>
+    <div class="mt-10 flex flex-wrap gap-3" data-reveal>
+      {
+        industries.map((name) => (
+          <a href="/features" class="ease-out-quad rounded-full border border-hairline bg-charcoal-soft/40 px-5 py-2.5 text-sm text-bone/70 transition-colors duration-300 hover:border-gold/40 hover:text-bone">
+            {name}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===================== HOW WE WORK ===================== -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
     <div data-reveal>
-      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">What owners say</p>
-      <h2 class="max-w-2xl text-balance text-display-md font-bold text-bone">
-        Trusted at the till across Saudi Arabia.
-      </h2>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">How we work</p>
+      <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">From your idea to a working solution.</h2>
     </div>
-
-    <div class="mt-14 grid gap-6 md:grid-cols-3">
+    <div class="relative mt-14 grid gap-10 md:grid-cols-4 md:gap-6">
+      <div aria-hidden="true" class="absolute left-[15px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent md:left-0 md:right-0 md:top-[15px] md:bottom-auto md:h-px md:w-full md:bg-gradient-to-r"></div>
       {
-        testimonials.map((t, i) => (
-          <div data-reveal style={`--reveal-delay: ${i * 0.1}s`}>
-            <figure class="ease-out-quad flex h-full flex-col rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
-              <span aria-hidden="true" class="font-mono text-3xl leading-none text-gold/60">“</span>
-              <blockquote class="mt-3 flex-1 text-sm leading-relaxed text-bone/75">
-                {t.quote}
-              </blockquote>
-              <figcaption class="mt-6 border-t border-hairline pt-4 text-sm">
-                <span class="font-semibold text-bone">{t.name}</span>
-                <span class="text-bone/40"> · {t.place}</span>
-              </figcaption>
-            </figure>
+        process.map((s, i) => (
+          <div data-reveal style={`--reveal-delay: ${i * 0.1}s`} class="relative">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">{s.n}</span>
+            <h3 class="mt-6 text-lg font-semibold text-bone">{s.t}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/55">{s.d}</p>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="mx-auto max-w-3xl px-6 py-24 md:px-8">
+  <!-- ===================== FAQ ===================== -->
+  <section class="mx-auto max-w-3xl px-6 pt-28 md:px-8">
     <div data-reveal>
       <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">FAQ</p>
-      <h2 class="text-balance text-display-md font-bold text-bone">
-        Questions, answered.
-      </h2>
+      <h2 class="text-balance text-display-md font-bold text-bone">Questions, answered.</h2>
     </div>
-
     <div class="mt-12 divide-y divide-hairline border-y border-hairline">
       {
         faqs.map((f, i) => (
-          <details
-            data-reveal
-            style={`--reveal-delay: ${(i % 4) * 0.06}s`}
-            class="group"
-          >
+          <details data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`} class="group">
             <summary class="ease-out-quad flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left font-medium text-bone transition-colors duration-300 hover:text-gold [&::-webkit-details-marker]:hidden">
               {f.q}
-              <span
-                aria-hidden="true"
-                class="ease-out-quad shrink-0 text-gold transition-transform duration-300 group-open:rotate-45"
-              >
-                ＋
-              </span>
+              <span aria-hidden="true" class="ease-out-quad shrink-0 text-gold transition-transform duration-300 group-open:rotate-45">＋</span>
             </summary>
             <p class="pb-5 text-sm leading-relaxed text-bone/55">{f.a}</p>
           </details>
@@ -302,5 +292,26 @@ const faqs = [
     </div>
   </section>
 
-  <DemoCta />
+  <!-- ===================== MAIN CTA ===================== -->
+  <section class="mx-auto mt-28 max-w-6xl px-6 md:px-8">
+    <div data-reveal class="light-sweep relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-b from-charcoal-soft to-charcoal px-8 py-16 text-center md:px-16">
+      <h2 class="mx-auto max-w-xl text-balance text-display-md font-bold text-bone">
+        Have a business idea? Let’s build the technology behind it.
+      </h2>
+      <p class="mx-auto mt-5 max-w-lg text-balance leading-relaxed text-bone/55">
+        Whether you need a ready-to-use platform or fully customized software, we’re ready to
+        understand your requirements.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href="/contact" class="brand-gradient ease-out-quad inline-block rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">
+          Request a Consultation
+        </a>
+        <a href="/contact" class="ease-out-quad inline-block rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">
+          Contact Our Team
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-8"></div>
 </Layout>
