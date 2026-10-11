@@ -1,20 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import DemoCta from '../components/DemoCta.astro';
+import AppMock from '../components/AppMock.astro';
 
+// Each service carries an inline line-icon (stroke = currentColor).
 const services = [
-  { t: 'Custom Android Apps', d: 'Native Android applications built around your brand and workflow.' },
-  { t: 'Custom iOS Apps', d: 'Native iPhone and iPad apps, published under your own name.' },
-  { t: 'Restaurant Ordering Apps', d: 'Branded delivery, pickup and dine-in ordering for your customers.' },
-  { t: 'Delivery & Pickup Systems', d: 'Order capture and fulfilment flows wired into your operation.' },
-  { t: 'Customer Mobile Apps', d: 'Loyalty, reordering and engagement apps for your regulars.' },
-  { t: 'Management Dashboards', d: 'Admin consoles and reporting built for how you actually run things.' },
-  { t: 'Kitchen Display Systems', d: 'Screen-based kitchen workflows that replace paper tickets.' },
-  { t: 'Driver Applications', d: 'Dispatch and delivery apps for your own fleet.' },
-  { t: 'Multi-Branch Systems', d: 'Central management with per-branch data and controls.' },
-  { t: 'Business Websites & Web Apps', d: 'Fast, modern marketing sites and full web applications.' },
-  { t: 'Backend & API Integration', d: 'APIs, data pipelines and connections to the tools you use.' },
-  { t: 'Workflow Automation', d: 'Cloud-based systems that remove manual, repetitive work.' },
+  { t: 'Custom Android Apps', d: 'Native Android applications built around your brand and workflow.', i: '<path d="M6 10a6 6 0 0 1 12 0v6a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z"/><path d="M7 10 5.5 7.5M17 10l1.5-2.5M9.5 7h.01M14.5 7h.01"/>' },
+  { t: 'Custom iOS Apps', d: 'Native iPhone and iPad apps, published under your own name.', i: '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/>' },
+  { t: 'Restaurant Ordering Apps', d: 'Branded delivery, pickup and dine-in ordering for your customers.', i: '<path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/>' },
+  { t: 'Delivery & Pickup Systems', d: 'Order capture and fulfilment flows wired into your operation.', i: '<path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/>' },
+  { t: 'Customer Mobile Apps', d: 'Loyalty, reordering and engagement apps for your regulars.', i: '<rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="9" r="2"/><path d="M8.5 15.5a3.5 3.5 0 0 1 7 0"/>' },
+  { t: 'Management Dashboards', d: 'Admin consoles and reporting built for how you actually run things.', i: '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="4" rx="1"/><rect x="13" y="10" width="7" height="10" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/>' },
+  { t: 'Kitchen Display Systems', d: 'Screen-based kitchen workflows that replace paper tickets.', i: '<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/>' },
+  { t: 'Driver Applications', d: 'Dispatch and delivery apps for your own fleet.', i: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M4.5 17l5-3.5M19.5 17l-5-3.5"/>' },
+  { t: 'Multi-Branch Systems', d: 'Central management with per-branch data and controls.', i: '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>' },
+  { t: 'Business Websites & Web Apps', d: 'Fast, modern marketing sites and full web applications.', i: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  { t: 'Backend & API Integration', d: 'APIs, data pipelines and connections to the tools you use.', i: '<path d="M9.5 14.5l5-5"/><path d="M10 7l1-1a4 4 0 0 1 6 6l-1 1"/><path d="M14 17l-1 1a4 4 0 0 1-6-6l1-1"/>' },
+  { t: 'Workflow Automation', d: 'Cloud-based systems that remove manual, repetitive work.', i: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>' },
 ];
 
 const process = [
@@ -26,35 +28,53 @@ const process = [
 ---
 
 <Layout
-  title="Custom Software Development — RestoPOS"
+  title="App Development — RestoPOS"
   description="RestoPOS builds custom software — native iOS and Android apps, restaurant ordering and delivery systems, admin dashboards, websites, APIs and automation — tailored to your brand and workflow."
 >
   <div class="pb-8 pt-40">
+    <!-- Hero with app mock -->
     <section class="mx-auto max-w-6xl px-6 md:px-8">
-      <div data-reveal>
-        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Custom software development</p>
-        <h1 class="max-w-3xl text-balance text-display-lg font-extrabold text-bone">
-          Software built for your business, not borrowed from someone else’s.
-        </h1>
-        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
-          Beyond the RestoPOS platform, we design and build custom applications tailored to your
-          branding, your operating workflow and your commercial requirements — mobile apps, ordering
-          systems, dashboards, websites and the backends that power them.
-        </p>
-        <div class="mt-9 flex flex-wrap items-center gap-4">
-          <a href="/contact" class="brand-gradient ease-out-quad rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">Discuss Your Project</a>
-          <a href="/ordering" class="ease-out-quad rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">See the Ordering App</a>
+      <div class="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+        <div data-reveal>
+          <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">App &amp; software development</p>
+          <h1 class="max-w-2xl text-balance text-display-lg font-extrabold text-bone">
+            Your app, built around your business — not borrowed from someone else’s.
+          </h1>
+          <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+            Beyond the RestoPOS platform, we design and build custom applications tailored to your
+            branding, your workflow and your commercial requirements — mobile apps, ordering systems,
+            dashboards, websites and the backends that power them.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a href="/contact" class="brand-gradient ease-out-quad rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">Discuss Your Project</a>
+            <a href="/ordering" class="ease-out-quad rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">See the Ordering App</a>
+          </div>
+          <div class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-xs text-bone/40">
+            <span>✓ iOS &amp; Android</span>
+            <span>✓ Published under your brand</span>
+            <span>✓ Built on the RestoPOS core</span>
+          </div>
+        </div>
+
+        <div class="mx-auto w-full max-w-[18rem] [perspective:1400px]" data-reveal style="--reveal-delay: 0.1s">
+          <div data-tilt class="light-sweep animate-float shadow-gold">
+            <AppMock />
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- What we develop -->
     <section class="mx-auto mt-24 max-w-6xl px-6 md:px-8">
       <h2 class="max-w-lg text-balance text-display-md font-bold text-bone" data-reveal>What we develop.</h2>
       <div class="mt-12 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
         {
           services.map((s, i) => (
-            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.07}s`} class="ease-out-quad bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
-              <h3 class="text-sm font-semibold text-bone">{s.t}</h3>
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.07}s`} class="ease-out-quad group bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/5 text-gold transition-colors duration-500 group-hover:bg-gold/10" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={s.i}></svg>
+              </div>
+              <h3 class="mt-5 text-sm font-semibold text-bone">{s.t}</h3>
               <p class="mt-2 text-xs leading-relaxed text-bone/50">{s.d}</p>
             </div>
           ))
@@ -62,6 +82,7 @@ const process = [
       </div>
     </section>
 
+    <!-- How we work -->
     <section class="mx-auto mt-28 max-w-6xl px-6 md:px-8">
       <div data-reveal>
         <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">How we work</p>
@@ -82,7 +103,10 @@ const process = [
     </section>
 
     <div class="mt-28">
-      <DemoCta />
+      <DemoCta
+        heading="Have an app or software idea? Let’s scope it together."
+        ctaLabel="Discuss Your Project"
+      />
     </div>
   </div>
 </Layout>
