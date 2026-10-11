@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import DemoCta from '../components/DemoCta.astro';
+import DashboardPreview from '../components/DashboardPreview.astro';
+import AppMock from '../components/AppMock.astro';
 import { APP_URL } from '../config';
 
 // Eight things we build. Icons are inline SVG (no emoji) for a cleaner B2B feel.
@@ -13,13 +15,6 @@ const build = [
   { t: 'Custom Admin Dashboards', d: 'Control panels and reporting built for how your business actually runs.', href: '/custom-development' },
   { t: 'Business Websites', d: 'Fast, modern marketing sites and web apps for growing businesses.', href: '/custom-development' },
   { t: 'API & Integrations', d: 'Connect RestoPOS or your systems to the tools you already use.', href: '/custom-development' },
-];
-
-// Real projects DB has built — screenshots live in /public/shots.
-const work = [
-  { name: 'Baloot Al-Mamlaka', cat: 'Mobile game · Arabic RTL', img: '/shots/baloot.jpg', href: '/our-work' },
-  { name: 'Mathbro', cat: 'Education web app', img: '/shots/mathbro.jpg', href: '/our-work' },
-  { name: 'DB Agent', cat: 'AI product', img: '/shots/agent.jpg', href: '/our-work' },
 ];
 
 const why = [
@@ -90,19 +85,18 @@ const faqs = [
         </div>
       </div>
 
-      <!-- Right: real product visuals (desktop + phone), floating -->
-      <div class="relative [perspective:1600px]">
+      <!-- Right: coded product mocks (POS console + branded app), floating -->
+      <div class="relative pb-10 pl-10 [perspective:1600px] sm:pb-0">
         <div class="animate-float">
           <div data-tilt class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/80 p-2 shadow-gold backdrop-blur-xl">
-            <img src="/shots/restopos-features.jpg" width="2040" height="1230" loading="eager" decoding="async" alt="RestoPOS platform — features overview" class="rounded-xl" />
+            <DashboardPreview />
           </div>
         </div>
-        <!-- Phone: a real custom app we built -->
-        <div class="absolute -bottom-8 -left-4 w-32 rotate-[-6deg] sm:w-40 lg:-left-10">
-          <div class="light-sweep overflow-hidden rounded-[1.6rem] border border-hairline bg-charcoal-soft p-1.5 shadow-gold">
-            <img src="/shots/baloot.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="A custom mobile app built by RestoPOS" class="h-40 rounded-[1.2rem] object-cover object-top sm:h-52" />
+        <!-- Phone: an illustrative branded ordering app -->
+        <div class="absolute -bottom-2 left-0 w-36 rotate-[-6deg] sm:w-44 lg:-left-6">
+          <div class="light-sweep shadow-gold">
+            <AppMock />
           </div>
-          <p class="mt-2 text-center font-mono text-[10px] text-bone/35">custom app</p>
         </div>
       </div>
     </div>
@@ -120,8 +114,8 @@ const faqs = [
     <div class="mt-14 grid gap-6 lg:grid-cols-2">
       <!-- Card A -->
       <div data-reveal class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
-        <div class="border-b border-hairline p-3">
-          <img src="/shots/restopos.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="RestoPOS platform" class="rounded-2xl" />
+        <div class="border-b border-hairline bg-charcoal p-4">
+          <DashboardPreview />
         </div>
         <div class="flex flex-1 flex-col p-8">
           <span class="text-[11px] uppercase tracking-widest text-gold">RestoPOS Platform</span>
@@ -143,8 +137,8 @@ const faqs = [
 
       <!-- Card B -->
       <div data-reveal style="--reveal-delay: 0.1s" class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
-        <div class="border-b border-hairline p-3">
-          <img src="/shots/mathbro.jpg" width="2040" height="1230" loading="lazy" decoding="async" alt="A custom application built by RestoPOS" class="rounded-2xl" />
+        <div class="flex items-center justify-center border-b border-hairline bg-charcoal p-6">
+          <div class="w-48"><AppMock /></div>
         </div>
         <div class="flex flex-1 flex-col p-8">
           <span class="text-[11px] uppercase tracking-widest text-gold">Custom Software Development</span>
@@ -181,32 +175,6 @@ const faqs = [
             <h3 class="mt-5 text-sm font-semibold text-bone">{b.t}</h3>
             <p class="mt-2 text-xs leading-relaxed text-bone/50">{b.d}</p>
             <span class="ease-out-quad mt-4 inline-block text-xs font-medium text-gold/80 transition-colors group-hover:text-gold">Learn more →</span>
-          </a>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- ===================== OUR WORK TEASER ===================== -->
-  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
-    <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
-      <div>
-        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Our work</p>
-        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">Software built for real businesses.</h2>
-      </div>
-      <a href="/our-work" class="ease-out-quad text-sm font-semibold text-gold hover:gap-3">View Our Work →</a>
-    </div>
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        work.map((w, i) => (
-          <a href={w.href} data-reveal style={`--reveal-delay: ${i * 0.08}s`} class="ease-out-quad group overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
-            <div class="overflow-hidden">
-              <img src={w.img} width="2040" height="1230" loading="lazy" decoding="async" alt={`${w.name} — ${w.cat}`} class="ease-out-quad aspect-[16/10] w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
-            </div>
-            <div class="p-6">
-              <h3 class="font-semibold text-bone">{w.name}</h3>
-              <p class="mt-1 text-xs text-bone/45">{w.cat}</p>
-            </div>
           </a>
         ))
       }
