@@ -1,0 +1,223 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DemoCta from '../components/DemoCta.astro';
+
+// Honest, anti-aggregator framing. This converts a restaurant's EXISTING
+// customers to direct ordering — it does not acquire strangers and does not
+// supply drivers. Every claim below is scoped to what the product does:
+// a branded native ordering app, orders only, wired into RestoPOS.
+
+const inApp = [
+  {
+    title: 'Your brand, front and centre',
+    body: 'Your name, logo and colours on the icon and every screen. Customers open your app — not a marketplace where you are one tile among a thousand.',
+  },
+  {
+    title: 'Delivery, pickup and dine-in',
+    body: 'Customers choose how they want it. Delivery takes an address, pickup and dine-in route straight to the kitchen — each as its own order type.',
+  },
+  {
+    title: 'Pay in the app',
+    body: 'Card and local payment methods at checkout, so the order is placed and paid before it reaches your counter.',
+  },
+  {
+    title: 'Full menu with photos',
+    body: 'Categories, item photos, modifiers and bilingual Arabic/English descriptions — the same menu your POS already knows.',
+  },
+  {
+    title: 'Order status, live',
+    body: 'Customers see accepted, preparing and ready, so your staff field fewer "is it ready?" calls during the rush.',
+  },
+  {
+    title: 'One-tap reorder',
+    body: 'Regulars reorder their usual in seconds — the behaviour that makes a direct app worth more than a one-off marketplace sale.',
+  },
+];
+
+// Truthful comparison. The honest-downside row ("Who brings the customers")
+// is included on purpose, framed without pretending the app generates demand.
+const compare = [
+  { label: 'Commission per order', agg: '~15–30%', own: 'None', ownGood: true },
+  { label: 'Whose brand customers see', agg: 'The aggregator', own: 'Yours', ownGood: true },
+  { label: 'Who owns the customer data', agg: 'The aggregator', own: 'You', ownGood: true },
+  { label: 'Who sets prices & offers', agg: "Within their rules", own: 'You', ownGood: true },
+  { label: 'Who brings the customers', agg: 'Aggregator’s marketplace', own: 'You do — your regulars', ownGood: false },
+  { label: 'Delivery', agg: 'Their fleet', own: 'Your drivers or pickup', ownGood: false },
+];
+---
+
+<Layout
+  title="Your Own Ordering App — RestoPOS"
+  description="RestoPOS gives each restaurant its own branded ordering app on the App Store and Google Play — delivery, pickup and dine-in ordering under your name, with no aggregator commission, wired straight into your ZATCA-compliant POS and kitchen."
+>
+  <div class="pb-8 pt-40">
+    <!-- Hero -->
+    <section class="mx-auto max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Your own ordering app</p>
+        <h1 class="max-w-3xl text-balance text-display-lg font-extrabold text-bone">
+          Stop renting your customers.<br />Own the app they order from.
+        </h1>
+        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+          We publish a complete ordering app under <em class="not-italic text-bone/80">your</em>
+          restaurant's name — on the App Store and Google Play. Your regulars order delivery,
+          pickup and dine-in directly from you, and every order lands in your RestoPOS kitchen and
+          bills itself to ZATCA. No marketplace commission. No sharing your customers with anyone.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a
+            href="/contact"
+            class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110"
+          >
+            Talk to our team
+          </a>
+          <a
+            href="/contact"
+            class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50"
+          >
+            See a live example
+          </a>
+        </div>
+        <!-- Honest framing up front, not buried -->
+        <p class="mt-6 max-w-xl text-sm leading-relaxed text-bone/40">
+          Straight talk: this isn't a marketplace. It doesn't send you new strangers the way
+          HungerStation or Keeta do — it turns the customers you already have into repeat, direct
+          orders you don't pay commission on.
+        </p>
+      </div>
+    </section>
+
+    <!-- Branded-app mock: two phones, one restaurant's identity -->
+    <section class="mx-auto mt-20 max-w-5xl px-6 md:px-8">
+      <div class="grid gap-5 sm:grid-cols-2" data-reveal>
+        {
+          [
+            { name: 'Broast House', accent: 'text-gold', badge: 'App Store' },
+            { name: 'Qahwa & Co.', accent: 'text-leaf-bright', badge: 'Google Play' },
+          ].map((r, i) => (
+            <div
+              class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/60 p-6 shadow-gold backdrop-blur-xl"
+              style={`--reveal-delay: ${i * 0.1}s`}
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class={`flex h-10 w-10 items-center justify-center rounded-xl border border-hairline bg-charcoal font-bold ${r.accent}`}>
+                    {r.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-bone">{r.name}</p>
+                    <p class="font-mono text-[10px] text-bone/40">{r.badge} · their name</p>
+                  </div>
+                </div>
+                <span class="rounded-md border border-leaf-bright/30 bg-leaf/10 px-2 py-0.5 font-mono text-[10px] text-leaf-bright">
+                  LIVE
+                </span>
+              </div>
+              <div class="mt-5 space-y-2 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]">
+                <div class="flex items-center justify-between text-bone/40">
+                  <span>ORDER · DELIVERY</span>
+                  <span class="text-leaf-bright">PAID</span>
+                </div>
+                <div class="flex justify-between text-bone/60"><span>2× House Broast</span><span class="text-bone">44.00</span></div>
+                <div class="flex justify-between text-bone/60"><span>1× Karak</span><span class="text-bone">6.00</span></div>
+                <div class="mt-1 flex justify-between border-t border-hairline pt-2 text-bone/60">
+                  <span>→ RestoPOS kitchen</span><span class="text-leaf-bright">PRINTED ✓</span>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Why direct vs aggregator -->
+    <section class="mx-auto mt-32 max-w-5xl px-6 md:px-8">
+      <h2 class="max-w-xl text-balance text-display-md font-bold text-bone" data-reveal>
+        Your app vs. an aggregator.
+      </h2>
+      <p class="mt-5 max-w-lg leading-relaxed text-bone/55" data-reveal>
+        Aggregators are good at one thing — reach. For the customers who already know you, every
+        order through them is margin you give away and a relationship you never own. Here's the
+        honest trade.
+      </p>
+      <div class="mt-12 overflow-hidden rounded-2xl border border-hairline" data-reveal>
+        <div class="grid grid-cols-3 border-b border-hairline bg-charcoal-soft/60 font-mono text-[11px] uppercase tracking-wide text-bone/40">
+          <div class="p-4"></div>
+          <div class="p-4 text-center">Aggregator</div>
+          <div class="p-4 text-center text-gold">Your own app</div>
+        </div>
+        {
+          compare.map((row) => (
+            <div class="grid grid-cols-3 border-b border-hairline text-sm last:border-b-0">
+              <div class="bg-charcoal p-4 text-bone/70">{row.label}</div>
+              <div class="bg-charcoal p-4 text-center text-bone/45">{row.agg}</div>
+              <div class={`bg-charcoal p-4 text-center font-medium ${row.ownGood ? 'text-leaf-bright' : 'text-bone/70'}`}>
+                {row.own}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-4 text-xs leading-relaxed text-bone/35" data-reveal>
+        Commission range reflects typical food-aggregator rates in the region; your actual aggregator
+        terms may differ.
+      </p>
+    </section>
+
+    <!-- What's in the app -->
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <h2 class="max-w-lg text-balance text-display-md font-bold text-bone" data-reveal>
+        Everything your customers need to order.
+      </h2>
+      <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {
+          inApp.map((f, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
+              <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+                <h3 class="font-semibold text-bone">{f.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-bone/50">{f.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- The loop: app → POS → kitchen → ZATCA -->
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">One connected system</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">
+          The order never leaves your system.
+        </h2>
+        <p class="mt-5 max-w-lg leading-relaxed text-bone/55">
+          Because the app is built on the same RestoPOS core, an order placed on a phone is the same
+          order your kitchen and your books already understand — no re-keying, no reconciliation
+          between two systems.
+        </p>
+      </div>
+      <div class="relative mt-14 grid gap-6 md:grid-cols-4">
+        {
+          [
+            { n: '01', t: 'Customer orders', b: 'In your branded app — delivery, pickup or dine-in, paid at checkout.' },
+            { n: '02', t: 'Kitchen gets the ticket', b: 'A KOT prints the moment the order lands, auto-labelled by order type.' },
+            { n: '03', t: 'Invoice to Fatoora', b: 'A ZATCA Phase 2 invoice generates and reports itself in the background.' },
+            { n: '04', t: 'You fulfil it', b: 'Your own driver or your counter — you keep delivery, and the margin.' },
+          ].map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+              <div class="h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-6">
+                <span class="font-mono text-sm text-gold">{s.n}</span>
+                <h3 class="mt-3 font-semibold text-bone">{s.t}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-bone/50">{s.b}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="mt-32">
+      <DemoCta />
+    </div>
+  </div>
+</Layout>
