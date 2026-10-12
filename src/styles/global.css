@@ -256,6 +256,14 @@ textarea:focus-visible {
   direction: ltr;
 }
 
+/* Block variant — lets a long bilingual phrase wrap and stay centered
+   (used in the hero headline). */
+.bilingual.is-block {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
 .bilingual > span {
   grid-area: 1 / 1;
   transition:

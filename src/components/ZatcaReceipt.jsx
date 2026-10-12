@@ -176,7 +176,7 @@ export default function ZatcaReceipt() {
       >
         <div className="mb-3 text-center">
           <p className="text-[13px] font-semibold tracking-widest">RESTOPOS</p>
-          <p className="text-[10px] text-charcoal/60">Broast Al-Bahr — Makkah Branch</p>
+          <p className="text-[10px] text-charcoal/60">Your Restaurant — Main Branch</p>
           <p className="text-[10px] text-charcoal/40">VAT No. 3007xxxxxx0003</p>
         </div>
 
