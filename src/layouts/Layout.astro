@@ -7,17 +7,30 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  lang?: 'en' | 'ar';
 }
 
 const {
   title = 'RestoPOS — Business Software & Custom App Development',
   description = 'RestoPOS builds business management software and custom applications — ZATCA Phase 2 POS and billing, branded restaurant ordering apps, and tailored iOS, Android and web software for businesses in Saudi Arabia and beyond.',
   image = '/og-image.png',
+  lang = 'en',
 } = Astro.props;
+
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
 // Canonical + absolute OG image URL (Astro.site = https://restopos.store).
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
+
+// hreflang alternates — map the current path to its EN / AR counterpart.
+const base = Astro.url.pathname.replace(/^\/ar(?=\/|$)/, '') || '/';
+const enPath = base;
+const arPath = base === '/' ? '/ar/' : `/ar${base}`;
+const enHref = Astro.site ? new URL(enPath, Astro.site).href : enPath;
+const arHref = Astro.site ? new URL(arPath, Astro.site).href : arPath;
+// URL to the other language, for the in-nav switcher.
+const altLangPath = lang === 'ar' ? enPath : arPath;
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -37,13 +50,16 @@ const orgSchema = {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} dir={dir} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="ar" href={arHref} />
+    <link rel="alternate" hreflang="x-default" href={enHref} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -65,7 +81,7 @@ const orgSchema = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
@@ -73,11 +89,11 @@ const orgSchema = {
   </head>
   <body class="flex min-h-screen flex-col">
     <div id="scroll-progress" aria-hidden="true"></div>
-    <Navbar />
+    <Navbar lang={lang} altLangPath={altLangPath} />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <script>
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

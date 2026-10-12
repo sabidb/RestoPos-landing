@@ -78,6 +78,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ---------------------------------------------------------------------------
+   Arabic / RTL — Arabic text uses IBM Plex Sans Arabic; Latin and monospace
+   stay as-is. dir="rtl" (set on <html> for /ar pages) handles flow.
+--------------------------------------------------------------------------- */
+[lang="ar"],
+[lang="ar"] .font-sans {
+  font-family: "IBM Plex Sans Arabic", "Inter", sans-serif;
+}
+/* Keep Latin numerals/codes crisp in monospace even inside Arabic pages. */
+[lang="ar"] .font-mono,
+[lang="ar"] [class*="font-mono"] {
+  font-family: var(--font-mono);
+}
+/* Arabic headings read better with a touch more line-height and no tight
+   Latin letter-spacing. */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
 body {
   background-color: var(--color-charcoal);
   color: var(--color-bone);

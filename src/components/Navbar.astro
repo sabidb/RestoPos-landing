@@ -2,28 +2,40 @@
 import LogoMark from './LogoMark.astro';
 import { APP_URL } from '../config';
 
-// Solutions dropdown — all routes already exist in the site.
+interface Props {
+  lang?: 'en' | 'ar';
+  altLangPath?: string;
+}
+const { lang = 'en', altLangPath = '/ar/' } = Astro.props;
+const ar = lang === 'ar';
+const p = ar ? '/ar' : ''; // route prefix
+
+const t = ar
+  ? { home: 'الرئيسية', solutions: 'الحلول', appDev: 'تطوير التطبيقات', about: 'من نحن', contact: 'تواصل معنا', login: 'دخول العملاء', demo: 'اطلب عرضاً تجريبياً', altLabel: 'English' }
+  : { home: 'Home', solutions: 'Solutions', appDev: 'App Development', about: 'About Us', contact: 'Contact', login: 'Client Login', demo: 'Request a Demo', altLabel: 'العربية' };
+
 const solutions = [
-  { href: '/features', label: 'RestoPOS Platform', desc: 'POS, billing & ZATCA e-invoicing' },
-  { href: '/ordering', label: 'Restaurant Ordering App', desc: 'Your own branded customer app' },
-  { href: '/chains', label: 'Multi-Branch Systems', desc: 'Run every branch from one account' },
-  { href: '/pricing', label: 'Pricing', desc: 'Plans & request a quote' },
+  { href: '/features', label: ar ? 'منصة RestoPOS' : 'RestoPOS Platform', desc: ar ? 'نقاط البيع والفوترة والفاتورة الإلكترونية' : 'POS, billing & ZATCA e-invoicing' },
+  { href: '/ordering', label: ar ? 'تطبيق طلبات المطعم' : 'Restaurant Ordering App', desc: ar ? 'تطبيقك الخاص بعلامتك التجارية' : 'Your own branded customer app' },
+  { href: '/chains', label: ar ? 'أنظمة متعددة الفروع' : 'Multi-Branch Systems', desc: ar ? 'أدِر كل فروعك من حساب واحد' : 'Run every branch from one account' },
+  { href: '/pricing', label: ar ? 'الأسعار' : 'Pricing', desc: ar ? 'الباقات وطلب عرض سعر' : 'Plans & request a quote' },
 ];
 
 const links = [
-  { href: '/custom-development', label: 'App Development' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/custom-development', label: t.appDev },
+  { href: '/about', label: t.about },
+  { href: '/contact', label: t.contact },
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => path === href;
+const isActive = (href: string) => path === (p + href).replace(/\/$/, '');
+const homeHref = p ? p + '/' : '/';
 const solutionsActive = solutions.some((s) => isActive(s.href));
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-charcoal/85 backdrop-blur-md">
   <nav aria-label="Main" class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-8">
-    <a href="/" class="group flex items-center gap-2.5" aria-label="RestoPOS home">
+    <a href={homeHref} class="group flex items-center gap-2.5" aria-label="RestoPOS home">
       <LogoMark class="ease-out-quad size-8 rounded-lg text-[15px] transition-transform duration-300 group-hover:scale-105" />
       <span class="text-[15px] font-semibold tracking-tight text-bone">
         Resto<span class="text-gold">POS</span>
@@ -31,35 +43,18 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
     </a>
 
     <div class="hidden items-center gap-7 lg:flex">
-      <a
-        href="/"
-        class:list={['ease-out-quad text-[13px] tracking-wide transition-colors duration-300', isActive('/') ? 'text-gold' : 'text-bone/70 hover:text-bone']}
-        aria-current={isActive('/') ? 'page' : undefined}
-      >Home</a>
+      <a href={homeHref} class:list={['ease-out-quad text-[13px] tracking-wide transition-colors duration-300', isActive('/') ? 'text-gold' : 'text-bone/70 hover:text-bone']} aria-current={isActive('/') ? 'page' : undefined}>{t.home}</a>
 
-      <!-- Solutions dropdown (hover + focus-within) -->
       <div class="group relative" data-dropdown>
-        <button
-          type="button"
-          class:list={['ease-out-quad flex items-center gap-1 text-[13px] tracking-wide transition-colors duration-300', solutionsActive ? 'text-gold' : 'text-bone/70 hover:text-bone']}
-          aria-haspopup="true"
-          aria-expanded="false"
-          data-dropdown-trigger
-        >
-          Solutions
+        <button type="button" class:list={['ease-out-quad flex items-center gap-1 text-[13px] tracking-wide transition-colors duration-300', solutionsActive ? 'text-gold' : 'text-bone/70 hover:text-bone']} aria-haspopup="true" aria-expanded="false" data-dropdown-trigger>
+          {t.solutions}
           <span aria-hidden="true" class="ease-out-quad text-[10px] transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180">▾</span>
         </button>
-        <div
-          class="ease-out-quad invisible absolute left-1/2 top-full z-50 w-80 -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
-          data-dropdown-menu
-        >
+        <div class="ease-out-quad invisible absolute top-full z-50 w-80 translate-y-1 pt-3 opacity-0 transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2" data-dropdown-menu>
           <div class="overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/95 p-2 shadow-gold backdrop-blur-xl">
             {
               solutions.map((s) => (
-                <a
-                  href={s.href}
-                  class="ease-out-quad block rounded-xl px-4 py-3 transition-colors duration-200 hover:bg-charcoal"
-                >
+                <a href={p + s.href} class="ease-out-quad block rounded-xl px-4 py-3 transition-colors duration-200 hover:bg-charcoal">
                   <span class="block text-sm font-medium text-bone">{s.label}</span>
                   <span class="block text-xs text-bone/45">{s.desc}</span>
                 </a>
@@ -69,38 +64,18 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
         </div>
       </div>
 
-      {
-        links.map(({ href, label }) => (
-          <a
-            href={href}
-            class:list={['ease-out-quad text-[13px] tracking-wide transition-colors duration-300', isActive(href) ? 'text-gold' : 'text-bone/70 hover:text-bone']}
-            aria-current={isActive(href) ? 'page' : undefined}
-          >
-            {label}
-          </a>
-        ))
-      }
+      {links.map(({ href, label }) => (
+        <a href={p + href} class:list={['ease-out-quad text-[13px] tracking-wide transition-colors duration-300', isActive(href) ? 'text-gold' : 'text-bone/70 hover:text-bone']} aria-current={isActive(href) ? 'page' : undefined}>{label}</a>
+      ))}
     </div>
 
     <div class="hidden items-center gap-5 lg:flex">
-      <a href={APP_URL} class="ease-out-quad text-[13px] tracking-wide text-bone/70 transition-colors duration-300 hover:text-bone">
-        Client Login
-      </a>
-      <a
-        href="/contact"
-        class="ease-out-quad rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-[13px] font-medium tracking-wide text-gold shadow-[inset_0_1px_0_rgba(220,192,138,0.15)] backdrop-blur-md transition-all duration-300 hover:bg-gold hover:text-charcoal"
-      >
-        Request a Demo
-      </a>
+      <a href={altLangPath} class="ease-out-quad rounded-md border border-hairline px-2.5 py-1 text-[12px] font-medium tracking-wide text-bone/70 transition-colors duration-300 hover:border-gold/40 hover:text-gold" hreflang={ar ? 'en' : 'ar'}>{t.altLabel}</a>
+      <a href={APP_URL} class="ease-out-quad text-[13px] tracking-wide text-bone/70 transition-colors duration-300 hover:text-bone">{t.login}</a>
+      <a href={p + '/contact'} class="ease-out-quad rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-[13px] font-medium tracking-wide text-gold shadow-[inset_0_1px_0_rgba(220,192,138,0.15)] backdrop-blur-md transition-all duration-300 hover:bg-gold hover:text-charcoal">{t.demo}</a>
     </div>
 
-    <button
-      id="menu-toggle"
-      class="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-bone lg:hidden"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
+    <button id="menu-toggle" class="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-bone lg:hidden" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
       <span class="menu-line ease-out-quad block h-px w-5 bg-bone transition-transform duration-300"></span>
       <span class="menu-line ease-out-quad block h-px w-5 bg-bone transition-opacity duration-300"></span>
       <span class="menu-line ease-out-quad block h-px w-5 bg-bone transition-transform duration-300"></span>
@@ -109,22 +84,20 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
 
   <div id="mobile-menu" hidden class="max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-hairline bg-charcoal lg:hidden">
     <div class="flex flex-col gap-1 px-6 py-5">
-      <a href="/" class="py-2 text-sm text-bone/80">Home</a>
-      <span class="mt-2 text-[11px] uppercase tracking-widest text-bone/40">Solutions</span>
+      <a href={homeHref} class="py-2 text-sm text-bone/80">{t.home}</a>
+      <span class="mt-2 text-[11px] uppercase tracking-widest text-bone/40">{t.solutions}</span>
       {solutions.map((s) => (
-        <a href={s.href} class="py-2 pl-3 text-sm text-bone/80">{s.label}</a>
+        <a href={p + s.href} class="py-2 ltr:pl-3 rtl:pr-3 text-sm text-bone/80">{s.label}</a>
       ))}
       <div class="my-1 h-px bg-hairline"></div>
       {links.map(({ href, label }) => (
-        <a href={href} class="py-2 text-sm text-bone/80">{label}</a>
+        <a href={p + href} class="py-2 text-sm text-bone/80">{label}</a>
       ))}
-      <a href={APP_URL} class="py-2 text-sm text-bone/80">Client Login</a>
-      <a
-        href="/contact"
-        class="mt-2 inline-flex items-center justify-center rounded-full border border-gold/40 bg-gold/10 px-5 py-2.5 text-sm font-medium text-gold"
-      >
-        Request a Demo
-      </a>
+      <a href={APP_URL} class="py-2 text-sm text-bone/80">{t.login}</a>
+      <div class="mt-2 flex items-center gap-3">
+        <a href={p + '/contact'} class="inline-flex items-center justify-center rounded-full border border-gold/40 bg-gold/10 px-5 py-2.5 text-sm font-medium text-gold">{t.demo}</a>
+        <a href={altLangPath} class="rounded-md border border-hairline px-3 py-2 text-sm text-bone/70" hreflang={ar ? 'en' : 'ar'}>{t.altLabel}</a>
+      </div>
     </div>
   </div>
 </header>
@@ -145,7 +118,6 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
     }
   });
 
-  // Reflect open state on the Solutions trigger for aria-expanded (desktop).
   for (const dd of document.querySelectorAll<HTMLElement>('[data-dropdown]')) {
     const trigger = dd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]');
     const set = (v: boolean) => trigger?.setAttribute('aria-expanded', String(v));

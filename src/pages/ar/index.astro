@@ -1,0 +1,233 @@
+---
+// Arabic homepage (RTL). Drafted Arabic — NEEDS NATIVE REVIEW before go-live.
+import Layout from '../../layouts/Layout.astro';
+import DashboardPreview from '../../components/DashboardPreview.astro';
+import AppMock from '../../components/AppMock.astro';
+
+const build = [
+  { t: 'حلول نقاط البيع والفوترة', d: 'نقاط بيع متوافقة مع المرحلة الثانية من ZATCA بفواتير موقّعة ورمز QR وإبلاغ لمنصة فاتورة.', href: '/ar/features', i: '<path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8M8 12h8M8 16h5"/>' },
+  { t: 'تطبيقات iOS و Android مخصصة', d: 'تطبيقات جوال أصلية مبنية حول علامتك التجارية وطريقة عملك.', href: '/ar/custom-development', i: '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/>' },
+  { t: 'منصات الطلب عبر الإنترنت', d: 'تطبيق الطلب الخاص بك للتوصيل والاستلام وتناول الطعام في المكان.', href: '/ar/ordering', i: '<path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/>' },
+  { t: 'إدارة المطاعم', d: 'القوائم وتذاكر المطبخ وأدوار الموظفين والإقفال اليومي في نظام واحد.', href: '/ar/features', i: '<rect x="6" y="4" width="12" height="18" rx="1.5"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/>' },
+  { t: 'أنظمة متعددة الفروع', d: 'أدِر كل فرع من حساب واحد مع عزل ضريبي لكل فرع.', href: '/ar/chains', i: '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>' },
+  { t: 'لوحات تحكم إدارية مخصصة', d: 'لوحات تحكم وتقارير مبنية لطريقة إدارتك الفعلية.', href: '/ar/custom-development', i: '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="4" rx="1"/><rect x="13" y="10" width="7" height="10" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/>' },
+  { t: 'مواقع الأعمال', d: 'مواقع تسويقية وتطبيقات ويب سريعة وحديثة للأعمال النامية.', href: '/ar/custom-development', i: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  { t: 'واجهات برمجية وتكاملات', d: 'اربط RestoPOS أو أنظمتك بالأدوات التي تستخدمها.', href: '/ar/custom-development', i: '<path d="M9.5 14.5l5-5"/><path d="M10 7l1-1a4 4 0 0 1 6 6l-1 1"/><path d="M14 17l-1 1a4 4 0 0 1-6-6l1-1"/>' },
+];
+
+const why = [
+  { t: 'برمجيات حول سير عملك', d: 'نصمم وفق طريقة عمل أعمالك فعلياً — لا قالب تضطر للتكيّف معه.' },
+  { t: 'تصميم واجهات احترافي', d: 'واجهات نظيفة وحديثة يسهل على موظفيك وعملائك استخدامها.' },
+  { t: 'بنية قابلة للتوسّع', d: 'مبنية لتنمو معك — فروع أكثر، مستخدمون أكثر، طلبات أكثر.' },
+  { t: 'تعدد الفروع عند الحاجة', d: 'رؤية مركزية مع عزل بيانات لكل فرع، مدمجة.' },
+  { t: 'ممارسات هندسية آمنة', d: 'فواتير موقّعة، وتحكم بالوصول على مستوى الجهاز، ومعالجة دقيقة للبيانات.' },
+  { t: 'تطوير ودعم مستمر', d: 'شريك تقني على المدى الطويل — صيانة وميزات جديدة مع نموك.' },
+];
+
+const industries = ['مطاعم', 'مقاهٍ', 'دجاج بروست', 'مطابخ سحابية', 'سوبرماركت', 'تجزئة', 'أعمال غذائية متعددة الفروع', 'أعمال خدمية'];
+
+const process = [
+  { n: '٠١', t: 'الاكتشاف', d: 'نفهم أعمالك وأهدافك ومتطلباتك قبل كتابة أي سطر برمجي.' },
+  { n: '٠٢', t: 'التصميم', d: 'نخطط للحل وتجربة المستخدم وبنية التطبيق.' },
+  { n: '٠٣', t: 'التطوير', d: 'نبني وندمج ونختبر البرمجيات المطلوبة.' },
+  { n: '٠٤', t: 'الإطلاق والدعم', d: 'ننشر، وندرّب فريقك، وندعمك وفق خطة متفق عليها.' },
+];
+
+const faqs = [
+  { q: 'ما هي RestoPOS؟', a: 'RestoPOS منصة لإدارة الأعمال ونقاط البيع — وأيضاً استوديو برمجيات. نقدّم نظام نقاط بيع جاهزاً مع فوترة إلكترونية متوافقة مع المرحلة الثانية من ZATCA، كما نبني تطبيقات جوال وأنظمة طلب وبرمجيات أعمال مخصصة لكل عميل.' },
+  { q: 'هل تطوّرون تطبيقات جوال مخصصة؟', a: 'نعم. نبني تطبيقات أصلية لنظامي iOS و Android — تطبيقات طلب للعملاء، ولوحات تحكم إدارية، وتطبيقات أعمال أخرى — مصممة حول علامتك التجارية وطريقة عملك.' },
+  { q: 'هل يمكنكم تطوير تطبيقات لمطاعم متعددة الفروع؟', a: 'نعم. تعدد الفروع مدمج في منصة RestoPOS — حساب واحد، وعزل ضريبي لكل فرع، وتقارير موحّدة — ويمكننا توسيعه للعمليات الأكبر أو المخصصة.' },
+  { q: 'هل تدعم RestoPOS الفوترة الإلكترونية ZATCA؟', a: 'نعم. RestoPOS معتمدة للمرحلة الثانية من ZATCA: الفواتير موقّعة تشفيرياً وتحمل رمز QR ويتم إبلاغها لمنصة فاتورة.' },
+  { q: 'هل يمكن أن تتكامل RestoPOS مع تطبيق طلب موجود؟', a: 'نعم — التكامل مع أنظمة الطلب الخارجية مدعوم، ويمكننا بناء تكاملات مخصصة عند الحاجة.' },
+  { q: 'هل تبنون تطبيقات لنظامي Android و iOS؟', a: 'نعم، لكلا النظامين، ومنشورة باسم علامتك التجارية.' },
+  { q: 'كيف تُحتسب أسعار البرمجيات المخصصة؟', a: 'يُسعّر العمل المخصص لكل مشروع بحسب النطاق. شاركنا فكرتك في صفحة التواصل وسنُعدّ عرض سعر مخصصاً.' },
+  { q: 'هل تقدمون صيانة ودعماً فنياً مستمراً؟', a: 'نعم. نقدّم صيانة وتطويراً مستمراً وفق خطط دعم متفق عليها، إضافة إلى دردشة مباشرة داخل منصة RestoPOS.' },
+  { q: 'كيف أطلب عرضاً تجريبياً أو عرض سعر؟', a: 'استخدم زر «اطلب عرضاً تجريبياً» أو صفحة التواصل — أخبرنا عن أعمالك وما تحتاجه، وسنتابع معك عبر واتساب أو البريد الإلكتروني.' },
+];
+---
+
+<Layout
+  lang="ar"
+  title="RestoPOS — برمجيات الأعمال وتطوير التطبيقات"
+  description="تبني RestoPOS برمجيات إدارة الأعمال وتطبيقات مخصصة — نقاط بيع وفوترة متوافقة مع المرحلة الثانية من ZATCA، وتطبيقات طلب بعلامتك التجارية، وبرمجيات iOS و Android وويب مصممة للأعمال في السعودية وخارجها."
+>
+  <!-- HERO -->
+  <section class="relative overflow-x-clip px-6 pb-20 pt-36 md:px-8 md:pt-44">
+    <div aria-hidden="true" data-parallax="0.18" class="pointer-events-none absolute right-1/4 top-0 -z-10 h-[32rem] w-[40rem] translate-x-1/2 rounded-full bg-leaf/[0.07] blur-[140px] will-change-transform"></div>
+    <div aria-hidden="true" data-parallax="-0.1" class="pointer-events-none absolute left-1/4 top-10 -z-10 h-[32rem] w-[40rem] -translate-x-1/2 rounded-full bg-gold/[0.06] blur-[140px] will-change-transform"></div>
+
+    <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
+      <div>
+        <p class="mb-6 text-[12px] uppercase tracking-[0.2em] text-gold">برمجيات الأعمال وتطوير التطبيقات</p>
+        <h1 class="text-balance text-display-xl font-extrabold text-bone">
+          برمجيات قوية.<br /><span class="text-gold">مبنية حول أعمالك.</span>
+        </h1>
+        <p class="mt-7 max-w-lg text-balance text-lg leading-relaxed text-bone/60">
+          من الفوترة الذكية وإدارة المطاعم إلى تطبيقات الجوال المخصصة والمنصات الرقمية، تبني RestoPOS
+          تقنية مصممة حول طريقة عمل أعمالك فعلياً.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="#divisions" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">استكشف حلولنا</a>
+          <a href="/ar/contact" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">ناقش مشروعك</a>
+        </div>
+        <div class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-xs text-bone/40">
+          <span>✓ متوافق مع المرحلة الثانية من ZATCA</span>
+          <span>✓ عربي وإنجليزي</span>
+          <span>✓ iOS · Android · ويب</span>
+        </div>
+      </div>
+
+      <div class="relative pb-10 pr-10 [perspective:1600px] sm:pb-0">
+        <div class="animate-float">
+          <div data-tilt class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/80 p-2 shadow-gold backdrop-blur-xl">
+            <DashboardPreview />
+          </div>
+        </div>
+        <div class="absolute -bottom-2 right-0 w-36 rotate-[6deg] sm:w-44 lg:-right-6">
+          <div class="light-sweep shadow-gold">
+            <AppMock />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TWO DIVISIONS -->
+  <section id="divisions" class="mx-auto max-w-6xl scroll-mt-24 px-6 pt-28 md:px-8">
+    <div data-reveal>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">ماذا نقدم</p>
+      <h2 class="max-w-2xl text-balance text-display-lg font-bold text-bone">حلول تقنية لكل مرحلة من مراحل أعمالك.</h2>
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-2">
+      <div data-reveal class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
+        <div class="border-b border-hairline bg-charcoal p-4"><DashboardPreview /></div>
+        <div class="flex flex-1 flex-col p-8">
+          <span class="text-[11px] uppercase tracking-widest text-gold">منصة RestoPOS</span>
+          <h3 class="mt-3 text-xl font-semibold text-bone">إدارة أعمال ذكية مع RestoPOS</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone/55">بسّط الفوترة، وأدِر العمليات، وأصدر فواتير متوافقة، واحصل على رؤية أوضح لأعمالك من خلال منصة واحدة متكاملة.</p>
+          <ul class="mt-5 flex flex-wrap gap-2 text-xs text-bone/60">
+            {['نقاط البيع والفوترة', 'الفاتورة الإلكترونية', 'التقارير', 'متعدد الفروع'].map((x) => (<li class="rounded-md border border-hairline px-2.5 py-1">{x}</li>))}
+          </ul>
+          <a href="/ar/features" class="ease-out-quad mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-gold transition-transform duration-300 hover:gap-3">استكشف المنصة ←</a>
+        </div>
+      </div>
+
+      <div data-reveal style="--reveal-delay: 0.1s" class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
+        <div class="flex items-center justify-center border-b border-hairline bg-charcoal p-6"><div class="w-48"><AppMock /></div></div>
+        <div class="flex flex-1 flex-col p-8">
+          <span class="text-[11px] uppercase tracking-widest text-gold">تطوير البرمجيات المخصصة</span>
+          <h3 class="mt-3 text-xl font-semibold text-bone">برمجيات مخصصة مبنية لأعمالك</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone/55">من تطبيقات الجوال بعلامتك التجارية إلى منصات الإدارة المعقدة، نطوّر برمجيات مصممة لتناسب متطلبات تشغيلك بدقة.</p>
+          <ul class="mt-5 flex flex-wrap gap-2 text-xs text-bone/60">
+            {['iOS و Android', 'تطبيقات ويب', 'لوحات تحكم', 'تكاملات'].map((x) => (<li class="rounded-md border border-hairline px-2.5 py-1">{x}</li>))}
+          </ul>
+          <a href="/ar/custom-development" class="ease-out-quad mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-gold transition-transform duration-300 hover:gap-3">استكشف خدمات التطوير ←</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE BUILD -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <h2 class="max-w-xl text-balance text-display-md font-bold text-bone" data-reveal>كل ما تحتاجه أعمالك، مدعوماً بالتقنية.</h2>
+    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+      {
+        build.map((b, i) => (
+          <a href={b.href} data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`} class="ease-out-quad group bg-charcoal p-7 transition-colors duration-500 hover:bg-charcoal-soft">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/5 text-gold transition-colors duration-500 group-hover:bg-gold/10" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={b.i}></svg>
+            </div>
+            <h3 class="mt-5 text-sm font-semibold text-bone">{b.t}</h3>
+            <p class="mt-2 text-xs leading-relaxed text-bone/50">{b.d}</p>
+            <span class="ease-out-quad mt-4 inline-block text-xs font-medium text-gold/80 transition-colors group-hover:text-gold">اعرف المزيد ←</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">لماذا RestoPOS</p>
+        <h2 class="text-balance text-display-md font-bold text-bone">أكثر من مجرد برمجيات. شريك تقني لأعمالك.</h2>
+        <p class="mt-6 max-w-sm leading-relaxed text-bone/55">نبني تقنية قابلة للصيانة حول سير عمل حقيقي — ونبقى معك مع نمو أعمالك.</p>
+      </div>
+      <div class="grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2">
+        {
+          why.map((w, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 2) * 0.08}s`} class="bg-charcoal p-6">
+              <h3 class="text-sm font-semibold text-bone">{w.t}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-bone/50">{w.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <h2 class="text-balance text-display-md font-bold text-bone" data-reveal>القطاعات التي نخدمها.</h2>
+    <div class="mt-10 flex flex-wrap gap-3" data-reveal>
+      {industries.map((name) => (<a href="/ar/features" class="ease-out-quad rounded-full border border-hairline bg-charcoal-soft/40 px-5 py-2.5 text-sm text-bone/70 transition-colors duration-300 hover:border-gold/40 hover:text-bone">{name}</a>))}
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section class="mx-auto max-w-6xl px-6 pt-28 md:px-8">
+    <div data-reveal>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">كيف نعمل</p>
+      <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">من فكرتك إلى حل يعمل.</h2>
+    </div>
+    <div class="relative mt-14 grid gap-10 md:grid-cols-4 md:gap-6">
+      <div aria-hidden="true" class="absolute top-4 bottom-4 hidden w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent md:bottom-auto md:top-[15px] md:h-px md:w-full md:bg-gradient-to-l ltr:left-[15px] md:ltr:left-0 md:ltr:right-0 rtl:right-[15px] md:rtl:right-0 md:rtl:left-0"></div>
+      {
+        process.map((s, i) => (
+          <div data-reveal style={`--reveal-delay: ${i * 0.1}s`} class="relative">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold">{s.n}</span>
+            <h3 class="mt-6 text-lg font-semibold text-bone">{s.t}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/55">{s.d}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mx-auto max-w-3xl px-6 pt-28 md:px-8">
+    <div data-reveal>
+      <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">الأسئلة الشائعة</p>
+      <h2 class="text-balance text-display-md font-bold text-bone">أسئلة، وإجاباتها.</h2>
+    </div>
+    <div class="mt-12 divide-y divide-hairline border-y border-hairline">
+      {
+        faqs.map((f, i) => (
+          <details data-reveal style={`--reveal-delay: ${(i % 4) * 0.06}s`} class="group">
+            <summary class="ease-out-quad flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-right font-medium text-bone transition-colors duration-300 hover:text-gold [&::-webkit-details-marker]:hidden">
+              {f.q}
+              <span aria-hidden="true" class="ease-out-quad shrink-0 text-gold transition-transform duration-300 group-open:rotate-45">＋</span>
+            </summary>
+            <p class="pb-5 text-sm leading-relaxed text-bone/55">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- MAIN CTA -->
+  <section class="mx-auto mt-28 max-w-6xl px-6 md:px-8">
+    <div data-reveal class="light-sweep relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-b from-charcoal-soft to-charcoal px-8 py-16 text-center md:px-16">
+      <h2 class="mx-auto max-w-xl text-balance text-display-md font-bold text-bone">لديك فكرة لمشروع؟ لنبنِ التقنية التي تقف خلفها.</h2>
+      <p class="mx-auto mt-5 max-w-lg text-balance leading-relaxed text-bone/55">سواء كنت تبحث عن منصة جاهزة أو برمجيات مخصصة بالكامل، نحن مستعدون لفهم متطلباتك.</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href="/ar/contact" class="brand-gradient ease-out-quad inline-block rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">اطلب استشارة</a>
+        <a href="/ar/contact" class="ease-out-quad inline-block rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">تواصل مع فريقنا</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-8"></div>
+</Layout>
