@@ -1,119 +1,141 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const fields = [
-  { label: 'Full name', name: 'name' },
-  { label: 'Business name', name: 'business' },
+const services = [
+  'RestoPOS Platform',
+  'Custom Mobile App',
+  'Restaurant Ordering System',
+  'Business Management Software',
+  'Website Development',
+  'API Integration',
+  'Other Custom Software',
 ];
+
+const industries = [
+  'Restaurant', 'Café', 'Broasted Chicken', 'Cloud Kitchen',
+  'Supermarket', 'Retail', 'Pharmacy', 'Services', 'Other',
+];
+
+const budgets = ['Not sure yet', 'Under SAR 10k', 'SAR 10k–50k', 'SAR 50k–150k', 'SAR 150k+'];
 ---
 
-<Layout title="Contact — RestoPOS">
+<Layout
+  title="Contact — RestoPOS"
+  description="Request a demo of the RestoPOS platform or a quote for a custom app. Tell us about your business and we'll follow up on WhatsApp or by email."
+>
   <div class="pb-8 pt-40">
     <section class="mx-auto max-w-3xl px-6 md:px-8">
       <div data-reveal>
         <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">Contact</p>
         <h1 class="text-balance text-display-lg font-extrabold text-bone">
-          Let's get your first invoice printing.
+          Tell us what you’re building.
         </h1>
         <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
-          Tell us about your business and we'll set up a demo tailored to your branches,
-          printers, and products. Send it straight to us on WhatsApp or by email.
+          Whether you want a demo of the RestoPOS platform or a quote for a custom app, share a few
+          details and we’ll follow up on WhatsApp or by email.
         </p>
       </div>
 
       <div data-reveal style="--reveal-delay: 0.15s">
         <form id="contact-form" class="mt-14 flex flex-col gap-6">
           <div class="grid gap-6 sm:grid-cols-2">
-            {
-              fields.map(({ label, name }) => (
-                <div>
-                  <label class="text-xs uppercase tracking-widest text-bone/50" for={name}>
-                    {label}
-                  </label>
-                  <input
-                    id={name}
-                    name={name}
-                    required
-                    class="ease-out-quad mt-2 w-full rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
-                  />
-                </div>
-              ))
-            }
-          </div>
-
-          <div>
-            <label class="text-xs uppercase tracking-widest text-bone/50" for="phone">
-              Phone or WhatsApp
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              required
-              class="ease-out-quad mt-2 w-full rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
-            />
-          </div>
-
-          <div>
-            <label class="text-xs uppercase tracking-widest text-bone/50" for="branches">
-              Number of branches
-            </label>
-            <input
-              id="branches"
-              name="branches"
-              placeholder="e.g. 2"
-              class="ease-out-quad mt-2 w-full rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
-            />
-          </div>
-
-          <div>
-            <label class="text-xs uppercase tracking-widest text-bone/50" for="message">
-              What should we know?
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              placeholder="Current POS, printer model, timeline — anything helps."
-              class="ease-out-quad mt-2 w-full resize-none rounded-xl border border-hairline bg-charcoal-soft px-4 py-3 text-bone outline-none transition-colors duration-300 placeholder:text-bone/25 focus:border-gold/50"
-            ></textarea>
-          </div>
-
-          <!-- country + send options -->
-          <div>
-            <p class="text-xs uppercase tracking-widest text-bone/50">Reach us on</p>
-            <div class="mt-2 flex gap-2" id="country-toggle">
-              <button
-                type="button"
-                data-c="sa"
-                class="ease-out-quad rounded-lg border border-gold/50 bg-gold/10 px-4 py-2 font-mono text-[13px] font-semibold text-gold transition"
-              >
-                🇸🇦 Saudi Arabia
-              </button>
-              <button
-                type="button"
-                data-c="in"
-                class="ease-out-quad rounded-lg border border-hairline px-4 py-2 font-mono text-[13px] font-semibold text-bone/60 transition"
-              >
-                🇮🇳 India
-              </button>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="name">Full name</label>
+              <input id="name" name="name" required class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="business">Business name</label>
+              <input id="business" name="business" class="field" />
             </div>
           </div>
 
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="email">Email</label>
+              <input id="email" name="email" type="email" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="phone">Phone / WhatsApp</label>
+              <input id="phone" name="phone" type="tel" required class="field" />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="country">Country</label>
+              <input id="country" name="country" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="city">City</label>
+              <input id="city" name="city" class="field" />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="service">What do you need?</label>
+              <select id="service" name="service" required class="field">
+                <option value="" disabled selected>Select a service…</option>
+                {services.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="industry">Industry</label>
+              <select id="industry" name="industry" class="field">
+                <option value="" disabled selected>Select…</option>
+                {industries.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="branches">Number of branches</label>
+              <input id="branches" name="branches" placeholder="e.g. 2" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="budget">Budget (optional)</label>
+              <select id="budget" name="budget" class="field">
+                <option value="" disabled selected>Select…</option>
+                {budgets.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs uppercase tracking-widest text-bone/50" for="message">Project description</label>
+            <textarea id="message" name="message" rows="4" placeholder="What are you looking to build or improve? Current setup, timeline — anything helps." class="field resize-none"></textarea>
+          </div>
+
+          <!-- preferred contact + country routing -->
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-bone/50">Preferred contact</p>
+              <div class="mt-2 flex gap-2" id="pref-toggle">
+                <button type="button" data-p="WhatsApp" class="pref pref-on">WhatsApp</button>
+                <button type="button" data-p="Email" class="pref pref-off">Email</button>
+                <button type="button" data-p="Call" class="pref pref-off">Call</button>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-bone/50">Reach us on</p>
+              <div class="mt-2 flex gap-2" id="country-toggle">
+                <button type="button" data-c="sa" class="pref pref-on">🇸🇦 Saudi Arabia</button>
+                <button type="button" data-c="in" class="pref pref-off">🇮🇳 India</button>
+              </div>
+            </div>
+          </div>
+
+          <label class="flex items-start gap-3 text-sm text-bone/60">
+            <input id="consent" name="consent" type="checkbox" required class="mt-0.5 size-4 shrink-0 accent-gold" />
+            <span>I agree to be contacted about my enquiry.</span>
+          </label>
+
           <div class="mt-1 flex flex-wrap gap-3">
-            <button
-              type="submit"
-              id="wa-send"
-              class="ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-[#04110a] transition duration-300 hover:brightness-110"
-              style="background:#25D366"
-            >
+            <button type="submit" id="wa-send" class="ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-[#04110a] transition duration-300 hover:brightness-110" style="background:#25D366">
               💬 Send on WhatsApp
             </button>
-            <button
-              type="button"
-              id="mail-send"
-              class="brand-gradient ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition duration-300 hover:brightness-110"
-            >
+            <button type="button" id="mail-send" class="brand-gradient ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition duration-300 hover:brightness-110">
               ✉️ Send by email
             </button>
           </div>
@@ -121,45 +143,86 @@ const fields = [
 
         <div id="contact-success" hidden class="mt-8 rounded-2xl border border-leaf-bright/30 bg-leaf/5 p-8 text-center">
           <p class="mb-2 text-sm uppercase tracking-widest text-leaf-bright">Opening your app…</p>
-          <h2 class="text-lg font-semibold text-bone">
-            Your message is ready with your details filled in — just hit send.
-          </h2>
+          <h2 class="text-lg font-semibold text-bone">Your message is ready with your details filled in — just hit send.</h2>
         </div>
+      </div>
+
+      <!-- Head office -->
+      <div class="mt-16 rounded-2xl border border-hairline bg-charcoal-soft/40 p-6" data-reveal>
+        <p class="text-[11px] uppercase tracking-widest text-gold">Head Office</p>
+        <p class="mt-2 text-bone/70">Iritty, Kannur, Kerala, India</p>
       </div>
     </section>
   </div>
 </Layout>
 
+<style>
+  .field {
+    margin-top: 0.5rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-hairline);
+    background: var(--color-charcoal-soft);
+    padding: 0.75rem 1rem;
+    color: var(--color-bone);
+    outline: none;
+    transition: border-color 0.3s var(--ease-out-quad);
+  }
+  .field::placeholder { color: color-mix(in srgb, var(--color-bone) 25%, transparent); }
+  .field:focus { border-color: color-mix(in srgb, var(--color-gold) 50%, transparent); }
+  .pref {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s var(--ease-out-quad);
+  }
+  .pref-on { border: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent); background: color-mix(in srgb, var(--color-gold) 10%, transparent); color: var(--color-gold); }
+  .pref-off { border: 1px solid var(--color-hairline); color: color-mix(in srgb, var(--color-bone) 60%, transparent); }
+</style>
+
 <script>
   const WHATSAPP = { sa: '966538360053', in: '918848095603' };
   const OWNER_EMAIL = 'hello@dbdev.io';
   let country: 'sa' | 'in' = 'sa';
+  let pref = 'WhatsApp';
 
-  const toggle = document.getElementById('country-toggle');
-  toggle?.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
-    b.addEventListener('click', () => {
-      country = (b.dataset.c as 'sa' | 'in') || 'sa';
-      toggle.querySelectorAll<HTMLButtonElement>('button').forEach((x) => {
-        const on = x === b;
-        x.className = on
-          ? 'ease-out-quad rounded-lg border border-gold/50 bg-gold/10 px-4 py-2 font-mono text-[13px] font-semibold text-gold transition'
-          : 'ease-out-quad rounded-lg border border-hairline px-4 py-2 font-mono text-[13px] font-semibold text-bone/60 transition';
+  function wireToggle(id: string, onPick: (v: string) => void) {
+    const wrap = document.getElementById(id);
+    wrap?.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+      b.addEventListener('click', () => {
+        onPick(b.dataset.c || b.dataset.p || '');
+        wrap.querySelectorAll<HTMLButtonElement>('button').forEach((x) => {
+          x.className = 'pref ' + (x === b ? 'pref-on' : 'pref-off');
+        });
       });
     });
-  });
+  }
+  wireToggle('country-toggle', (v) => (country = (v as 'sa' | 'in') || 'sa'));
+  wireToggle('pref-toggle', (v) => (pref = v || 'WhatsApp'));
 
-  const val = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() || '';
+  const val = (id: string) =>
+    (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null)?.value.trim() || '';
+
   function buildMessage() {
     const lines = [
-      'Hi RestoPOS! I\'d like a demo.',
+      'Hi RestoPOS! I’d like to get in touch.',
+      val('service') && `Need: ${val('service')}`,
       val('name') && `Name: ${val('name')}`,
       val('business') && `Business: ${val('business')}`,
+      val('email') && `Email: ${val('email')}`,
       val('phone') && `Phone: ${val('phone')}`,
+      (val('city') || val('country')) && `Location: ${[val('city'), val('country')].filter(Boolean).join(', ')}`,
+      val('industry') && `Industry: ${val('industry')}`,
       val('branches') && `Branches: ${val('branches')}`,
-      val('message') && `Notes: ${val('message')}`,
+      val('budget') && `Budget: ${val('budget')}`,
+      `Preferred contact: ${pref}`,
+      val('message') && `Details: ${val('message')}`,
     ].filter(Boolean);
     return lines.join('\n');
   }
+
   function flashSuccess() {
     const s = document.getElementById('contact-success');
     if (s) { s.hidden = false; setTimeout(() => (s.hidden = true), 6000); }
@@ -176,7 +239,7 @@ const fields = [
   document.getElementById('mail-send')?.addEventListener('click', () => {
     if (!form?.reportValidity()) return;
     const body = encodeURIComponent(buildMessage());
-    const subject = encodeURIComponent('RestoPOS demo request');
+    const subject = encodeURIComponent('RestoPOS enquiry');
     window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
     flashSuccess();
   });

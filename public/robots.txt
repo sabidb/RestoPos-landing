@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://restopos.store/sitemap-index.xml

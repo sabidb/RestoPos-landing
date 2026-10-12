@@ -6,12 +6,34 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
-  title = 'RestoPOS — ZATCA-Compliant Billing for Your Business',
-  description = 'RestoPOS is ZATCA Phase 2-compliant point of sale software for any business in Saudi Arabia — restaurants, cafés, retail shops, supermarkets, salons and pharmacies. Bilingual invoicing, thermal printing, and Fatoora reporting built in.',
+  title = 'RestoPOS — Business Software & Custom App Development',
+  description = 'RestoPOS builds business management software and custom applications — ZATCA Phase 2 POS and billing, branded restaurant ordering apps, and tailored iOS, Android and web software for businesses in Saudi Arabia and beyond.',
+  image = '/og-image.png',
 } = Astro.props;
+
+// Canonical + absolute OG image URL (Astro.site = https://restopos.store).
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
+const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'RestoPOS',
+  url: 'https://restopos.store',
+  logo: 'https://restopos.store/favicon.svg',
+  description:
+    'Business management software and custom app development — ZATCA Phase 2 POS, restaurant ordering apps, and tailored software.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Iritty, Kannur',
+    addressRegion: 'Kerala',
+    addressCountry: 'IN',
+  },
+};
 ---
 
 <!doctype html>
@@ -21,9 +43,24 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="RestoPOS" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,6 +69,7 @@ const {
       rel="stylesheet"
     />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} is:inline />
   </head>
   <body class="flex min-h-screen flex-col">
     <div id="scroll-progress" aria-hidden="true"></div>
