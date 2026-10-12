@@ -1,0 +1,153 @@
+---
+// Arabic Pricing (RTL). Drafted Arabic — NEEDS NATIVE REVIEW.
+import Layout from '../../layouts/Layout.astro';
+import { APP_URL } from '../../config';
+
+const plans = [
+  {
+    name: 'أساسي', price: '99', period: '/ شهرياً',
+    tagline: 'لموقع واحد يبدأ بفوترة متوافقة.',
+    features: ['فرع واحد · جهازان · مستخدمان', 'فوترة ZATCA المرحلة الثانية — موقّعة، برمز QR، وتُبلّغ تلقائياً لمنصة فاتورة', 'إيصالات حرارية و PDF · تذاكر مطبخ', 'تقارير إقفال اليوم وسجل المعاملات', 'سجل إبلاغ 7 أيام', 'دعم دردشة بأولوية'],
+    highlighted: false,
+  },
+  {
+    name: 'احترافي', price: '149', period: '/ شهرياً',
+    tagline: 'للأعمال التي تتجاوز فرعاً واحداً.',
+    features: ['حتى 3 فروع · أجهزة غير محدودة · 5 مستخدمين', 'كل ما في الأساسي', 'وحدة تحكم المدير — عدّاد «اليوم» الحي، وسجل إقفال اليوم، والتصدير', 'تقارير متقدمة · سجل 30 يوماً · أنماط مبيعات بالساعة', 'موافقة دخول الأجهزة والتحكم بالوصول', 'فواتير مخصصة/بعلامتك'],
+    highlighted: true,
+  },
+  {
+    name: 'متميّز', price: '249', period: '/ شهرياً',
+    tagline: 'للسلاسل ومجموعات السوبرماركت التي تريد كل شيء.',
+    features: ['فروع ومستخدمون غير محدودين', 'كل ما في الاحترافي', 'وضع السوبرماركت/التجزئة (باركود)', 'تطبيق سطح مكتب ويندوز (يعمل دون اتصال)', 'تحليلات كاملة · سجل 90+ يوماً · علامة بيضاء', 'دعم بأولوية 24/7 · تهيئة ZATCA مخصصة'],
+    highlighted: false,
+  },
+];
+
+const compare = [
+  { group: 'الأساس والامتثال', rows: [
+    { label: 'فوترة ZATCA المرحلة الثانية — موقّعة، QR، تُبلّغ تلقائياً لفاتورة', basic: true, pro: true, prem: true },
+    { label: 'إيصالات حرارية و PDF · 4 أنماط فواتير', basic: true, pro: true, prem: true },
+    { label: 'تذاكر مطبخ (تناول/سفري/هاتفي)', basic: true, pro: true, prem: true },
+    { label: 'تسوية إقفال اليوم وسجل المعاملات', basic: true, pro: true, prem: true },
+    { label: 'عربي وإنجليزي — كل شاشة وإيصال', basic: true, pro: true, prem: true },
+  ]},
+  { group: 'الفروع والأجهزة والمستخدمون', rows: [
+    { label: 'الفروع', basic: '1', pro: 'حتى 3', prem: 'غير محدود' },
+    { label: 'الأجهزة (نقاط البيع)', basic: '2', pro: 'غير محدود', prem: 'غير محدود' },
+    { label: 'المستخدمون لكل فرع', basic: '2', pro: '5', prem: 'غير محدود' },
+    { label: 'موافقة دخول الأجهزة والتحكم بالوصول', basic: false, pro: true, prem: true },
+  ]},
+  { group: 'التقارير والتحليلات', rows: [
+    { label: 'لوحة مبيعات حية وإجماليات اليوم', basic: true, pro: true, prem: true },
+    { label: 'حالة مُبلّغ/قيد الإبلاغ لـ ZATCA', basic: true, pro: true, prem: true },
+    { label: 'رقم الفاتورة و QR والتفاصيل على الشاشة', basic: true, pro: true, prem: true },
+    { label: 'تقارير المبيعات والضريبة', basic: 'أساسية', pro: 'متقدمة', prem: 'تحليلات كاملة' },
+    { label: 'سجل الإبلاغ', basic: '7 أيام', pro: '30 يوماً', prem: '90+ يوماً' },
+    { label: 'وحدة تحكم المدير (تطبيق مراقبة عن بُعد)', basic: false, pro: true, prem: true },
+    { label: 'أنماط مبيعات بالساعة وتحليلات عميقة', basic: false, pro: true, prem: true },
+    { label: 'مشاركة واتساب وتصدير PDF/CSV', basic: false, pro: true, prem: true },
+    { label: 'فواتير مخصصة/بعلامتك', basic: false, pro: true, prem: true },
+  ]},
+  { group: 'متقدم', rows: [
+    { label: 'وضع السوبرماركت/التجزئة (باركود)', basic: false, pro: false, prem: true },
+    { label: 'تطبيق سطح مكتب ويندوز (دون اتصال)', basic: false, pro: false, prem: true },
+    { label: 'علامة بيضاء', basic: false, pro: false, prem: true },
+    { label: 'تهيئة ZATCA/فاتورة مخصصة', basic: false, pro: false, prem: true },
+  ]},
+  { group: 'الدعم', rows: [
+    { label: 'دردشة بأولوية داخل لوحة الإدارة', basic: true, pro: true, prem: true },
+    { label: 'تذاكر دعم داخل التطبيق', basic: true, pro: true, prem: true },
+    { label: 'زمن الاستجابة', basic: 'يوم العمل التالي', pro: 'نفس اليوم', prem: 'أولوية 24/7' },
+  ]},
+];
+---
+
+<Layout lang="ar" title="الأسعار — RestoPOS" description="باقات منصة RestoPOS — تشمل كل باقة امتثال ZATCA المرحلة الثانية. البرمجيات المخصصة تُسعّر لكل مشروع.">
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-4xl px-6 text-center md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">الأسعار</p>
+        <h1 class="text-balance text-display-lg font-extrabold text-bone">سعر واحد، بلا فواتير مفاجئة منا.</h1>
+        <p class="mx-auto mt-6 max-w-xl leading-relaxed text-bone/55">تشمل كل باقة امتثال ZATCA المرحلة الثانية ودعم دردشة بأولوية. بلا رسوم إعداد، وبلا رسوم لكل فاتورة — ألغِ في أي وقت.</p>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 grid max-w-6xl items-start gap-8 px-6 md:px-8 lg:grid-cols-3">
+      {
+        plans.map((plan, i) => (
+          <div data-reveal style={`--reveal-delay: ${i * 0.1}s`}>
+            <div class:list={['flex h-full flex-col rounded-2xl p-8', plan.highlighted ? 'relative border border-gold/40 bg-charcoal-soft shadow-gold' : 'border border-hairline bg-charcoal-soft/30']}>
+              {plan.highlighted && (<span class="brand-gradient absolute -top-3 right-8 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">الأكثر اختياراً</span>)}
+              <h3 class="text-lg font-semibold text-bone">{plan.name}</h3>
+              <div class="mt-4 flex items-baseline gap-1"><span class="text-display-md font-extrabold text-bone">SAR {plan.price}</span><span class="text-sm text-bone/40">{plan.period}</span></div>
+              <p class="mt-3 text-sm leading-relaxed text-bone/50">{plan.tagline}</p>
+              <ul class="mt-8 flex flex-1 flex-col gap-3">
+                {plan.features.map((f) => (<li class="flex items-start gap-2.5 text-sm text-bone/70"><span class="mt-0.5 text-gold">＋</span>{f}</li>))}
+              </ul>
+              <a href={APP_URL} class:list={['ease-out-quad mt-8 rounded-full px-6 py-3 text-center text-sm font-semibold transition-colors duration-300', plan.highlighted ? 'brand-gradient text-white hover:brightness-110' : 'border border-bone/20 text-bone hover:border-bone/50']}>ابدأ الآن</a>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mx-auto mt-28 max-w-5xl px-6 md:px-8" data-reveal>
+      <h2 class="text-center text-2xl font-bold text-bone">قارن كل ميزة</h2>
+      <p class="mx-auto mt-3 max-w-lg text-center text-sm leading-relaxed text-bone/50">كل ما تشمله كل باقة، جنباً إلى جنب — لتعرف بالضبط ما تختاره.</p>
+
+      <div class="mt-12 overflow-x-auto">
+        <table class="w-full min-w-[680px] border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-hairline">
+              <th class="py-4 pl-4 text-right font-medium text-bone/40"></th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-bone">أساسي<br /><span class="text-xs font-normal text-bone/40">SAR 99 / شهرياً</span></th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-gold">احترافي<br /><span class="text-xs font-normal text-bone/40">SAR 149 / شهرياً</span></th>
+              <th class="px-4 py-4 text-center align-bottom font-semibold text-bone">متميّز<br /><span class="text-xs font-normal text-bone/40">SAR 249 / شهرياً</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              compare.map((section) => (
+                <Fragment>
+                  <tr><td colspan="4" class="pt-8 pb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-gold">{section.group}</td></tr>
+                  {section.rows.map((row) => (
+                    <tr class="border-b border-hairline/40">
+                      <td class="py-3 pl-4 text-bone/70">{row.label}</td>
+                      {[row.basic, row.pro, row.prem].map((v) => (
+                        <td class="px-4 py-3 text-center">
+                          {v === true ? (<span class="text-gold">✓</span>) : v === false ? (<span class="text-bone/20">–</span>) : (<span class="text-bone/70">{v}</span>)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </Fragment>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-28 max-w-6xl px-6 md:px-8">
+      <div data-reveal class="flex flex-col items-start justify-between gap-6 rounded-3xl border border-hairline bg-charcoal-soft/40 p-8 md:flex-row md:items-center md:p-10">
+        <div>
+          <p class="text-[11px] uppercase tracking-widest text-gold">تحتاج تطبيقاً مخصصاً؟</p>
+          <h2 class="mt-3 text-xl font-semibold text-bone">البرمجيات المخصصة تُسعّر لكل مشروع.</h2>
+          <p class="mt-2 max-w-xl text-sm leading-relaxed text-bone/55">تغطي الباقات أعلاه منصة RestoPOS. لتطبيق طلب بعلامتك، أو لوحة تحكم، أو أي بناء مخصص، نسعّر حسب النطاق — أخبرنا بما تحتاجه وسنعد تقديراً مخصصاً.</p>
+        </div>
+        <div class="flex shrink-0 flex-wrap gap-3">
+          <a href="/ar/contact" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">اطلب عرض سعر</a>
+          <a href="/ar/custom-development" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-6 py-3 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">تطوير التطبيقات</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-24 max-w-3xl px-6 text-center md:px-8">
+      <p class="text-sm text-bone/40" data-reveal>
+        جميع الأسعار لا تشمل ضريبة القيمة المضافة 15%. تُحصّل شهرياً بالريال السعودي.<br />
+        تُفتح وحدة تحكم المدير في الاحترافي؛ ووضع السوبرماركت وتطبيق سطح المكتب ميزتان في المتميّز.
+      </p>
+    </section>
+  </div>
+</Layout>

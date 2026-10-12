@@ -1,0 +1,167 @@
+---
+// Arabic Features / platform (RTL). Drafted Arabic — NEEDS NATIVE REVIEW.
+// Coded terminal-style mini-mocks are kept in English (product output).
+import Layout from '../../layouts/Layout.astro';
+import DemoCta from '../../components/DemoCta.astro';
+
+const steps = [
+  { n: '٠١', title: 'الطلب', body: 'تناول في المكان، سفري، أو هاتفي — كل نوع طلب يوجّه تذكرة مطبخ خاصة به، معنونة تلقائياً ليعرف المطبخ المسار بلمحة.' },
+  { n: '٠٢', title: 'الفوترة', body: 'تُنشأ فاتورة متوافقة مع ZATCA فوراً: موقّعة، برمز QR، ومفصّلة بالعربية والإنجليزية. احتفظ بها كمسودة أولاً إذا لم تنتهِ الطاولة.' },
+  { n: '٠٣', title: 'التقارير', body: 'يُبلّغ عن الفاتورة لمنصة فاتورة في الخلفية عبر طابور إبلاغ مخصص. وتقرير إقفال اليوم يسوّي نفسه.' },
+];
+
+const features = [
+  { title: 'متعدد الفروع، حساب واحد', body: 'أدِر كل فرع ضمن مستأجر واحد ببيانات معزولة لكل رقم ضريبي، وتقارير مشتركة، واشتراك واحد.', i: '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 13v3"/>' },
+  { title: 'طباعة حرارية تعمل ببساطة', body: 'تكامل مباشر مع QZ Tray — طباعة صامتة بلا نوافذ متصفح، وإعادة اتصال تلقائية حتى لا تنقطع الطابعات أثناء الدوام، ومضبوطة للوضوح على أي ورق حراري.', i: '<rect x="6" y="9" width="12" height="7" rx="1"/><path d="M6 9V4h12v5M8 16v4h8v-4M16 12.5h.01"/>' },
+  { title: 'عربي وإنجليزي بشكل أصيل', body: 'كل شاشة وفاتورة وتقرير ثنائي اللغة افتراضياً — لا ترجمة لاحقة.', i: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+  { title: 'تذاكر مطبخ ذكية', body: 'تُطبع تذاكر المطبخ لحظة وصول الطلب، معنونة تلقائياً: هاتفي، سفري، أو تناول في المكان.', i: '<path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8M8 12h8M8 16h5"/>' },
+  { title: 'أنماط فواتير بمعاينة حية', body: 'أربعة أنماط فواتير جاهزة — تشمل تخطيطات عربية/إنجليزية — بمعاينة حية وخطوط آمنة للطباعة الحرارية.', i: '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 13l9 5 9-5"/>' },
+  { title: 'تطبيق سطح مكتب ويندوز', body: 'تطبيق سطح مكتب أصلي بتحديثات تلقائية، للأعمال التي تشغّل أجهزة نقاط بيع بنظام ويندوز بدل الأجهزة اللوحية.', i: '<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/>' },
+  { title: 'إقفال اليوم والمعاملات', body: 'أرشفة نهاية اليوم تسوّى حتى الريال، بجانب سجل معاملات كامل يمكنك تدقيقه في أي وقت.', i: '<rect x="6" y="4" width="12" height="18" rx="1.5"/><path d="M9 4V3h6v1M9 10l1.5 1.5L13 9M9 15h5"/>' },
+  { title: 'وضع السوبرماركت', body: 'يتحول النواة نفسها إلى تدفق تجزئة قائم على الباركود لمتاجر البقالة والتموينات.', i: '<path d="M4 6v12M7 6v12M10 6v12M13.5 6v12M16 6v12M19 6v12"/>' },
+  { title: 'دعم مدمج', body: 'دردشة مباشرة داخل لوحة الإدارة — تواصل معنا دون مغادرة اللوحة، على أدوات إدارة كل باقة.', i: '<path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/>' },
+];
+---
+
+<Layout
+  lang="ar"
+  title="الميزات — RestoPOS"
+  description="من الكاشير إلى منصة فاتورة في خط واحد متصل — نقاط بيع متوافقة مع ZATCA المرحلة الثانية، فوترة ثنائية اللغة، طباعة حرارية، تعدد فروع، وأدوات على مستوى المالك."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">الميزات</p>
+        <h1 class="max-w-2xl text-balance text-display-lg font-extrabold text-bone">من الكاشير إلى فاتورة، في خط واحد متصل.</h1>
+        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+          سواء كنت تدير مطعماً أو سوبرماركت أو صيدلية أو منفذ تجزئة، تمنحك RestoPOS نفس المجموعة المتوافقة
+          ثنائية اللغة — فوترة، وطباعة، وتقارير، وأدوات على مستوى المالك — مضبوطة على طريقة بيعك الفعلية.
+        </p>
+      </div>
+    </section>
+
+    <section class="relative mx-auto mt-24 max-w-6xl px-6 md:px-8">
+      <div aria-hidden="true" class="absolute bottom-4 top-4 w-px bg-gradient-to-b from-leaf/50 via-gold/30 to-transparent rtl:right-[15px] md:right-1/2 md:translate-x-1/2"></div>
+      <div class="relative grid gap-10 md:grid-cols-3 md:gap-8">
+        {
+          steps.map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 0.12}s`}>
+              <div class="flex gap-5 pr-10 md:flex-col md:gap-0 md:pr-0">
+                <span class="absolute right-0 flex h-8 w-8 items-center justify-center rounded-full border border-gold/30 bg-charcoal font-mono text-sm text-gold md:static md:mb-6">{s.n}</span>
+                <div>
+                  <h3 class="text-lg font-semibold text-bone">{s.title}</h3>
+                  <p class="mt-2 max-w-xs text-sm leading-relaxed text-bone/55">{s.body}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <h2 class="max-w-lg text-balance text-display-md font-bold text-bone" data-reveal>كل ما يحتاجه عمل سعودي، لا أكثر.</h2>
+      <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
+              <div class="ease-out-quad group h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/5 text-gold transition-colors duration-500 group-hover:bg-gold/10" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={f.i}></svg>
+                </div>
+                <h3 class="mt-5 font-semibold text-bone">{f.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-bone/50">{f.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">مجموعة الأدوات</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">أدوات متقدمة للمُلّاك الذين يديرون الأرقام.</h2>
+      </div>
+
+      <div class="mt-14 grid gap-6 lg:grid-cols-2">
+        <div data-reveal>
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">وحدة تحكم المدير</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">تطبيق حي منفصل للمُلّاك — قابل للتثبيت على أي هاتف. عدّاد اليوم ينبض لحظياً، وسجل إقفال اليوم، ومشاركة بنقرة عبر واتساب أو تصدير PDF، وشريط حالة ZATCA ليكون الامتثال ظاهراً بلمحة.</p>
+            <div class="mt-6 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]" dir="ltr">
+              <div class="rounded-md border border-leaf-bright/30 bg-leaf/10 px-2.5 py-1 text-center text-leaf-bright">ZATCA · CONNECTED</div>
+              <div class="mt-3 flex items-center justify-between text-bone/40"><span>TODAY · ALL BRANCHES</span><span class="text-leaf-bright">● LIVE</span></div>
+              <div class="mt-2 flex items-baseline justify-between"><span class="text-2xl font-semibold text-bone">SAR 48,210</span><span class="text-leaf-bright">+11.4%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal style="--reveal-delay: 0.08s">
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">إقفال اليوم</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">أنهِ كل وردية بتقرير يسوّى حتى الريال — مبيعات، وضريبة محصّلة، وعدد فواتير، مطابقة لما أُبلغ لمنصة فاتورة.</p>
+            <div class="mt-6 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px] text-bone/60" dir="ltr">
+              <div class="flex justify-between py-1"><span>Invoices issued</span><span class="text-bone">342</span></div>
+              <div class="flex justify-between py-1"><span>VAT collected (15%)</span><span class="text-bone">1,872.30</span></div>
+              <div class="flex justify-between py-1"><span>Reported to Fatoora</span><span class="text-leaf-bright">342 / 342 ✓</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal>
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">تحكم بالوصول على مستوى الجهاز</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">نموذج المنع الافتراضي: كل كاشير يسجّل دخوله منفرداً، ولا يفوتر جهاز جديد ريالاً واحداً حتى يوافق عليه المالك صراحةً.</p>
+            <div class="mt-6 space-y-2 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]" dir="ltr">
+              <div class="flex items-center justify-between"><span class="text-bone/60">Till 01 · Front counter</span><span class="text-leaf-bright">APPROVED</span></div>
+              <div class="flex items-center justify-between"><span class="text-bone/60">Till 02 · Drive-thru</span><span class="text-leaf-bright">APPROVED</span></div>
+              <div class="flex items-center justify-between"><span class="text-bone/60">Tablet 07 · Unknown</span><span class="rounded-md border border-gold/40 px-2 py-0.5 text-gold">PENDING</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal style="--reveal-delay: 0.08s">
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">وضع السوبرماركت</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">يتحول النواة نفسها إلى تدفق تجزئة قائم على الباركود لمتاجر البقالة والتموينات — نفس الامتثال، نفس التقارير، إيقاع مختلف.</p>
+            <div class="mt-6 flex items-center gap-4 rounded-xl border border-hairline bg-charcoal p-4" dir="ltr">
+              <svg viewBox="0 0 60 24" class="h-9 w-24 text-bone/70" aria-hidden="true">
+                {[1, 4, 6, 9, 13, 15, 19, 22, 26, 28, 31, 35, 38, 40, 44, 47, 51, 54, 57].map((x, i) => (<rect x={x} y="0" width={i % 3 === 0 ? 2 : 1} height="24" fill="currentColor" />))}
+              </svg>
+              <div class="font-mono text-[11px]"><p class="text-bone">6281000123457</p><p class="text-bone/50">Scanned · SAR 4.50 · VAT incl.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal>
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">تهيئة فاتورة، آلياً</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">يمر كل عميل جديد بتهيئة ZATCA آلية من سبع خطوات — من تسجيل الجهاز حتى الإبلاغ الإنتاجي — عبر خط فاتورة المخصص لدينا. تزوّدنا برمز تحقق واحد من البوابة، ونفعل الباقي.</p>
+            <div class="mt-6 space-y-1.5 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]" dir="ltr">
+              <div class="flex items-center justify-between text-bone/40"><span>ONBOARDING</span><span class="text-gold">STEP 5 / 7</span></div>
+              <div class="mt-2 flex items-center justify-between"><span class="text-bone/60">Device registered</span><span class="text-leaf-bright">✓</span></div>
+              <div class="flex items-center justify-between"><span class="text-bone/60">Compliance checks passed</span><span class="text-leaf-bright">✓</span></div>
+              <div class="flex items-center justify-between"><span class="text-bone/60">Fatoora portal OTP</span><span class="rounded-md border border-gold/40 px-2 py-0.5 text-gold">PENDING</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal style="--reveal-delay: 0.08s">
+          <div class="ease-out-quad h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-8 transition-colors duration-500 hover:border-gold/30">
+            <h3 class="font-semibold text-bone">تذاكر مطبخ بعناوين ذكية</h3>
+            <p class="mt-2 text-sm leading-relaxed text-bone/50">تُطبع تذاكر المطبخ لحظة وصول الطلب وتعنون نفسها — هاتفي، سفري، أو تناول في المكان — ليقرأ المطبخ المسار قبل أول صنف.</p>
+            <div class="mt-6 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]" dir="ltr">
+              <div class="flex items-center justify-between"><span class="font-semibold text-bone">KOT #114 · TELEPHONE</span><span class="text-bone/40">20:42</span></div>
+              <div class="mt-2 space-y-0.5 text-bone/60"><p>2× Grilled Broast Platter</p><p>1× Bukhari Rice</p><p class="text-bone/40">— extra garlic sauce</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-32">
+      <DemoCta heading="شاهد أول فاتورة متوافقة لديك تُطبع خلال أقل من عشر دقائق." ctaLabel="تحدث إلينا" ctaHref="/ar/contact" />
+    </div>
+  </div>
+</Layout>

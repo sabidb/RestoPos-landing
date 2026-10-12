@@ -1,0 +1,164 @@
+---
+// Arabic Ordering app (RTL). Drafted Arabic — NEEDS NATIVE REVIEW.
+import Layout from '../../layouts/Layout.astro';
+import DemoCta from '../../components/DemoCta.astro';
+
+const inApp = [
+  { title: 'علامتك في الواجهة', body: 'اسمك وشعارك وألوانك على الأيقونة وكل شاشة. يفتح العملاء تطبيقك — لا سوقاً أنت فيه بلاطة بين الآلاف.' },
+  { title: 'توصيل واستلام وتناول في المكان', body: 'يختار العملاء كيف يريدونها. التوصيل يأخذ عنواناً، والاستلام وتناول الطعام في المكان يتجهان مباشرة للمطبخ — كل منها نوع طلب خاص به.' },
+  { title: 'الدفع في التطبيق', body: 'بطاقة وطرق دفع محلية عند الدفع، لتُطلب الطلبية وتُدفع قبل أن تصل إلى كاونترك.' },
+  { title: 'قائمة كاملة بالصور', body: 'فئات وصور أصناف وإضافات وأوصاف ثنائية اللغة عربي/إنجليزي — نفس القائمة التي يعرفها نظام نقاط بيعك.' },
+  { title: 'حالة الطلب مباشرة', body: 'يرى العملاء: مقبول، قيد التحضير، جاهز — ليقل اتصال موظفيك «هل جهز؟» وقت الذروة.' },
+  { title: 'إعادة الطلب بنقرة', body: 'يعيد العملاء الدائمون طلبهم المعتاد في ثوانٍ — السلوك الذي يجعل التطبيق المباشر أثمن من بيعة عابرة في السوق.' },
+];
+
+const compare = [
+  { label: 'العمولة لكل طلب', agg: '~15–30%', own: 'لا شيء', ownGood: true },
+  { label: 'لمن يرى العملاء علامته', agg: 'للوسيط', own: 'لك', ownGood: true },
+  { label: 'من يملك بيانات العملاء', agg: 'الوسيط', own: 'أنت', ownGood: true },
+  { label: 'من يحدد الأسعار والعروض', agg: 'ضمن قواعدهم', own: 'أنت', ownGood: true },
+  { label: 'من يجلب العملاء', agg: 'سوق الوسيط', own: 'أنت — عملاؤك الدائمون', ownGood: false },
+  { label: 'التوصيل', agg: 'أسطولهم', own: 'سائقوك أو الاستلام', ownGood: false },
+];
+---
+
+<Layout
+  lang="ar"
+  title="تطبيق الطلب الخاص بك — RestoPOS"
+  description="تمنح RestoPOS كل مطعم تطبيق طلب خاصاً باسمه على App Store و Google Play — طلب توصيل واستلام وتناول في المكان باسمك، دون عمولة وسيط، ومرتبط مباشرة بنظام نقاط البيع والمطبخ المتوافق مع ZATCA."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">تطبيق الطلب الخاص بك</p>
+        <h1 class="max-w-3xl text-balance text-display-lg font-extrabold text-bone">
+          توقّف عن استئجار عملائك.<br />امتلك التطبيق الذي يطلبون منه.
+        </h1>
+        <p class="mt-6 max-w-xl leading-relaxed text-bone/55">
+          ننشر تطبيق طلب كاملاً باسم <em class="not-italic text-bone/80">مطعمك</em> — على App Store و Google Play.
+          يطلب عملاؤك الدائمون التوصيل والاستلام وتناول الطعام في المكان منك مباشرة، وتصل كل طلبية إلى مطبخ
+          RestoPOS وتُفوتر تلقائياً إلى ZATCA. دون عمولة سوق، ودون مشاركة عملائك مع أحد.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="/ar/contact" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">تحدث إلى فريقنا</a>
+          <a href="/ar/contact" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">شاهد مثالاً حياً</a>
+        </div>
+        <p class="mt-6 max-w-xl text-sm leading-relaxed text-bone/40">
+          كلام صريح: هذا ليس سوقاً إلكترونياً. لا يرسل لك غرباء جدداً كما تفعل هنقرستيشن أو كيتا — بل يحوّل
+          العملاء الذين لديك أصلاً إلى طلبات متكررة مباشرة لا تدفع عنها عمولة.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-5xl px-6 md:px-8">
+      <div class="grid gap-5 sm:grid-cols-2" data-reveal>
+        {
+          [
+            { name: 'مطعم البروست', accent: 'text-gold', badge: 'App Store' },
+            { name: 'قهوة وكو', accent: 'text-leaf-bright', badge: 'Google Play' },
+          ].map((r, i) => (
+            <div class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/60 p-6 shadow-gold backdrop-blur-xl" style={`--reveal-delay: ${i * 0.1}s`}>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class={`flex h-10 w-10 items-center justify-center rounded-xl border border-hairline bg-charcoal font-bold ${r.accent}`}>{r.name.charAt(0)}</div>
+                  <div>
+                    <p class="text-sm font-semibold text-bone">{r.name}</p>
+                    <p class="font-mono text-[10px] text-bone/40">{r.badge} · باسمهم</p>
+                  </div>
+                </div>
+                <span class="rounded-md border border-leaf-bright/30 bg-leaf/10 px-2 py-0.5 font-mono text-[10px] text-leaf-bright">مباشر</span>
+              </div>
+              <div class="mt-5 space-y-2 rounded-xl border border-hairline bg-charcoal p-4 font-mono text-[11px]">
+                <div class="flex items-center justify-between text-bone/40">
+                  <span>طلب · توصيل</span>
+                  <span class="text-leaf-bright">مدفوع</span>
+                </div>
+                <div class="flex justify-between text-bone/60"><span>٢× بروست البيت</span><span class="text-bone">44.00</span></div>
+                <div class="flex justify-between text-bone/60"><span>١× كرك</span><span class="text-bone">6.00</span></div>
+                <div class="mt-1 flex justify-between border-t border-hairline pt-2 text-bone/60">
+                  <span>← مطبخ RestoPOS</span><span class="text-leaf-bright">طُبعت ✓</span>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-32 max-w-5xl px-6 md:px-8">
+      <h2 class="max-w-xl text-balance text-display-md font-bold text-bone" data-reveal>تطبيقك مقابل الوسيط.</h2>
+      <p class="mt-5 max-w-lg leading-relaxed text-bone/55" data-reveal>
+        الوسطاء بارعون في شيء واحد — الوصول. أما للعملاء الذين يعرفونك أصلاً، فكل طلب عبرهم هامش تتنازل عنه
+        وعلاقة لا تملكها أبداً. إليك المقايضة الصريحة.
+      </p>
+      <div class="mt-12 overflow-hidden rounded-2xl border border-hairline" data-reveal>
+        <div class="grid grid-cols-3 border-b border-hairline bg-charcoal-soft/60 font-mono text-[11px] uppercase tracking-wide text-bone/40">
+          <div class="p-4"></div>
+          <div class="p-4 text-center">الوسيط</div>
+          <div class="p-4 text-center text-gold">تطبيقك الخاص</div>
+        </div>
+        {
+          compare.map((row) => (
+            <div class="grid grid-cols-3 border-b border-hairline text-sm last:border-b-0">
+              <div class="bg-charcoal p-4 text-bone/70">{row.label}</div>
+              <div class="bg-charcoal p-4 text-center text-bone/45">{row.agg}</div>
+              <div class={`bg-charcoal p-4 text-center font-medium ${row.ownGood ? 'text-leaf-bright' : 'text-bone/70'}`}>{row.own}</div>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-4 text-xs leading-relaxed text-bone/35" data-reveal>
+        يعكس نطاق العمولة معدلات وسطاء الطعام المعتادة في المنطقة؛ قد تختلف شروط الوسيط لديك فعلياً.
+      </p>
+    </section>
+
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <h2 class="max-w-lg text-balance text-display-md font-bold text-bone" data-reveal>كل ما يحتاجه عملاؤك للطلب.</h2>
+      <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        {
+          inApp.map((f, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 3) * 0.08}s`} class="h-full">
+              <div class="ease-out-quad h-full bg-charcoal p-8 transition-colors duration-500 hover:bg-charcoal-soft">
+                <h3 class="font-semibold text-bone">{f.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-bone/50">{f.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-32 max-w-6xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">نظام واحد متصل</p>
+        <h2 class="max-w-xl text-balance text-display-md font-bold text-bone">الطلب لا يغادر نظامك أبداً.</h2>
+        <p class="mt-5 max-w-lg leading-relaxed text-bone/55">
+          لأن التطبيق مبني على نفس نواة RestoPOS، فالطلب على الهاتف هو نفس الطلب الذي يفهمه مطبخك ودفاترك
+          أصلاً — دون إعادة إدخال، ودون تسوية بين نظامين.
+        </p>
+      </div>
+      <div class="relative mt-14 grid gap-6 md:grid-cols-4">
+        {
+          [
+            { n: '٠١', t: 'يطلب العميل', b: 'في تطبيقك بعلامتك — توصيل أو استلام أو تناول في المكان، مدفوع عند الدفع.' },
+            { n: '٠٢', t: 'يصل المطبخ التذكرة', b: 'تُطبع تذكرة المطبخ لحظة وصول الطلب، معنونة تلقائياً بنوعه.' },
+            { n: '٠٣', t: 'فاتورة إلى فاتورة', b: 'تُنشأ فاتورة ZATCA المرحلة الثانية وتُبلّغ نفسها في الخلفية.' },
+            { n: '٠٤', t: 'تتولّى التنفيذ', b: 'سائقك أو كاونترك — تحتفظ بالتوصيل، وبالهامش.' },
+          ].map((s, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+              <div class="h-full rounded-2xl border border-hairline bg-charcoal-soft/40 p-6">
+                <span class="font-mono text-sm text-gold">{s.n}</span>
+                <h3 class="mt-3 font-semibold text-bone">{s.t}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-bone/50">{s.b}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="mt-32">
+      <DemoCta heading="امتلك تطبيق الطلب الخاص بمطعمك." ctaLabel="تحدث إلينا" ctaHref="/ar/contact" />
+    </div>
+  </div>
+</Layout>

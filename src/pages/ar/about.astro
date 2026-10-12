@@ -1,0 +1,75 @@
+---
+// Arabic About (RTL). Drafted Arabic — NEEDS NATIVE REVIEW.
+import Layout from '../../layouts/Layout.astro';
+import DemoCta from '../../components/DemoCta.astro';
+
+const values = [
+  { t: 'مبنية حول سير عمل حقيقي', d: 'نصمم البرمجيات لطريقة عمل العمل فعلياً — ثم نجعلها أسرع.' },
+  { t: 'تقنية قابلة للصيانة', d: 'نبني برمجيات تدوم وتنمو، لا نماذج تجريبية عابرة.' },
+  { t: 'نأخذ الامتثال بجدية', d: 'فوترة ZATCA المرحلة الثانية ومعالجة البيانات بعناية جزء من طريقة بنائنا.' },
+  { t: 'شريك لا مورّد', d: 'نبقى منخرطين بعد الإطلاق — دعم وصيانة وميزات جديدة مع نموك.' },
+];
+---
+
+<Layout
+  lang="ar"
+  title="من نحن — RestoPOS"
+  description="RestoPOS شركة برمجيات أعمال وتطوير تطبيقات مخصصة — نبني منصة RestoPOS لنقاط البيع وبرمجيات مصممة للمطاعم والأعمال النامية. المقر الرئيسي في إيريتي، كانور، كيرالا، الهند."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-3xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">من نحن</p>
+        <h1 class="text-balance text-display-lg font-extrabold text-bone">تقنية مبنية حول من يستخدمها.</h1>
+      </div>
+      <div data-reveal style="--reveal-delay: 0.1s" class="mt-8 space-y-5 text-[15px] leading-relaxed text-bone/65">
+        <p>
+          RestoPOS شركة برمجيات أعمال بجانبين. نبني ونشغّل <strong class="font-semibold text-bone/90">منصة RestoPOS</strong> —
+          نظام نقاط بيع وفوترة متوافق مع المرحلة الثانية من ZATCA للمطاعم والمقاهي والسوبرماركت والتجزئة
+          والأعمال الخدمية. كما نبني <strong class="font-semibold text-bone/90">برمجيات مخصصة</strong> — تطبيقات جوال،
+          وأنظمة طلب، ولوحات تحكم، ومواقع، والأنظمة الخلفية التي تشغّلها — للعملاء الذين يحتاجون حلاً مصمماً
+          لعملياتهم تحديداً.
+        </p>
+        <p>
+          المشكلة التي نحلّها واحدة في الحالتين: تعتمد الأعمال على برمجيات لم تُبنَ لطريقة عملها الفعلية.
+          فوترة لا تطابق الامتثال المحلي. طلبات محبوسة داخل تطبيق وسيط. تقارير لا تتوازن. نبني تقنية تناسب
+          العمل بدل إجبار العمل على التكيّف مع التقنية.
+        </p>
+        <p>
+          منهجنا هندسة برمجيات عملية — نفهم سير العمل، ونصمم التجربة، ونبنيها لتتوسّع، وندعمها بعد الإطلاق.
+          نهتم بالامتثال والواجهات النظيفة والكود القابل للصيانة، ليبقى ما نطلقه يعمل مع نموك.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-6xl px-6 md:px-8">
+      <div class="grid gap-px overflow-hidden rounded-2xl bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((v, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 4) * 0.07}s`} class="bg-charcoal p-7">
+              <h3 class="text-sm font-semibold text-bone">{v.t}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-bone/50">{v.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-6xl px-6 md:px-8">
+      <div data-reveal class="rounded-3xl border border-hairline bg-charcoal-soft/40 p-8 md:p-10">
+        <p class="text-[11px] uppercase tracking-widest text-gold">المقر الرئيسي</p>
+        <p class="mt-3 text-xl font-semibold text-bone">إيريتي، كانور</p>
+        <p class="text-bone/60">ولاية كيرالا، الهند</p>
+        <p class="mt-5 max-w-lg text-sm leading-relaxed text-bone/50">
+          من مقرنا في كيرالا، نعمل مع أعمال محلياً ودولياً — بما في ذلك مطاعم وتجار تجزئة في السعودية،
+          حيث امتثال ZATCA المرحلة الثانية مدمج لدينا.
+        </p>
+        <a href="/ar/contact" class="ease-out-quad mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gold transition-all duration-300 hover:gap-3">تواصل معنا ←</a>
+      </div>
+    </section>
+
+    <div class="mt-28">
+      <DemoCta heading="لنبنِ التقنية التي تقف خلف أعمالك." ctaLabel="تواصل معنا" ctaHref="/ar/contact" />
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,231 @@
+---
+// Arabic Contact (RTL). Drafted Arabic — NEEDS NATIVE REVIEW.
+import Layout from '../../layouts/Layout.astro';
+
+const services = ['منصة RestoPOS', 'تطبيق جوال مخصص', 'نظام طلب للمطاعم', 'برمجيات إدارة الأعمال', 'تطوير موقع', 'تكامل واجهات برمجية', 'برمجيات مخصصة أخرى'];
+const industries = ['مطعم', 'مقهى', 'دجاج بروست', 'مطبخ سحابي', 'سوبرماركت', 'تجزئة', 'صيدلية', 'خدمات', 'أخرى'];
+const budgets = ['غير محدد بعد', 'أقل من 10 آلاف ريال', '10–50 ألف ريال', '50–150 ألف ريال', 'أكثر من 150 ألف ريال'];
+---
+
+<Layout
+  lang="ar"
+  title="تواصل معنا — RestoPOS"
+  description="اطلب عرضاً تجريبياً لمنصة RestoPOS أو عرض سعر لتطبيق مخصص. شاركنا تفاصيل عملك وسنتابع معك عبر واتساب أو البريد الإلكتروني."
+>
+  <div class="pb-8 pt-40">
+    <section class="mx-auto max-w-3xl px-6 md:px-8">
+      <div data-reveal>
+        <p class="mb-5 text-[12px] uppercase tracking-[0.2em] text-gold">تواصل معنا</p>
+        <h1 class="text-balance text-display-lg font-extrabold text-bone">أخبرنا بما تبنيه.</h1>
+        <p class="mt-6 max-w-lg leading-relaxed text-bone/55">
+          سواء أردت عرضاً تجريبياً لمنصة RestoPOS أو عرض سعر لتطبيق مخصص، شارك بعض التفاصيل وسنتابع معك
+          عبر واتساب أو البريد الإلكتروني.
+        </p>
+      </div>
+
+      <div data-reveal style="--reveal-delay: 0.15s">
+        <form id="contact-form" class="mt-14 flex flex-col gap-6">
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="name">الاسم الكامل</label>
+              <input id="name" name="name" required class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="business">اسم العمل</label>
+              <input id="business" name="business" class="field" />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="email">البريد الإلكتروني</label>
+              <input id="email" name="email" type="email" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="phone">الهاتف / واتساب</label>
+              <input id="phone" name="phone" type="tel" required class="field" />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="country">الدولة</label>
+              <input id="country" name="country" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="city">المدينة</label>
+              <input id="city" name="city" class="field" />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="service">ماذا تحتاج؟</label>
+              <select id="service" name="service" required class="field">
+                <option value="" disabled selected>اختر خدمة…</option>
+                {services.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="industry">القطاع</label>
+              <select id="industry" name="industry" class="field">
+                <option value="" disabled selected>اختر…</option>
+                {industries.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="branches">عدد الفروع</label>
+              <input id="branches" name="branches" placeholder="مثال: 2" class="field" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-bone/50" for="budget">الميزانية (اختياري)</label>
+              <select id="budget" name="budget" class="field">
+                <option value="" disabled selected>اختر…</option>
+                {budgets.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs uppercase tracking-widest text-bone/50" for="message">وصف المشروع</label>
+            <textarea id="message" name="message" rows="4" placeholder="ما الذي تريد بناءه أو تحسينه؟ الإعداد الحالي، الجدول الزمني — أي تفاصيل تساعد." class="field resize-none"></textarea>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-bone/50">طريقة التواصل المفضلة</p>
+              <div class="mt-2 flex gap-2" id="pref-toggle">
+                <button type="button" data-p="واتساب" class="pref pref-on">واتساب</button>
+                <button type="button" data-p="البريد" class="pref pref-off">البريد</button>
+                <button type="button" data-p="اتصال" class="pref pref-off">اتصال</button>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-bone/50">تواصل معنا عبر</p>
+              <div class="mt-2 flex gap-2" id="country-toggle">
+                <button type="button" data-c="sa" class="pref pref-on">🇸🇦 السعودية</button>
+                <button type="button" data-c="in" class="pref pref-off">🇮🇳 الهند</button>
+              </div>
+            </div>
+          </div>
+
+          <label class="flex items-start gap-3 text-sm text-bone/60">
+            <input id="consent" name="consent" type="checkbox" required class="mt-0.5 size-4 shrink-0 accent-gold" />
+            <span>أوافق على أن يتم التواصل معي بشأن استفساري.</span>
+          </label>
+
+          <div class="mt-1 flex flex-wrap gap-3">
+            <button type="submit" id="wa-send" class="ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-[#04110a] transition duration-300 hover:brightness-110" style="background:#25D366">
+              💬 إرسال عبر واتساب
+            </button>
+            <button type="button" id="mail-send" class="brand-gradient ease-out-quad inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition duration-300 hover:brightness-110">
+              ✉️ إرسال بالبريد
+            </button>
+          </div>
+        </form>
+
+        <div id="contact-success" hidden class="mt-8 rounded-2xl border border-leaf-bright/30 bg-leaf/5 p-8 text-center">
+          <p class="mb-2 text-sm uppercase tracking-widest text-leaf-bright">جارٍ فتح تطبيقك…</p>
+          <h2 class="text-lg font-semibold text-bone">رسالتك جاهزة وبياناتك معبّأة — فقط اضغط إرسال.</h2>
+        </div>
+      </div>
+
+      <div class="mt-16 rounded-2xl border border-hairline bg-charcoal-soft/40 p-6" data-reveal>
+        <p class="text-[11px] uppercase tracking-widest text-gold">المقر الرئيسي</p>
+        <p class="mt-2 text-bone/70">إيريتي، كانور، كيرالا، الهند</p>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .field {
+    margin-top: 0.5rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-hairline);
+    background: var(--color-charcoal-soft);
+    padding: 0.75rem 1rem;
+    color: var(--color-bone);
+    outline: none;
+    transition: border-color 0.3s var(--ease-out-quad);
+  }
+  .field::placeholder { color: color-mix(in srgb, var(--color-bone) 25%, transparent); }
+  .field:focus { border-color: color-mix(in srgb, var(--color-gold) 50%, transparent); }
+  .pref {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s var(--ease-out-quad);
+  }
+  .pref-on { border: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent); background: color-mix(in srgb, var(--color-gold) 10%, transparent); color: var(--color-gold); }
+  .pref-off { border: 1px solid var(--color-hairline); color: color-mix(in srgb, var(--color-bone) 60%, transparent); }
+</style>
+
+<script>
+  const WHATSAPP = { sa: '966538360053', in: '918848095603' };
+  const OWNER_EMAIL = 'hello@dbdev.io';
+  let country: 'sa' | 'in' = 'sa';
+  let pref = 'واتساب';
+
+  function wireToggle(id: string, onPick: (v: string) => void) {
+    const wrap = document.getElementById(id);
+    wrap?.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+      b.addEventListener('click', () => {
+        onPick(b.dataset.c || b.dataset.p || '');
+        wrap.querySelectorAll<HTMLButtonElement>('button').forEach((x) => {
+          x.className = 'pref ' + (x === b ? 'pref-on' : 'pref-off');
+        });
+      });
+    });
+  }
+  wireToggle('country-toggle', (v) => (country = (v as 'sa' | 'in') || 'sa'));
+  wireToggle('pref-toggle', (v) => (pref = v || 'واتساب'));
+
+  const val = (id: string) =>
+    (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null)?.value.trim() || '';
+
+  function buildMessage() {
+    const lines = [
+      'مرحباً RestoPOS! أرغب في التواصل.',
+      val('service') && `أحتاج: ${val('service')}`,
+      val('name') && `الاسم: ${val('name')}`,
+      val('business') && `العمل: ${val('business')}`,
+      val('email') && `البريد: ${val('email')}`,
+      val('phone') && `الهاتف: ${val('phone')}`,
+      (val('city') || val('country')) && `الموقع: ${[val('city'), val('country')].filter(Boolean).join('، ')}`,
+      val('industry') && `القطاع: ${val('industry')}`,
+      val('branches') && `الفروع: ${val('branches')}`,
+      val('budget') && `الميزانية: ${val('budget')}`,
+      `طريقة التواصل المفضلة: ${pref}`,
+      val('message') && `التفاصيل: ${val('message')}`,
+    ].filter(Boolean);
+    return lines.join('\n');
+  }
+
+  function flashSuccess() {
+    const s = document.getElementById('contact-success');
+    if (s) { s.hidden = false; setTimeout(() => (s.hidden = true), 6000); }
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = encodeURIComponent(buildMessage());
+    window.open(`https://wa.me/${WHATSAPP[country]}?text=${msg}`, '_blank', 'noopener');
+    flashSuccess();
+  });
+
+  document.getElementById('mail-send')?.addEventListener('click', () => {
+    if (!form?.reportValidity()) return;
+    const body = encodeURIComponent(buildMessage());
+    const subject = encodeURIComponent('استفسار RestoPOS');
+    window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+    flashSuccess();
+  });
+</script>
