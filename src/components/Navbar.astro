@@ -11,8 +11,8 @@ const ar = lang === 'ar';
 const p = ar ? '/ar' : ''; // route prefix
 
 const t = ar
-  ? { home: 'الرئيسية', solutions: 'الحلول', appDev: 'تطوير التطبيقات', about: 'من نحن', contact: 'تواصل معنا', login: 'دخول العملاء', demo: 'اطلب عرضاً تجريبياً', altLabel: 'English' }
-  : { home: 'Home', solutions: 'Solutions', appDev: 'App Development', about: 'About Us', contact: 'Contact', login: 'Client Login', demo: 'Request a Demo', altLabel: 'العربية' };
+  ? { home: 'الرئيسية', solutions: 'الحلول', appDev: 'تطوير التطبيقات', about: 'من نحن', contact: 'تواصل معنا', register: 'سجّل الآن', demo: 'اطلب عرضاً تجريبياً', altLabel: 'English' }
+  : { home: 'Home', solutions: 'Solutions', appDev: 'App Development', about: 'About Us', contact: 'Contact', register: 'Register Now', demo: 'Request a Demo', altLabel: 'العربية' };
 
 const solutions = [
   { href: '/features', label: ar ? 'منصة RestoPOS' : 'RestoPOS Platform', desc: ar ? 'نقاط البيع والفوترة والفاتورة الإلكترونية' : 'POS, billing & ZATCA e-invoicing' },
@@ -69,10 +69,10 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
       ))}
     </div>
 
-    <div class="hidden items-center gap-5 lg:flex">
+    <div class="hidden items-center gap-4 lg:flex">
       <a href={altLangPath} class="ease-out-quad rounded-md border border-hairline px-2.5 py-1 text-[12px] font-medium tracking-wide text-bone/70 transition-colors duration-300 hover:border-gold/40 hover:text-gold" hreflang={ar ? 'en' : 'ar'}>{t.altLabel}</a>
-      <a href={APP_URL} class="ease-out-quad text-[13px] tracking-wide text-bone/70 transition-colors duration-300 hover:text-bone">{t.login}</a>
       <a href={p + '/contact'} class="ease-out-quad rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-[13px] font-medium tracking-wide text-gold shadow-[inset_0_1px_0_rgba(220,192,138,0.15)] backdrop-blur-md transition-all duration-300 hover:bg-gold hover:text-charcoal">{t.demo}</a>
+      <a href={APP_URL} class="brand-gradient ease-out-quad rounded-full px-5 py-2 text-[13px] font-semibold tracking-wide text-white shadow-[0_6px_20px_rgba(76,122,82,0.3)] transition duration-300 hover:brightness-110">{t.register}</a>
     </div>
 
     <button id="menu-toggle" class="flex h-8 w-8 flex-col items-center justify-center gap-1.5 text-bone lg:hidden" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -93,8 +93,8 @@ const solutionsActive = solutions.some((s) => isActive(s.href));
       {links.map(({ href, label }) => (
         <a href={p + href} class="py-2 text-sm text-bone/80">{label}</a>
       ))}
-      <a href={APP_URL} class="py-2 text-sm text-bone/80">{t.login}</a>
-      <div class="mt-2 flex items-center gap-3">
+      <div class="mt-2 flex flex-wrap items-center gap-3">
+        <a href={APP_URL} class="brand-gradient inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white">{t.register}</a>
         <a href={p + '/contact'} class="inline-flex items-center justify-center rounded-full border border-gold/40 bg-gold/10 px-5 py-2.5 text-sm font-medium text-gold">{t.demo}</a>
         <a href={altLangPath} class="rounded-md border border-hairline px-3 py-2 text-sm text-bone/70" hreflang={ar ? 'en' : 'ar'}>{t.altLabel}</a>
       </div>

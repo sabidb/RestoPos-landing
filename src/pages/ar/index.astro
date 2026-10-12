@@ -112,7 +112,7 @@ const faqs = [
       </div>
 
       <div data-reveal style="--reveal-delay: 0.1s" class="ease-out-quad flex flex-col overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/40 transition-colors duration-500 hover:border-gold/30">
-        <div class="flex items-center justify-center border-b border-hairline bg-charcoal p-6"><div class="w-48"><AppMock /></div></div>
+        <div class="flex items-center justify-center border-b border-hairline bg-charcoal p-8"><div class="w-44"><AppMock /></div></div>
         <div class="flex flex-1 flex-col p-8">
           <span class="text-[11px] uppercase tracking-widest text-gold">تطوير البرمجيات المخصصة</span>
           <h3 class="mt-3 text-xl font-semibold text-bone">برمجيات مخصصة مبنية لأعمالك</h3>
@@ -229,17 +229,3 @@ const faqs = [
 
   <div class="mt-8"></div>
 </Layout>
-
-<script>
-  // تبديل ثنائي اللغة في العنوان كل 2.6 ثانية.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  for (const el of document.querySelectorAll('[data-bilingual]')) {
-    if (reduceMotion.matches) continue;
-    setInterval(() => {
-      el.classList.toggle('show-en');
-      const showEn = el.classList.contains('show-en');
-      el.querySelector('[data-lang="ar"]')?.setAttribute('aria-hidden', String(showEn));
-      el.querySelector('[data-lang="en"]')?.setAttribute('aria-hidden', String(!showEn));
-    }, 2600);
-  }
-</script>

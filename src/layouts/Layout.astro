@@ -206,6 +206,19 @@ const orgSchema = {
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
+
+      // Bilingual swap: any [data-bilingual] element alternates its Arabic and
+      // English spans every 2.6s (skipped under reduced motion).
+      if (!reduceMotion) {
+        for (const el of document.querySelectorAll('[data-bilingual]')) {
+          setInterval(() => {
+            el.classList.toggle('show-en');
+            const showEn = el.classList.contains('show-en');
+            el.querySelector('[data-lang="ar"]')?.setAttribute('aria-hidden', String(showEn));
+            el.querySelector('[data-lang="en"]')?.setAttribute('aria-hidden', String(!showEn));
+          }, 2600);
+        }
+      }
     </script>
   </body>
 </html>
