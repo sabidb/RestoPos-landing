@@ -60,38 +60,35 @@ const faqs = [
     <div aria-hidden="true" data-parallax="0.18" class="pointer-events-none absolute left-1/4 top-0 -z-10 h-[32rem] w-[40rem] -translate-x-1/2 rounded-full bg-leaf/[0.07] blur-[140px] will-change-transform"></div>
     <div aria-hidden="true" data-parallax="-0.1" class="pointer-events-none absolute right-1/4 top-10 -z-10 h-[32rem] w-[40rem] translate-x-1/2 rounded-full bg-gold/[0.06] blur-[140px] will-change-transform"></div>
 
-    <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
-      <div>
-        <p class="mb-6 text-[12px] uppercase tracking-[0.2em] text-gold">Business software &amp; custom development</p>
-        <h1 class="text-balance text-display-xl font-extrabold leading-[0.98] text-bone">
-          Powerful software.<br /><span class="text-gold">Built around your business.</span>
-        </h1>
-        <p class="mt-7 max-w-lg text-balance text-lg leading-relaxed text-bone/60">
-          From smart billing and restaurant management to fully customized mobile apps and digital
-          platforms, RestoPOS builds technology designed around how your business actually works.
-        </p>
-        <div class="mt-9 flex flex-wrap items-center gap-4">
-          <a href="#divisions" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">
-            Explore Our Solutions
-          </a>
-          <a href="/contact" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">
-            Discuss Your Project
-          </a>
-        </div>
-        <div class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-xs text-bone/40">
-          <span>✓ ZATCA Phase 2-certified</span>
-          <span>✓ Bilingual Arabic &amp; English</span>
-          <span>✓ iOS · Android · Web</span>
-        </div>
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="mb-6 text-[12px] uppercase tracking-[0.2em] text-gold">Business software &amp; custom development</p>
+      <h1 class="text-balance text-display-xl font-extrabold leading-[0.98] text-bone">
+        Powerful software.<br /><span class="text-gold">Built around your business.</span>
+      </h1>
+      <p class="mx-auto mt-7 max-w-xl text-balance text-lg leading-relaxed text-bone/60">
+        From smart billing and restaurant management to fully customized mobile apps and digital
+        platforms, RestoPOS builds technology designed around how your business actually works.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <a href="#divisions" class="brand-gradient ease-out-quad whitespace-nowrap rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_8px_28px_rgba(76,122,82,0.35)] transition duration-300 hover:brightness-110">
+          Explore Our Solutions
+        </a>
+        <a href="/contact" class="ease-out-quad whitespace-nowrap rounded-full border border-bone/20 px-7 py-3.5 text-sm font-medium text-bone transition-colors duration-300 hover:border-bone/50">
+          Discuss Your Project
+        </a>
       </div>
+      <div class="mt-9 flex flex-wrap justify-center gap-x-7 gap-y-2 text-xs text-bone/40">
+        <span>✓ ZATCA Phase 2-certified</span>
+        <span>✓ Bilingual Arabic &amp; English</span>
+        <span>✓ iOS · Android · Web</span>
+      </div>
+    </div>
 
-      <!-- Right: a single clean POS console frame. The branded app is shown
-           in its own card in the two-division section below. -->
-      <div class="mx-auto w-full max-w-lg [perspective:1600px] lg:max-w-none">
-        <div class="animate-float">
-          <div data-tilt class="light-sweep relative overflow-hidden rounded-2xl border border-hairline bg-charcoal-soft/80 p-2 shadow-gold backdrop-blur-xl">
-            <DashboardPreview />
-          </div>
+    <!-- Full-width POS console showcase, on its own line as a clean box. -->
+    <div class="mt-16 [perspective:1600px]">
+      <div class="animate-float mx-auto max-w-5xl">
+        <div data-tilt class="light-sweep relative overflow-hidden rounded-3xl border border-hairline bg-charcoal-soft/80 p-2 shadow-gold backdrop-blur-xl sm:p-3">
+          <DashboardPreview />
         </div>
       </div>
     </div>
